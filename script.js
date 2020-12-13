@@ -32,13 +32,13 @@ var userResult = document.createElement("h3");
 var correctAnswer = document.createElement("h5");
 
 var questionsArray = [
-    { question: "",
-       responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+    { question: "Which of the following is NOT a JavaScript data type?",
+       responseA: "Number",
+       responseB: "Double",
+       responseC: "Boolean",
+       responseD: "String",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "B"
     },
     { question: "What comparison operator is used to test if two values are equal and of the same data type?",
        responseA: "==",
@@ -64,53 +64,53 @@ var questionsArray = [
        responseE: "None of the above.",
        correctAnswer: "E"
     },
-    { question: "",
-       responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+    { question: "What is the correct keyword to use to end a switch statement or for loop?",
+       responseA: "skip",
+       responseB: "stop",
+       responseC: "halt",
+       responseD: "break",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "D"
     },
-    { question: "",
-       responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+    { question: "Which of the following is a not a string method?",
+       responseA: "splice()",
+       responseB: "indexOf()",
+       responseC: "toUpperCase()",
+       responseD: "trim()",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "A"
     },
-    { question: "",
+    { question: "Which of the following array methods would you use to add to the end of an array?",
        responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+       responseB: "shift()",
+       responseC: "pop()",
+       responseD: "push()",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "D"
     },
-    { question: "",
-       responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+    { question: "Which of the following does not have the data type of object?",
+       responseA: "Object",
+       responseB: "Function",
+       responseC: "Array",
+       responseD: "null",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "B"
     },
-    { question: "",
-       responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+    { question: "Which of the following is not a component of the Document Object Model tree?",
+       responseA: "Root Element",
+       responseB: "Sibling Element",
+       responseC: "Cousin Element",
+       responseD: "Child Element",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "C"
     },
-    { question: "",
-       responseA: "",
-       responseB: "",
-       responseC: "",
-       responseD: "",
+    { question: "Which of the following is not a valid parameter for a function?",
+       responseA: "Operator",
+       responseB: "String",
+       responseC: "Number",
+       responseD: "Boolean",
        responseE: "None of the above.",
-       correctAnswer: ""
+       correctAnswer: "A"
     }
 ];
 
