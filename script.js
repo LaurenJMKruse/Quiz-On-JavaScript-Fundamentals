@@ -1,4 +1,4 @@
-// Welcome Page
+// Welcome Page Assignments
 var gameTitle = document.createElement("h1");
 var welcomeDiv = document.createElement("div");
 var welcomeMessage = document.createElement("h3");
@@ -17,6 +17,104 @@ var timerHeader = document.createElement("h3");
 var timerPlaceholder = document.createElement("p");
 var startGameButton = document.createElement("button");
 
+// Quiz Assignments
+var questionsHeader = document.createElement("h1");
+var questionDiv = document.createElement("div");
+var askQuestion = document.createElement("h3");
+var answerDiv = document.createElement("div");
+var answerA = document.createElement("button");
+var answerB = document.createElement("button");
+var answerC = document.createElement("button");
+var answerD = document.createElement("button");
+var answerC = document.createElement("button");
+var responseDiv = document.createElement("div");
+var userResult = document.createElement("h3");
+var correctAnswer = document.createElement("h5");
+
+var questionsArray = [
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    },
+    { question: "What comparison operator is used to test if two values are equal and of the same data type?",
+       responseA: "==",
+       responseB: "=",
+       responseC: "===",
+       responseD: "=== &&",
+       responseE: "None of the above.",
+       correctAnswer: "C"
+    },
+    { question: "Which of the below values are truthy (evaluate to true)?",
+       responseA: "0",
+       responseB: "5",
+       responseC: "' ' (an empty string)",
+       responseD: "NaN",
+       responseE: "None of the above.",
+       correctAnswer: "B"
+    },
+    { question: "Which of the below values are falsy (evaluate to false)?",
+       responseA: "[ ] (an empty array",
+       responseB: "{ } (an empty object)",
+       responseC: "orca",
+       responseD: "'0'",
+       responseE: "None of the above.",
+       correctAnswer: "E"
+    },
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    },
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    },
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    },
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    },
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    },
+    { question: "",
+       responseA: "",
+       responseB: "",
+       responseC: "",
+       responseD: "",
+       responseE: "None of the above.",
+       correctAnswer: ""
+    }
+];
+
+// Welcome Page Text
 gameTitle.textContent = "Welcome to the JavaScript Quiz!";
 welcomeMessage.textContent = "Test your basic JavaScript skills!"
 instructionsHeader.textContent = "Instructions";
@@ -56,23 +154,9 @@ timerDiv.appendChild(timerPlaceholder);
 document.body.appendChild(startGameButton);
 
 
-// Questions
-
-var questionsHeader = document.createElement("h1");
-var questionDiv = document.createElement("div");
-var question = document.createElement("h3");
-var answerDiv = document.createElement("div");
-var answerA = document.createElement("button");
-var answerB = document.createElement("button");
-var answerC = document.createElement("button");
-var answerD = document.createElement("button");
-var answerC = document.createElement("button");
-var responseDiv = document.createElement("div");
-var userResult = document.createElement("h3");
-var correctAnswer = document.createElement("h5");
-
+// Quiz Text
 questionsHeader.textContent = "Question Number 0";
-question.textContent = "Placeholder";
+askQuestion.textContent = "Placeholder";
 answerA.textContent = "A - Placeholder";
 answerB.textContent = "B - Placeholder";
 answerC.textContent = "C - Placeholder";
@@ -82,7 +166,7 @@ correctAnswer.textContent = "The correct answer is Placeholder.";
 
 document.body.appendChild(questionsHeader);
 document.body.appendChild(questionDiv);
-questionDiv.appendChild(question);
+questionDiv.appendChild(askQuestion);
 questionDiv.appendChild(answerDiv);
 questionDiv.children[1].appendChild(answerA);
 questionDiv.children[1].appendChild(answerB);
@@ -92,5 +176,6 @@ questionDiv.children[1].appendChild(answerD);
 document.body.appendChild(responseDiv);
 responseDiv.appendChild(userResult);
 responseDiv.appendChild(correctAnswer);
+
 
 
