@@ -26,11 +26,14 @@ var answerA = document.createElement("button");
 var answerB = document.createElement("button");
 var answerC = document.createElement("button");
 var answerD = document.createElement("button");
-var answerC = document.createElement("button");
+var answerE = document.createElement("button");
 var responseDiv = document.createElement("div");
 var userResult = document.createElement("h3");
 var correctAnswer = document.createElement("h5");
+var buttons = document.getElementsByTagName("button");
 
+
+// Quiz Questions and Answers
 var questionsArray = [
     { question: "Which of the following is NOT a JavaScript data type?",
        responseA: "Number",
@@ -154,6 +157,10 @@ timerDiv.appendChild(timerPlaceholder);
 document.body.appendChild(startGameButton);
 
 
+// Applying Attributes to Welcome Page
+
+
+
 // Quiz Text
 questionsHeader.textContent = "Question Number 0";
 askQuestion.textContent = "Placeholder";
@@ -161,9 +168,11 @@ answerA.textContent = "A - Placeholder";
 answerB.textContent = "B - Placeholder";
 answerC.textContent = "C - Placeholder";
 answerD.textContent = "D - Placeholder";
+answerE.textContent = "None of the above.";
 userResult.textContent = "You answered correctly/incorrectly!";
 correctAnswer.textContent = "The correct answer is Placeholder.";
 
+// Setting up the Quiz Page
 document.body.appendChild(questionsHeader);
 document.body.appendChild(questionDiv);
 questionDiv.appendChild(askQuestion);
@@ -173,9 +182,22 @@ questionDiv.children[1].appendChild(answerB);
 questionDiv.children[1].appendChild(answerC);
 questionDiv.children[1].appendChild(answerD);
 questionDiv.children[1].appendChild(answerD);
+questionDiv.children[1].appendChild(answerE);
 document.body.appendChild(responseDiv);
 responseDiv.appendChild(userResult);
 responseDiv.appendChild(correctAnswer);
 
+// Applying Attributes to Quiz Page
+buttons[1].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
+buttons[2].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
+buttons[3].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
+buttons[4].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
+buttons[5].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
 
+
+
+
+// function populatingQuiz(questionsArray) {
+
+// }
 
