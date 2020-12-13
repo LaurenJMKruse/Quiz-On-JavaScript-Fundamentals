@@ -1,3 +1,6 @@
+var buttons = document.getElementsByTagName("button");
+
+
 // Welcome Page Assignments
 // var welcomeDiv = document.createElement("div");
 // var gameTitle = document.createElement("h1");
@@ -22,6 +25,19 @@ var quizDiv = document.createElement("div");
 
 // children[0]
 var questionHeader = document.createElement("h1");
+
+var questionData = document.createElement("h3");
+
+var question01 = document.createElement("h3");
+var question02 = document.createElement("h3");
+var question03 = document.createElement("h3");
+var question04 = document.createElement("h3");
+var question05 = document.createElement("h3");
+var question06 = document.createElement("h3");
+var question07 = document.createElement("h3");
+var question08 = document.createElement("h3");
+var question09 = document.createElement("h3");
+var question10 = document.createElement("h3");
 
 // children[1]
 var questionDiv = document.createElement("div");
@@ -48,17 +64,29 @@ var userResponse = document.createElement("h3");
 // childNodes[1]
 var correctAnswer = document.createElement("h5");
 
-var buttons = document.getElementsByTagName("button");
 
 // Setting up the Quiz Page
 document.body.appendChild(quizDiv);
 
 quizDiv.appendChild(questionHeader);
 
-quizDiv.appendChild(questionDiv);
+quizDiv.appendChild(questionData);
+
+questionData.appendChild(question01);
+questionData.appendChild(question02);
+questionData.appendChild(question03);
+questionData.appendChild(question04);
+questionData.appendChild(question05);
+questionData.appendChild(question06);
+questionData.appendChild(question07);
+questionData.appendChild(question08);
+questionData.appendChild(question09);
+questionData.appendChild(question10);
+
+questionData.appendChild(questionDiv);
 questionDiv.appendChild(askQuestion);
 
-quizDiv.appendChild(answerDiv);
+questionData.appendChild(answerDiv);
 answerDiv.appendChild(answerA);
 answerDiv.appendChild(answerB);
 answerDiv.appendChild(answerC);
@@ -66,33 +94,27 @@ answerDiv.appendChild(answerD);
 answerDiv.appendChild(answerD);
 answerDiv.appendChild(answerE);
 
-quizDiv.appendChild(responseDiv);
+questionData.appendChild(responseDiv);
 responseDiv.appendChild(userResponse);
 responseDiv.appendChild(correctAnswer);
 
+
 // Quiz textContent Placeholder
-questionHeader.textContent = "Question Number 0";
-askQuestion.textContent = "Placeholder";
-answerA.textContent = "A - Placeholder";
-answerB.textContent = "B - Placeholder";
-answerC.textContent = "C - Placeholder";
-answerD.textContent = "D - Placeholder";
-answerE.textContent = "None of the above.";
-userResponse.textContent = "Your answer";
-correctAnswer.textContent = "The correct answer is Placeholder.";
+// questionHeader.textContent = "Question Number 0";
+// askQuestion.textContent = "Placeholder";
+// answerA.textContent = "A - Placeholder";
+// answerB.textContent = "B - Placeholder";
+// answerC.textContent = "C - Placeholder";
+// answerD.textContent = "D - Placeholder";
+// answerE.textContent = "None of the above.";
+// userResponse.textContent = "Your answer";
+// correctAnswer.textContent = "The correct answer is Placeholder.";
 
 
 // Applying Attributes to Quiz Page
 for (var i = 0; i < buttons.length; i++) {
-   buttons[i].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
+   buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
 }
-
-// buttons[2].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
-// buttons[3].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
-// buttons[4].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
-// buttons[5].setAttribute("style", "background-color:#0000cc; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px");
-
-
 
 
 // Quiz Questions and Answers
@@ -200,34 +222,36 @@ var questionsArray = [
 ];
 
 // Function to populate quiz
-// function populateQuiz (questionsArray) {
-//    var questionNumber = questionsArray.questionNum;
-//    var quizQuestion = questionsArray.children[1];
-//    var buttonA = questionsArray.children[2];
-//    var buttonB = questionsArray.children[2];
-//    var buttonC = questionsArray.children[3];
-//    var buttonD = questionsArray.children[4];
-//    var buttonE = questionsArray.children[5];
-//    var rightAnswer = questionsArray.children[6];
+function populateQuiz (questionsArray) {;
+   var quizQuestion;
+   var buttonA;
+   var buttonB;
+   var buttonC;
+   var buttonD;
+   var buttonE;
+   var rightAnswer;
 
-//    quizQuestion.textContent = questionsArray.question;
-//    buttonA = questionsArray.A;
-//    buttonB = questionsArray.B;
-//    buttonC = questionsArray.C;
-//    buttonD = questionsArray.D;
-//    buttonE = questionsArray.E;
-//    rightAnswer = questionsArray.correctAnswer;
-// }
+   questionNumber.textContent = questionsArray.questionNum;
+   quizQuestion.textContent = questionsArray.question;
+   buttonA = questionsArray.A;
+   buttonB = questionsArray.B;
+   buttonC = questionsArray.C;
+   buttonD = questionsArray.D;
+   buttonE = questionsArray.E;
+   rightAnswer = questionsArray.correctAnswer;
 
-// for (var i = 0; i < questionsArray.length; i++) {
-//    populateQuiz(questionsArray[i]);
-//    console.log(quizQuestion);
-//    console.log(buttonA);
-//    console.log(buttonB);
-//    console.log(buttonC);
-//    console.log(buttonD);
-//    console.log(buttonE);
-// }
+   for (var i = 0; i < questionsArray.length; i++) {
+      populateQuiz(questionsArray[i]);
+      console.log(questionNumber)
+      console.log(quizQuestion);
+      console.log(buttonA);
+      console.log(buttonB);
+      console.log(buttonC);
+      console.log(buttonD);
+      console.log(buttonE);
+      console.log(rightAnswer);
+   }
+}   
 
 // Welcome Page Text
 // gameTitle.textContent = "Welcome to the JavaScript Quiz!";
