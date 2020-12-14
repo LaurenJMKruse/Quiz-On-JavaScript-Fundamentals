@@ -252,50 +252,52 @@ var questionsArray = [
     }
 ];
 
-for (var i = 0; i < questionsArray.length; i++) {
+populateQuiz(questionsArray);
+
+function populateQuiz(questionsArray) { 
+
+   for (var i = 0; i < questionsArray.length; i++) {
    
-   questionNumber = questionsArray[i].questionNum;
-   console.log("The current question is " + questionNumber);
-   
-   askQuestion.textContent = questionsArray[i].question;
-   console.log(askQuestion.innerText);
-
-   answerA.textContent = questionsArray[i].A;
-   console.log(answerA.innerText);
-
-   answerB.textContent = questionsArray[i].B;
-   console.log(answerB.innerText);
-   
-   answerC.textContent = questionsArray[i].C;
-   console.log(answerC.innerText);
-
-   answerD.textContent = questionsArray[i].D;
-   console.log(answerD.innerText);
-
-   answerE.textContent = questionsArray[i].E;
-   console.log(answerE.innerText);
-
-   correctAnswer = questionsArray[i].rightAnswer;
-
-   switch (correctAnswer) {
-      case "A":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].A}".`;
-                        break;
+      questionNumber = questionsArray[i].questionNum;
+      console.log("The current question is " + questionNumber);
       
-      case "B":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].B}".`;
-                        break;
+      questionHeader.textContent = `Question No. ${questionNumber}`;
+
+      askQuestion.textContent = questionsArray[i].question;
+      console.log(askQuestion.innerText);
+
+      answerA.textContent = questionsArray[i].A;
+      console.log(answerA.innerText);
+
+      answerB.textContent = questionsArray[i].B;
+      console.log(answerB.innerText);
+   
+      answerC.textContent = questionsArray[i].C;
+      console.log(answerC.innerText);
+
+      answerD.textContent = questionsArray[i].D;
+      console.log(answerD.innerText);
+
+      answerE.textContent = questionsArray[i].E;
+      console.log(answerE.innerText);
+
+      correctAnswer = questionsArray[i].rightAnswer;
+
+      switch (correctAnswer) {
+         case "A":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].A}".`;
+                           break;
       
-      case "C":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].C}".`;
-                        break;
+         case "B":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].B}".`;
+                           break;
+      
+         case "C":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].C}".`;
+                           break;
                      
-      case "D":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].D}".`;
-                        break;
+         case "D":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].D}".`;
+                           break;
 
-      case "E":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].E}".`;
-                        break;
+         case "E":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].E}".`;
+                           break;
+      }
    }
-   
 }
-   
-questionHeader.textContent = `Question No. ${questionNumber}`;
-
-   
