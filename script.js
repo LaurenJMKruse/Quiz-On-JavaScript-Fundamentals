@@ -189,20 +189,7 @@ for (var i = 0; i < buttons.length; i++) {
    } 
 }
 
-// function setTimer() {
-//    var timerInterval = setInterval(function() {
-//          remainingSeconds--;
-//          timerPlaceholder.textContent = remainingSeconds;
 
-//          populateQuiz(questionsArray);
-      
-//          if (secondsLeft === 0) {
-//             clearInterval(timerInterval);
-//          }
-//       }, 10000);
-// }
-
-// setTimer();
 
 // Quiz Questions and Answers
 var questionsArray = [
@@ -308,9 +295,9 @@ var questionsArray = [
     }
 ];
 
- populateQuiz(questionsArray);
+populateQuiz(questionsArray);
 
-function populateQuiz(questionsArray) { 
+function populateQuiz() { 
 
    for (var i = 0; i < questionsArray.length; i++) {
    
