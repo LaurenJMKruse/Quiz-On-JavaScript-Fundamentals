@@ -15,7 +15,7 @@ timerHeader.textContent = "Timer";
 // timerDiv.children[1]
 var timerPlaceholder = document.createElement("p");
 timerDiv.appendChild(timerPlaceholder);
-timerPlaceholder.textContent = "0:00";
+// timerPlaceholder.textContent = "0:00";
 
 
 // Welcome View Assignments
@@ -136,17 +136,73 @@ var answerFeedback = document.createElement("h3");
 // correctAnswer.textContent = "The correct answer is...";
 responseDiv.appendChild(answerFeedback);
 
+// Score View Assignments
+// scoreDiv is parent div for this section
+var scoreDiv = document.createElement("div");
+document.body.appendChild(scoreDiv);
+
+// scoreDiv.children[0]
+var scoreMessage = document.createElement("h2");
+scoreMessage.textContent = "How did your score rank?"
+scoreDiv.appendChild(scoreMessage);
+
+// scoreDiv.children[1]
+var allScoresDiv = document.createElement("div");
+scoreDiv.appendChild(allScoresDiv);
+
+// scoreDiv.allScoresDiv.children[0]
+var allScoresHeader = document.createElement("h5");
+allScoresHeader.textContent = "All Games";
+allScoresDiv.appendChild(allScoresHeader);
+
+// scoreDiv.children[2]
+var highScoresDiv = document.createElement("div");
+scoreDiv.appendChild(highScoresDiv);
+
+// scoreDiv.highScoresDiv.children[0]
+var highScoresHeader = document.createElement("h5");
+highScoresHeader.textContent = "High Scores";
+allScoresDiv.appendChild(highScoresHeader);
+
+// scoreDiv.children[3]
+var clearScores = document.createElement("button");
+clearScores.textContent = "Clear Scores";
+scoreDiv.appendChild(clearScores);
+
+// scoreDiv.children[4]
+var playAgain = document.createElement("button");
+playAgain.textContent = "Play Again";
+scoreDiv.appendChild(playAgain);
+
 // Applying Attributes to Buttons
 for (var i = 0; i < buttons.length; i++) {
    if (i === 0) {
       buttons[i].setAttribute("style", "background-color:red; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:300px;");
    }
    
-   else {
-       buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
+   else if (i <= 5) {
+      buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
    }
+
+   else {
+      buttons[i].setAttribute("style", "background-color:#00cc99; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px;");
+   } 
 }
 
+// function setTimer() {
+//    var timerInterval = setInterval(function() {
+//          remainingSeconds--;
+//          timerPlaceholder.textContent = remainingSeconds;
+
+//          populateQuiz(questionsArray);
+      
+//          if (secondsLeft === 0) {
+//             clearInterval(timerInterval);
+//          }
+//       }, 10000);
+// }
+
+// setTimer();
 
 // Quiz Questions and Answers
 var questionsArray = [
@@ -252,7 +308,7 @@ var questionsArray = [
     }
 ];
 
-populateQuiz(questionsArray);
+ populateQuiz(questionsArray);
 
 function populateQuiz(questionsArray) { 
 
@@ -301,3 +357,4 @@ function populateQuiz(questionsArray) {
       }
    }
 }
+
