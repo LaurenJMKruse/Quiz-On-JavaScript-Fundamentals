@@ -1,119 +1,150 @@
 var buttons = document.getElementsByTagName("button");
 
+// Stuff that goes on every view
+// Game title
+var gameTitle = document.createElement("h1");
+document.body.appendChild(gameTitle);
+gameTitle.textContent = "JavaScript Fundamentals Quiz";
+// Timer in timerDiv
+var timerDiv = document.createElement("div");
+document.body.appendChild(timerDiv);
+// timerDiv.children[0]
+var timerHeader = document.createElement("h2");
+timerDiv.appendChild(timerHeader);
+timerHeader.textContent = "Timer";
+// timerDiv.children[1]
+var timerPlaceholder = document.createElement("p");
+timerDiv.appendChild(timerPlaceholder);
+timerPlaceholder.textContent = "0:00";
 
-// Welcome Page Assignments
-// var welcomeDiv = document.createElement("div");
-// var gameTitle = document.createElement("h1");
-// var welcomeMessage = document.createElement("h3");
-// var instructionsDiv = document.createElement("div");
-// var instructionsHeader = document.createElement("h3");
-// var instructionsList = document.createElement("ul");
-// var bullet1 = document.createElement("li");
-// var bullet2 = document.createElement("li");
-// var bullet3 = document.createElement("li");
-// var bullet4 = document.createElement('li');
-// var bullet5 = document.createElement("li");
-// var bullet6 = document.createElement("li");
-// var bullet7 = document.createElement("li");
-// var timerDiv = document.createElement("div");
-// var timerHeader = document.createElement("h3");
-// var timerPlaceholder = document.createElement("p");
-// var startGameButton = document.createElement("button");
 
-// Quiz Assignments
+// Welcome View Assignments
+// welcomeDiv is parent div for this section
+var welcomeDiv = document.createElement("div");
+document.body.appendChild(welcomeDiv);
+
+// welcomeDiv.children[0]
+var welcomeMessage = document.createElement("h2");
+welcomeMessage.textContent = "Test your basic JavaScript skills!"
+welcomeDiv.appendChild(welcomeMessage);
+
+// welcomeDiv.children[1]
+var instructionsDiv = document.createElement("div");
+welcomeDiv.appendChild(instructionsDiv);
+// welcomeDiv.children[1].children[0]
+var instructionsHeader = document.createElement("h2");
+instructionsHeader.textContent = "Instructions";
+instructionsDiv.appendChild(instructionsHeader);
+// welcomeDiv.children[1].children[1]
+var instructionsList = document.createElement("ul");
+instructionsDiv.appendChild(instructionsList);
+// welcomeDiv.instructionsDiv.instructionsList.children[0]
+var bullet1 = document.createElement("li");
+bullet1.textContent = "The quiz consists of 10 questions";
+instructionsDiv.children[1].appendChild(bullet1);
+// welcomeDiv.instructionsDiv.instructionsList.children[1]
+var bullet2 = document.createElement("li");
+bullet2.textContent = "You have 30 seconds for each question";
+instructionsDiv.children[1].appendChild(bullet2);
+// welcomeDiv.instructionsDiv.instructionsList.children[3]
+var bullet3 = document.createElement("li");
+bullet3.textContent = "Answers are multiple choice";
+instructionsDiv.children[1].appendChild(bullet3);
+// welcomeDiv.instructionsDiv.instructionsList.children[4]
+var bullet4 = document.createElement('li');
+bullet4.textContent = "Click on the button that corresponds with your best answer";
+instructionsDiv.children[1].appendChild(bullet4);
+// welcomeDiv.instructionsDiv.instructionsList.children[5]
+var bullet5 = document.createElement("li");
+bullet5.textContent = "You will be notified if your answer is right or wrong";
+instructionsDiv.children[1].appendChild(bullet5);
+// welcomeDiv.instructionsDiv.instructionsList.children[6]
+var bullet6 = document.createElement("li");
+bullet6.textContent = "Each correct response is worth 5 points";
+instructionsDiv.children[1].appendChild(bullet6);
+// welcomeDiv.instructionsDiv.instructionsList.children[7]
+var bullet7 = document.createElement("li");
+bullet7.textContent = "Good results are recorded in the High Score list";
+instructionsDiv.children[1].appendChild(bullet7);
+
+// welcomeDiv.children[2]
+var startGameButton = document.createElement("button");
+startGameButton.textContent = "Begin Quiz";
+welcomeDiv.appendChild(startGameButton);
+
+// Welcome Page Text
+
+// Setting up the Welcome Page view with welcomeDiv
+// welcomeDiv contains 3 divs: welcomeMessage, instructionsDiv, startGameDiv
+
+// quizDiv is parent div for this section
 var quizDiv = document.createElement("div");
-
-// children[0]
-var questionHeader = document.createElement("h1");
-
-var questionData = document.createElement("h3");
-
-var question01 = document.createElement("h3");
-var question02 = document.createElement("h3");
-var question03 = document.createElement("h3");
-var question04 = document.createElement("h3");
-var question05 = document.createElement("h3");
-var question06 = document.createElement("h3");
-var question07 = document.createElement("h3");
-var question08 = document.createElement("h3");
-var question09 = document.createElement("h3");
-var question10 = document.createElement("h3");
-
-// children[1]
-var questionDiv = document.createElement("div");
-// childNodes[0]
-var askQuestion = document.createElement("h3");
-
-// children[2]   
-var answerDiv = document.createElement("div");
-// childNodes[0]
-var answerA = document.createElement("button");
-// childNodes[1]
-var answerB = document.createElement("button");
-// childNodes[2]
-var answerC = document.createElement("button");
-// childNodes[3]
-var answerD = document.createElement("button");
-// childNodes[4]
-var answerE = document.createElement("button");
-
-// children[3]      
-var responseDiv = document.createElement("div");
-// childNodes[0]
-var userResponse = document.createElement("h3");
-// childNodes[1]
-var correctAnswer = document.createElement("h5");
-
-
-// Setting up the Quiz Page
 document.body.appendChild(quizDiv);
 
+// quizDiv.children[0]
+var questionHeader = document.createElement("h2");
+// questionHeader.textContent = `Question No. ${questionNumber}`;
 quizDiv.appendChild(questionHeader);
+var questionNumber;
 
-quizDiv.appendChild(questionData);
+// quizDiv.children[1]
+var askQuestion = document.createElement("h3");
+// askQuestion.textContent = "Can you answer this question?";
+quizDiv.appendChild(askQuestion);
 
-questionData.appendChild(question01);
-questionData.appendChild(question02);
-questionData.appendChild(question03);
-questionData.appendChild(question04);
-questionData.appendChild(question05);
-questionData.appendChild(question06);
-questionData.appendChild(question07);
-questionData.appendChild(question08);
-questionData.appendChild(question09);
-questionData.appendChild(question10);
+// quizDiv.children[2]   
+var answerDiv = document.createElement("div");
+quizDiv.appendChild(answerDiv);
 
-questionData.appendChild(questionDiv);
-questionDiv.appendChild(askQuestion);
-
-questionData.appendChild(answerDiv);
+// quizDiv.answerDiv.children[0]
+var answerA = document.createElement("button");
+// answerA.textContent = "A";
 answerDiv.appendChild(answerA);
+
+// quizDiv.answerDIv.children[1]
+var answerB = document.createElement("button");
+// answerB.textContent = "B";
 answerDiv.appendChild(answerB);
+
+// quizDiv.answerDiv.children[2]
+var answerC = document.createElement("button");
+// answerC.textContent = "C";
 answerDiv.appendChild(answerC);
+
+// quizDiv.answerDiv.children[3]
+var answerD = document.createElement("button");
+// answerD.textContent = "D";
 answerDiv.appendChild(answerD);
-answerDiv.appendChild(answerD);
+
+// quizDiv.answerDiv.children[4]
+var answerE = document.createElement("button");
+// answerE.textContent = "E";
 answerDiv.appendChild(answerE);
 
-questionData.appendChild(responseDiv);
-responseDiv.appendChild(userResponse);
-responseDiv.appendChild(correctAnswer);
+// quizDiv.children[3]      
+var responseDiv = document.createElement("div");
+quizDiv.appendChild(responseDiv);
 
-
-// Quiz textContent Placeholder
-// questionHeader.textContent = "Question Number 0";
-// askQuestion.textContent = "Placeholder";
-// answerA.textContent = "A - Placeholder";
-// answerB.textContent = "B - Placeholder";
-// answerC.textContent = "C - Placeholder";
-// answerD.textContent = "D - Placeholder";
-// answerE.textContent = "None of the above.";
+// quizDiv.responseDiv.children[0]
+var userResponse = document.createElement("h3");
 // userResponse.textContent = "Your answer";
-// correctAnswer.textContent = "The correct answer is Placeholder.";
+responseDiv.appendChild(userResponse);
 
+// quizDiv.responseDiv.children[1]
+var correctAnswer;
+var answerFeedback = document.createElement("h3");
+// correctAnswer.textContent = "The correct answer is...";
+responseDiv.appendChild(answerFeedback);
 
-// Applying Attributes to Quiz Page
+// Applying Attributes to Buttons
 for (var i = 0; i < buttons.length; i++) {
-   buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
+   if (i === 0) {
+      buttons[i].setAttribute("style", "background-color:red; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:300px;");
+   }
+   
+   else {
+       buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
+   }
 }
 
 
@@ -126,8 +157,8 @@ var questionsArray = [
        B: "Double",
        C: "Boolean",
        D: "String",
-       E: "None of the above.",
-       correctAnswer: "B"
+       E: "None of the above",
+       rightAnswer: "B"
     },
     { 
       questionNum: 2,
@@ -136,8 +167,8 @@ var questionsArray = [
        B: "=",
        C: "===",
        D: "=== &&",
-       E: "None of the above.",
-       correctAnswer: "C"
+       E: "None of the above",
+       rightAnswer: "C"
     },
     { 
       questionNum: 3,
@@ -146,8 +177,8 @@ var questionsArray = [
        B: "5",
        C: "' ' (an empty string)",
        D: "NaN",
-       E: "None of the above.",
-       correctAnswer: "B"
+       E: "None of the above",
+       rightAnswer: "B"
     },
     { 
       questionNum: 4,
@@ -156,8 +187,8 @@ var questionsArray = [
        B: "{ } (an empty object)",
        C: "orca",
        D: "'0'",
-       E: "None of the above.",
-       correctAnswer: "E"
+       E: "None of the above",
+       rightAnswer: "E"
     },
     { 
       questionNum: 5,
@@ -166,8 +197,8 @@ var questionsArray = [
        B: "stop",
        C: "halt",
        D: "break",
-       E: "None of the above.",
-       correctAnswer: "D"
+       E: "None of the above",
+       rightAnswer: "D"
     },
     { 
       questionNum: 6,
@@ -176,8 +207,8 @@ var questionsArray = [
        B: "indexOf()",
        C: "toUpperCase()",
        D: "trim()",
-       E: "None of the above.",
-       correctAnswer: "A"
+       E: "None of the above",
+       rightAnswer: "A"
     },
     { 
       questionNum: 7,
@@ -186,8 +217,8 @@ var questionsArray = [
        B: "shift()",
        C: "pop()",
        D: "push()",
-       E: "None of the above.",
-       correctAnswer: "D"
+       E: "None of the above",
+       rightAnswer: "D"
     },
     { 
       questionNum: 8,
@@ -196,8 +227,8 @@ var questionsArray = [
        B: "Function",
        C: "Array",
        D: "null",
-       E: "None of the above.",
-       correctAnswer: "B"
+       E: "None of the above",
+       rightAnswer: "B"
     },
     { 
       questionNum: 9,
@@ -206,102 +237,65 @@ var questionsArray = [
        B: "Sibling Element",
        C: "Cousin Element",
        D: "Child Element",
-       E: "None of the above.",
-       correctAnswer: "C"
+       E: "None of the above",
+       rightAnswer: "C"
     },
     { 
       questionNum: 10,
       question: "Which of the following is not a valid parameter for a function?",
        A: "Operator",
        B: "String",
-       C: "Number",
+       C: "Number",  
        D: "Boolean",
-       E: "None of the above.",
-       correctAnswer: "A"
+       E: "None of the above",
+       rightAnswer: "A"
     }
 ];
 
-// Function to populate quiz
-function populateQuiz (questionsArray) {;
-   var quizQuestion;
-   var buttonA;
-   var buttonB;
-   var buttonC;
-   var buttonD;
-   var buttonE;
-   var rightAnswer;
+for (var i = 0; i < questionsArray.length; i++) {
+   
+   questionNumber = questionsArray[i].questionNum;
+   console.log("The current question is " + questionNumber);
+   
+   askQuestion.textContent = questionsArray[i].question;
+   console.log(askQuestion.innerText);
 
-   questionNumber.textContent = questionsArray.questionNum;
-   quizQuestion.textContent = questionsArray.question;
-   buttonA = questionsArray.A;
-   buttonB = questionsArray.B;
-   buttonC = questionsArray.C;
-   buttonD = questionsArray.D;
-   buttonE = questionsArray.E;
-   rightAnswer = questionsArray.correctAnswer;
+   answerA.textContent = questionsArray[i].A;
+   console.log(answerA.innerText);
 
-   for (var i = 0; i < questionsArray.length; i++) {
-      populateQuiz(questionsArray[i]);
-      console.log(questionNumber)
-      console.log(quizQuestion);
-      console.log(buttonA);
-      console.log(buttonB);
-      console.log(buttonC);
-      console.log(buttonD);
-      console.log(buttonE);
-      console.log(rightAnswer);
+   answerB.textContent = questionsArray[i].B;
+   console.log(answerB.innerText);
+   
+   answerC.textContent = questionsArray[i].C;
+   console.log(answerC.innerText);
+
+   answerD.textContent = questionsArray[i].D;
+   console.log(answerD.innerText);
+
+   answerE.textContent = questionsArray[i].E;
+   console.log(answerE.innerText);
+
+   correctAnswer = questionsArray[i].rightAnswer;
+
+   switch (correctAnswer) {
+      case "A":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].A}".`;
+                        break;
+      
+      case "B":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].B}".`;
+                        break;
+      
+      case "C":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].C}".`;
+                        break;
+                     
+      case "D":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].D}".`;
+                        break;
+
+      case "E":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].E}".`;
+                        break;
    }
-}   
+   
+}
+   
+questionHeader.textContent = `Question No. ${questionNumber}`;
 
-// Welcome Page Text
-// gameTitle.textContent = "Welcome to the JavaScript Quiz!";
-// welcomeMessage.textContent = "Test your basic JavaScript skills!"
-// instructionsHeader.textContent = "Instructions";
-// bullet1.textContent = "The quiz consists of 10 questions";
-// bullet2.textContent = "You have 30 seconds for each question";
-// bullet3.textContent = "Answers are multiple choice";
-// bullet4.textContent = "Click on the button that corresponds with your best answer";
-// bullet5.textContent = "After answering a question, you will be told if you responded correctly";
-// bullet6.textContent = "Each correct response is worth 5 points";
-// bullet7.textContent = "Good results are recorded in the High Score list";
-// timerHeader.textContent = "Timer";
-// timerPlaceholder.textContent = "Timer Placeholder";
-// startGameButton.textContent = "Begin Quiz";
-
-// // Setting up the Welcome Page
-// // body contains 4 divs: welcomeDiv, instructionsDiv, timerDiv, startGameDiv
-// document.body.appendChild(gameTitle);
-
-// document.body.appendChild(welcomeDiv);
-// welcomeDiv.appendChild(welcomeMessage);
-
-// document.body.appendChild(instructionsDiv)
-// instructionsDiv.appendChild(instructionsHeader);
-// instructionsDiv.appendChild(instructionsList);
-// instructionsDiv.children[1].appendChild(bullet1);
-// instructionsDiv.children[1].appendChild(bullet2);
-// instructionsDiv.children[1].appendChild(bullet3);
-// instructionsDiv.children[1].appendChild(bullet4);
-// instructionsDiv.children[1].appendChild(bullet5);
-// instructionsDiv.children[1].appendChild(bullet6);
-// instructionsDiv.children[1].appendChild(bullet7);
-
-// document.body.appendChild(timerDiv);
-// timerDiv.appendChild(timerHeader);
-// timerDiv.appendChild(timerPlaceholder);
-
-// document.body.appendChild(startGameButton);
-
-
-// Applying Attributes to Welcome Page
-
-
-
-
-
-
-
-// function populatingQuiz(questionsArray) {
-
-// }
-
+   
