@@ -22,7 +22,7 @@ timerHeader.textContent = "Timer";
 var timerPlaceholder = document.createElement("p");
 timerDiv.appendChild(timerPlaceholder);
 timerDiv.setAttribute("style", "display:none");
-
+var currentQuestion = 0;
 
 // Welcome View Assignments
 // welcomeDiv is parent div for this section
@@ -81,7 +81,11 @@ startGameButton.addEventListener("click", function() {
    gameTitle.setAttribute("style", "display:none");
    welcomeDiv.setAttribute("style", "display:none");
    quizDiv.setAttribute("style", "display:' '; width:80%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:#00b386; padding-left:40px; padding-bottom:10px; padding-top:10px;");
-   timerDiv.setAttribute("style", "display:' '");   
+   timerDiv.setAttribute("style", "display:' '; background-color:white; color:blue; position:relative; left:100px;");
+   populateQuiz();
+   currentQuestion = 1;
+   questionTimer(); 
+     
 });
 welcomeDiv.appendChild(startGameButton);
 
@@ -144,7 +148,6 @@ quizDiv.appendChild(responseDiv);
 // quizDiv.responseDiv.children[1]
 var correctAnswer;
 var answerFeedback = document.createElement("h3");
-// correctAnswer.textContent = "The correct answer is...";
 responseDiv.appendChild(answerFeedback);
 
 // Score View Assignments
@@ -186,6 +189,11 @@ playAgain.textContent = "Play Again";
 scoreDiv.appendChild(playAgain);
 
 
+var userResponseButton;
+
+
+var secondsRemaining = 10;
+
 
 
 
@@ -221,7 +229,8 @@ var questionsArray = [
        B: "Double",
        C: "Boolean",
        D: "String",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "Double"
     },
     { 
       questionNum: 2,
@@ -230,7 +239,8 @@ var questionsArray = [
        B: "=",
        C: "===",
        D: "=== &&",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "==="
     },
     { 
       questionNum: 3,
@@ -239,7 +249,8 @@ var questionsArray = [
        B: "5 (the number)",
        C: `" " (an empty string)`,
        D: "NaN",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "5 (the number)"
     },
     { 
       questionNum: 4,
@@ -248,7 +259,8 @@ var questionsArray = [
        B: "{ } (an empty object)",
        C: `"orca"`,
        D: `"0"`,
-       E: "None of the above"
+       E: "None of the above",
+       answer: "None of the above"
     },
     { 
       questionNum: 5,
@@ -257,7 +269,8 @@ var questionsArray = [
        B: "stop",
        C: "halt",
        D: "break",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "break"
     },
     { 
       questionNum: 6,
@@ -266,7 +279,8 @@ var questionsArray = [
        B: "indexOf()",
        C: "toUpperCase()",
        D: "trim()",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "splice"
     },
     { 
       questionNum: 7,
@@ -275,7 +289,8 @@ var questionsArray = [
        B: "shift()",
        C: "pop()",
        D: "push()",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "push()"
     },
     { 
       questionNum: 8,
@@ -284,7 +299,8 @@ var questionsArray = [
        B: "Function",
        C: "Array",
        D: "null",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "Function"
     },
     { 
       questionNum: 9,
@@ -293,7 +309,8 @@ var questionsArray = [
        B: "Sibling Element",
        C: "Cousin Element",
        D: "Child Element",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "Cousin Element"
     },
     { 
       questionNum: 10,
@@ -302,53 +319,10 @@ var questionsArray = [
        B: "String",
        C: "Number",  
        D: "Boolean",
-       E: "None of the above"
+       E: "None of the above",
+       answer: "Operator"
     }
 ];
-
-var questionsArray = [
-   {
-      questionNumber: 1,
-      rightAnswer: "Double"
-   },
-   { 
-      questionNumber: 2,
-      rightAnswer: "==="
-   },
-   { 
-      questionNumber: 3,
-      rightAnswer: "5 (the number)"
-   },
-   { 
-      questionNumber: 4,
-      rightAnswer: "None of the above"
-   },
-   { 
-      questionNumber: 5,
-      rightAnswer: "break"
-   },
-   { 
-      questionNumber: 6,
-      rightAnswer: "splice()"
-   },
-   { 
-      questionNumber: 7,
-      rightAnswer: "push()"
-   },
-   { 
-      questionNumber: 8,
-      rightAnswer: "Function"
-   },
-   { 
-      questionNumber: 9,
-      rightAnswer: "Cousin Element"
-   },
-   { 
-      questionNumber: 10,
-      rightAnswer: "Operator"
-   }
-];
-
 
 // Welcome View Settings
 timerDiv.setAttribute("style", "display:none;");
@@ -362,55 +336,70 @@ var takeQuiz = document.querySelector("startGameButton");
 
 
 
-var currentQuestion = 0;
-populateQuiz();
+function resetQuizButtons() {
+   for (var i = 1; i < buttons.length - 2; i++) {
+      buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
+   }
+}
 
-var secondsRemaining = 11;
-currentQuestion = 1;
+function rightAnswerButtons() {
+   userResponseButton.setAttribute("style", "background-color:green; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
+   userResponseButton.textContent = "Correct!";
+}
+
+function wrongAnswerButtons() {
+   userResponseButton.setAttribute("style", "background-color:red; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
+   userResponseButton.textContent = "Incorrect!";
+}
+
+
+
+// answerDiv.addEventListener("click", function(event) {
+         //    var userResponseButton = event.target; 
+         //    userResponseContent = event.target.textContent;
+            
+         
+         //    //switch (event.target)
+   
+         //    console.log("Clicked on this button: " + userResponseButton);
+         //    console.log("Clicked on this content: " + userResponseContent);
+         
+   
+   
+         //    if (userResponseContent === answersArray.rightAnswer) {
+         //      rightAnswerButtons();
+         //    } else {
+         //       wrongAnswerButtons();
+         //    }    
+         // });
+
 
 function questionTimer() {
    var questionInterval = setInterval (function () {
       secondsRemaining--;
       timerPlaceholder.textContent = secondsRemaining;
-
-      answerDiv.addEventListener("click", function(event) {
-         var userResponse = event.target;
-
-         if (userResponse === )
-
-      
-      });
-
+    
       if (secondsRemaining === 0) {
-         populateQuiz();
-         secondsRemaining = 11;
-         currentQuestion += 1;
-      }
+            populateQuiz();
+            currentQuestion += 1;
+            secondsRemaining = 3;
+         }
 
-      if (currentQuestion > 10) {
-         clearInterval(questionInterval);
-         timerPlaceholder.textContent = "Time's up!";
-         quizDiv.setAttribute("style", "display:none");
-      }
+      if (stopTimer === ) {
+            clearInterval(questionInterval);
+            timerPlaceholder.textContent = "Time's up!";
+            quizDiv.setAttribute("style", "display:none");  
+      }      
 
-   }, 1000 );
+   }, 1000);
 }
 
 
-// function questionTimer() {
-//    setTimeout (function() {
-//          console.log(currentQuestion);
-//          populateQuiz();
-//          currentQuestion += 1;
 
-//          if (currentQuestion < 10) {
-//          questionTimer();
-//          }
-
-//    }, 5000 );
-// }
 
 function populateQuiz() {
+
+   resetQuizButtons();
 
    quizData = questionsArray[currentQuestion];
 
@@ -420,24 +409,19 @@ function populateQuiz() {
    questionHeader.textContent = `Question ${questionNumber}`;
 
    askQuestion.textContent = quizData.question;
-   console.log(askQuestion.innerText);
-
-   answerA.textContent = quizData.A;
-   console.log(answerA.innerText);
-
-   answerB.textContent = quizData.B;
-   console.log(answerB.innerText);
    
+   answerA.textContent = quizData.A;
+   
+   answerB.textContent = quizData.B;
+      
    answerC.textContent = quizData.C;
-   console.log(answerC.innerText);
 
    answerD.textContent = quizData.D;
-   console.log(answerD.innerText);
 
    answerE.textContent = quizData.E;
-   console.log(answerE.innerText);
 
-   correctAnswer = quizData.rightAnswer;
+   correctAnswer = quizData.answer;
+   console.log(correctAnswer);
 
    switch (correctAnswer) {
          case "A":   answerFeedback.textContent = `The correct answer is "${quizData.A}".`;
@@ -457,4 +441,3 @@ function populateQuiz() {
    }
 }  
 
-questionTimer();
