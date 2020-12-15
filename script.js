@@ -216,9 +216,9 @@ var questionsArray = [
     { 
       questionNum: 3,
       question: "Which of the below values are truthy (evaluate to true)?",
-       A: "0",
-       B: "5",
-       C: "' ' (an empty string)",
+       A: "0 (the number)",
+       B: "5 (the number)",
+       C: `" " (an empty string)`,
        D: "NaN",
        E: "None of the above",
        rightAnswer: "B"
@@ -226,10 +226,10 @@ var questionsArray = [
     { 
       questionNum: 4,
       question: "Which of the below values are falsy (evaluate to false)?",
-       A: "[ ] (an empty array",
+       A: "[ ] (an empty array)",
        B: "{ } (an empty object)",
-       C: "orca",
-       D: "'0'",
+       C: `"orca"`,
+       D: `"0"`,
        E: "None of the above",
        rightAnswer: "E"
     },
@@ -256,7 +256,7 @@ var questionsArray = [
     { 
       questionNum: 7,
       question: "Which of the following array methods would you use to add to the end of an array?",
-       A: "",
+       A: "fill()",
        B: "shift()",
        C: "pop()",
        D: "push()",
@@ -292,70 +292,105 @@ var questionsArray = [
        D: "Boolean",
        E: "None of the above",
        rightAnswer: "A"
+    },
+    { 
+      questionNum: "Game Over",
+      question: "",
+       A: "",
+       B: "",
+       C: "",  
+       D: "",
+       E: "",
+       rightAnswer: ""
     }
 ];
 
-populateQuiz(questionsArray);
 
-var i = 0;
+var currentQuestion = 0;
+populateQuiz();
 
-//populateQuiz(questionsArray);
+var secondsRemaining = 11;
+currentQuestion = 1;
+
+function questionTimer() {
+   var questionInterval = setInterval (function () {
+      secondsRemaining--;
+      timerPlaceholder.textContent = secondsRemaining;
+
+      if (secondsRemaining === 0) {
+         populateQuiz();
+         secondsRemaining = 11;
+         currentQuestion += 1;
+      }
+
+      if (currentQuestion > 10) {
+         clearInterval(questionInterval);
+         timerPlaceholder.textContent = "Time's up!";
+         quizDiv.setAttribute("style", "display:none");
+      }
+
+   }, 1000 );
+}
+
+
+// function questionTimer() {
+//    setTimeout (function() {
+//          console.log(currentQuestion);
+//          populateQuiz();
+//          currentQuestion += 1;
+
+//          if (currentQuestion < 10) {
+//          questionTimer();
+//          }
+
+//    }, 5000 );
+// }
+
 function populateQuiz() {
+
+   quizData = questionsArray[currentQuestion];
+
+   questionNumber = quizData.questionNum;
+   console.log("The current question is " + questionNumber);
       
-      console.log(i);
+   questionHeader.textContent = `Question No. ${questionNumber}`;
 
-      setTimeout (function() {
+   askQuestion.textContent = quizData.question;
+   console.log(askQuestion.innerText);
 
-            questionNumber = questionsArray[i].questionNum;
-            console.log("The current question is " + questionNumber);
-      
-            questionHeader.textContent = `Question No. ${questionNumber}`;
+   answerA.textContent = quizData.A;
+   console.log(answerA.innerText);
 
-            askQuestion.textContent = questionsArray[i].question;
-            console.log(askQuestion.innerText);
-
-            answerA.textContent = questionsArray[i].A;
-            console.log(answerA.innerText);
-
-            answerB.textContent = questionsArray[i].B;
-            console.log(answerB.innerText);
+   answerB.textContent = quizData.B;
+   console.log(answerB.innerText);
    
-            answerC.textContent = questionsArray[i].C;
-            console.log(answerC.innerText);
+   answerC.textContent = quizData.C;
+   console.log(answerC.innerText);
 
-            answerD.textContent = questionsArray[i].D;
-            console.log(answerD.innerText);
+   answerD.textContent = quizData.D;
+   console.log(answerD.innerText);
 
-            answerE.textContent = questionsArray[i].E;
-            console.log(answerE.innerText);
+   answerE.textContent = quizData.E;
+   console.log(answerE.innerText);
 
-            correctAnswer = questionsArray[i].rightAnswer;
+   correctAnswer = quizData.rightAnswer;
 
-            switch (correctAnswer) {
-               case "A":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].A}".`;
-                                 break;
+   switch (correctAnswer) {
+         case "A":   answerFeedback.textContent = `The correct answer is "${quizData.A}".`;
+                           break;
       
-               case "B":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].B}".`;
-                                 break;
+         case "B":   answerFeedback.textContent = `The correct answer is "${quizData.B}".`;
+                           break;
       
-               case "C":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].C}".`;
-                                 break;
+         case "C":   answerFeedback.textContent = `The correct answer is "${quizData.C}".`;
+                           break;
                      
-               case "D":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].D}".`;
-                                 break;
+         case "D":   answerFeedback.textContent = `The correct answer is "${quizData.D}".`;
+                           break;
 
-               case "E":   answerFeedback.textContent = `The correct answer is "${questionsArray[i].E}".`;
-                                 break;
-            }
+         case "E":   answerFeedback.textContent = `The correct answer is "${quizData.E}".`;
+                           break;
+   }
+}  
 
-            i++;
-
-            if (i < 10) {
-               populateQuiz();               
-            }
-
-      }, 30000 );        
-    }
-//}
-         
-
+questionTimer();
