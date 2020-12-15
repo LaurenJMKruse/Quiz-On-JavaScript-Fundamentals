@@ -77,12 +77,14 @@ instructionsDiv.children[1].appendChild(bullet6);
 // welcomeDiv.children[2]
 var startGameButton = document.createElement("button");
 startGameButton.textContent = "Begin Quiz";
+startGameButton.addEventListener("click", function() {
+   gameTitle.setAttribute("style", "display:none");
+   welcomeDiv.setAttribute("style", "display:none");
+   quizDiv.setAttribute("style", "display:' '; width:80%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:#00b386; padding-left:40px; padding-bottom:10px; padding-top:10px;");
+   timerDiv.setAttribute("style", "display:' '");   
+});
 welcomeDiv.appendChild(startGameButton);
 
-// Welcome View Settings
-timerDiv.setAttribute("style", "display:none;");
-quizDiv.setAttribute("style", "display:none;");
-scoreDiv.setAttribute("style", "display:none;");
 
 
 
@@ -95,13 +97,13 @@ container.appendChild(quizDiv);
 
 // quizDiv.children[0]
 var questionHeader = document.createElement("h2");
-// questionHeader.textContent = `Question No. ${questionNumber}`;
+questionHeader.setAttribute("style", "font-family:century gothic; font-weight:bold; color:white;");
 quizDiv.appendChild(questionHeader);
 var questionNumber;
 
 // quizDiv.children[1]
 var askQuestion = document.createElement("h3");
-// askQuestion.textContent = "Can you answer this question?";
+askQuestion.setAttribute("style", "width:85%; font-family:century gothic; color:white; font-weight:bold;");
 quizDiv.appendChild(askQuestion);
 
 // quizDiv.children[2]   
@@ -137,10 +139,7 @@ answerDiv.appendChild(answerE);
 var responseDiv = document.createElement("div");
 quizDiv.appendChild(responseDiv);
 
-// quizDiv.responseDiv.children[0]
-var userResponse = document.createElement("h3");
-// userResponse.textContent = "Your answer";
-responseDiv.appendChild(userResponse);
+
 
 // quizDiv.responseDiv.children[1]
 var correctAnswer;
@@ -203,7 +202,7 @@ for (var i = 0; i < buttons.length; i++) {
    }
    
    else if (i <= 5) {
-      buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:left; padding:15px; cursor:pointer; margin:10px; width:300px;");
+      buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
    }
 
    else {
@@ -222,8 +221,7 @@ var questionsArray = [
        B: "Double",
        C: "Boolean",
        D: "String",
-       E: "None of the above",
-       rightAnswer: "B"
+       E: "None of the above"
     },
     { 
       questionNum: 2,
@@ -232,8 +230,7 @@ var questionsArray = [
        B: "=",
        C: "===",
        D: "=== &&",
-       E: "None of the above",
-       rightAnswer: "C"
+       E: "None of the above"
     },
     { 
       questionNum: 3,
@@ -242,8 +239,7 @@ var questionsArray = [
        B: "5 (the number)",
        C: `" " (an empty string)`,
        D: "NaN",
-       E: "None of the above",
-       rightAnswer: "B"
+       E: "None of the above"
     },
     { 
       questionNum: 4,
@@ -252,8 +248,7 @@ var questionsArray = [
        B: "{ } (an empty object)",
        C: `"orca"`,
        D: `"0"`,
-       E: "None of the above",
-       rightAnswer: "E"
+       E: "None of the above"
     },
     { 
       questionNum: 5,
@@ -262,8 +257,7 @@ var questionsArray = [
        B: "stop",
        C: "halt",
        D: "break",
-       E: "None of the above",
-       rightAnswer: "D"
+       E: "None of the above"
     },
     { 
       questionNum: 6,
@@ -272,8 +266,7 @@ var questionsArray = [
        B: "indexOf()",
        C: "toUpperCase()",
        D: "trim()",
-       E: "None of the above",
-       rightAnswer: "A"
+       E: "None of the above"
     },
     { 
       questionNum: 7,
@@ -282,18 +275,16 @@ var questionsArray = [
        B: "shift()",
        C: "pop()",
        D: "push()",
-       E: "None of the above",
-       rightAnswer: "D"
+       E: "None of the above"
     },
     { 
       questionNum: 8,
-      question: "Which of the following does not have the data type of object?",
+      question: "Which of the following does not have the data type of 'object'?",
        A: "Object",
        B: "Function",
        C: "Array",
        D: "null",
-       E: "None of the above",
-       rightAnswer: "B"
+       E: "None of the above"
     },
     { 
       questionNum: 9,
@@ -302,8 +293,7 @@ var questionsArray = [
        B: "Sibling Element",
        C: "Cousin Element",
        D: "Child Element",
-       E: "None of the above",
-       rightAnswer: "C"
+       E: "None of the above"
     },
     { 
       questionNum: 10,
@@ -312,20 +302,64 @@ var questionsArray = [
        B: "String",
        C: "Number",  
        D: "Boolean",
-       E: "None of the above",
-       rightAnswer: "A"
-    },
-    { 
-      questionNum: "Game Over",
-      question: "",
-       A: "",
-       B: "",
-       C: "",  
-       D: "",
-       E: "",
-       rightAnswer: ""
+       E: "None of the above"
     }
 ];
+
+var questionsArray = [
+   {
+      questionNumber: 1,
+      rightAnswer: "Double"
+   },
+   { 
+      questionNumber: 2,
+      rightAnswer: "==="
+   },
+   { 
+      questionNumber: 3,
+      rightAnswer: "5 (the number)"
+   },
+   { 
+      questionNumber: 4,
+      rightAnswer: "None of the above"
+   },
+   { 
+      questionNumber: 5,
+      rightAnswer: "break"
+   },
+   { 
+      questionNumber: 6,
+      rightAnswer: "splice()"
+   },
+   { 
+      questionNumber: 7,
+      rightAnswer: "push()"
+   },
+   { 
+      questionNumber: 8,
+      rightAnswer: "Function"
+   },
+   { 
+      questionNumber: 9,
+      rightAnswer: "Cousin Element"
+   },
+   { 
+      questionNumber: 10,
+      rightAnswer: "Operator"
+   }
+];
+
+
+// Welcome View Settings
+timerDiv.setAttribute("style", "display:none;");
+quizDiv.setAttribute("style", "display:none;");
+scoreDiv.setAttribute("style", "display:none;");
+
+// Set up transition to second view
+var takeQuiz = document.querySelector("startGameButton");
+
+
+
 
 
 var currentQuestion = 0;
@@ -338,6 +372,14 @@ function questionTimer() {
    var questionInterval = setInterval (function () {
       secondsRemaining--;
       timerPlaceholder.textContent = secondsRemaining;
+
+      answerDiv.addEventListener("click", function(event) {
+         var userResponse = event.target;
+
+         if (userResponse === )
+
+      
+      });
 
       if (secondsRemaining === 0) {
          populateQuiz();
@@ -375,7 +417,7 @@ function populateQuiz() {
    questionNumber = quizData.questionNum;
    console.log("The current question is " + questionNumber);
       
-   questionHeader.textContent = `Question No. ${questionNumber}`;
+   questionHeader.textContent = `Question ${questionNumber}`;
 
    askQuestion.textContent = quizData.question;
    console.log(askQuestion.innerText);
