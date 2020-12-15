@@ -1,13 +1,19 @@
 var buttons = document.getElementsByTagName("button");
-
+var body = document.querySelector(".body");
+body.setAttribute("style", "height:100%; margin:0; background-image:url(https://wallpapercave.com/wp/wp2465921.png); background-position: center; background-repeat:no-repeat; background-size:cover; background-color:black;")
+var container = document.createElement("div");
+document.body.appendChild(container);
+container.setAttribute("style", "margin-left:auto; margin-right:auto;");
 // Stuff that goes on every view
 // Game title
 var gameTitle = document.createElement("h1");
-document.body.appendChild(gameTitle);
 gameTitle.textContent = "JavaScript Fundamentals Quiz";
+gameTitle.setAttribute("style", "text-align:center; margin-left:auto; margin-right:auto; padding:10px; width:60%; border-radius:15px; color:white; font-family:century gothic;");
+container.appendChild(gameTitle);
+
 // Timer in timerDiv
 var timerDiv = document.createElement("div");
-document.body.appendChild(timerDiv);
+container.appendChild(timerDiv);
 // timerDiv.children[0]
 var timerHeader = document.createElement("h2");
 timerDiv.appendChild(timerHeader);
@@ -15,36 +21,40 @@ timerHeader.textContent = "Timer";
 // timerDiv.children[1]
 var timerPlaceholder = document.createElement("p");
 timerDiv.appendChild(timerPlaceholder);
-// timerPlaceholder.textContent = "0:00";
+timerDiv.setAttribute("style", "display:none");
 
 
 // Welcome View Assignments
 // welcomeDiv is parent div for this section
 var welcomeDiv = document.createElement("div");
-document.body.appendChild(welcomeDiv);
+welcomeDiv.setAttribute("style", "width:60%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:#00b386; padding-left:40px; padding-bottom:10px; padding-top:10px;");
+container.appendChild(welcomeDiv);
 
 // welcomeDiv.children[0]
 var welcomeMessage = document.createElement("h2");
 welcomeMessage.textContent = "Test your basic JavaScript skills!"
+welcomeMessage.setAttribute("style", "margin-top:10px; margin-left:auto; margin-right:auto; text-align:center; font-family:century gothic; color:white;");
 welcomeDiv.appendChild(welcomeMessage);
 
 // welcomeDiv.children[1]
 var instructionsDiv = document.createElement("div");
+instructionsDiv.setAttribute("style", "color:white; font-family:century gothic;");
 welcomeDiv.appendChild(instructionsDiv);
 // welcomeDiv.children[1].children[0]
-var instructionsHeader = document.createElement("h2");
+var instructionsHeader = document.createElement("h3");
 instructionsHeader.textContent = "Instructions";
 instructionsDiv.appendChild(instructionsHeader);
 // welcomeDiv.children[1].children[1]
 var instructionsList = document.createElement("ul");
+instructionsList.setAttribute("style", "list-style-type:square");
 instructionsDiv.appendChild(instructionsList);
 // welcomeDiv.instructionsDiv.instructionsList.children[0]
 var bullet1 = document.createElement("li");
-bullet1.textContent = "The quiz consists of 10 questions";
+bullet1.textContent = "There are 10 questions";
 instructionsDiv.children[1].appendChild(bullet1);
 // welcomeDiv.instructionsDiv.instructionsList.children[1]
 var bullet2 = document.createElement("li");
-bullet2.textContent = "You have 30 seconds for each question";
+bullet2.textContent = "You have 10 seconds per question";
 instructionsDiv.children[1].appendChild(bullet2);
 // welcomeDiv.instructionsDiv.instructionsList.children[3]
 var bullet3 = document.createElement("li");
@@ -52,34 +62,36 @@ bullet3.textContent = "Answers are multiple choice";
 instructionsDiv.children[1].appendChild(bullet3);
 // welcomeDiv.instructionsDiv.instructionsList.children[4]
 var bullet4 = document.createElement('li');
-bullet4.textContent = "Click on the button that corresponds with your best answer";
+bullet4.textContent = "Click the button that has your best answer";
 instructionsDiv.children[1].appendChild(bullet4);
 // welcomeDiv.instructionsDiv.instructionsList.children[5]
 var bullet5 = document.createElement("li");
-bullet5.textContent = "You will be notified if your answer is right or wrong";
+bullet5.textContent = "Each right answer is worth 5 points";
 instructionsDiv.children[1].appendChild(bullet5);
 // welcomeDiv.instructionsDiv.instructionsList.children[6]
 var bullet6 = document.createElement("li");
-bullet6.textContent = "Each correct response is worth 5 points";
+bullet6.textContent = "Can you add your initials to the High Score list?";
 instructionsDiv.children[1].appendChild(bullet6);
-// welcomeDiv.instructionsDiv.instructionsList.children[7]
-var bullet7 = document.createElement("li");
-bullet7.textContent = "Good results are recorded in the High Score list";
-instructionsDiv.children[1].appendChild(bullet7);
+
 
 // welcomeDiv.children[2]
 var startGameButton = document.createElement("button");
 startGameButton.textContent = "Begin Quiz";
 welcomeDiv.appendChild(startGameButton);
 
-// Welcome Page Text
+// Welcome View Settings
+timerDiv.setAttribute("style", "display:none;");
+quizDiv.setAttribute("style", "display:none;");
+scoreDiv.setAttribute("style", "display:none;");
+
+
 
 // Setting up the Welcome Page view with welcomeDiv
-// welcomeDiv contains 3 divs: welcomeMessage, instructionsDiv, startGameDiv
+// welcomeDiv contains 3 divs: welcomeMessage, instructionsDiv
 
 // quizDiv is parent div for this section
 var quizDiv = document.createElement("div");
-document.body.appendChild(quizDiv);
+container.appendChild(quizDiv);
 
 // quizDiv.children[0]
 var questionHeader = document.createElement("h2");
@@ -139,7 +151,7 @@ responseDiv.appendChild(answerFeedback);
 // Score View Assignments
 // scoreDiv is parent div for this section
 var scoreDiv = document.createElement("div");
-document.body.appendChild(scoreDiv);
+container.appendChild(scoreDiv);
 
 // scoreDiv.children[0]
 var scoreMessage = document.createElement("h2");
@@ -174,10 +186,20 @@ var playAgain = document.createElement("button");
 playAgain.textContent = "Play Again";
 scoreDiv.appendChild(playAgain);
 
+
+
+
+
+
+
+
+
+
+
 // Applying Attributes to Buttons
 for (var i = 0; i < buttons.length; i++) {
    if (i === 0) {
-      buttons[i].setAttribute("style", "background-color:red; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:300px;");
+      buttons[i].setAttribute("style", "background-color:white; font-family:century gothic; border:none; color:#cf1717; border-color:#cf1717; border-style:solid; border-width:medium; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px; margin-left:auto; margin-right:auto; font-weight:bold;");
    }
    
    else if (i <= 5) {
