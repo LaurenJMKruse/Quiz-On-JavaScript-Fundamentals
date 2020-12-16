@@ -1,15 +1,10 @@
 var buttons = document.getElementsByTagName("button");
 var body = document.querySelector(".body");
-body.setAttribute("style", "height:100%; margin:0; background-image:url(https://wallpapercave.com/wp/wp2465921.png); background-position: center; background-repeat:no-repeat; background-size:cover; background-color:black;")
+body.setAttribute("style", "height:100%; margin:0; background-image:url(./Images/JavaScript-Wallpaper.png); padding-bottom:400px; background-position: center; background-repeat:no-repeat; background-size:cover; background-color:black;")
+
 var container = document.createElement("div");
 document.body.appendChild(container);
 container.setAttribute("style", "margin-left:auto; margin-right:auto;");
-// Stuff that goes on every view
-// Game title
-var gameTitle = document.createElement("h1");
-gameTitle.textContent = "JavaScript Fundamentals Quiz";
-gameTitle.setAttribute("style", "text-align:center; margin-left:auto; margin-right:auto; padding:10px; width:60%; border-radius:15px; color:white; font-family:century gothic;");
-container.appendChild(gameTitle);
 
 // Timer in timerDiv
 var timerDiv = document.createElement("div");
@@ -23,11 +18,15 @@ var timerPlaceholder = document.createElement("p");
 timerDiv.appendChild(timerPlaceholder);
 timerDiv.setAttribute("style", "display:none");
 var currentQuestion = 0;
+var count = 1;
+totalSeconds = 100;
+secondsPerQuestion = 10;
+
 
 // Welcome View Assignments
 // welcomeDiv is parent div for this section
 var welcomeDiv = document.createElement("div");
-welcomeDiv.setAttribute("style", "width:60%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:#00b386; padding-left:40px; padding-bottom:10px; padding-top:10px;");
+welcomeDiv.setAttribute("style", "width:60%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:black; border-style:solid; color:white; border-color:#cf1717; padding-left:40px; padding-right:40px; padding-bottom:10px; padding-top:10px; position:relative; top:100px;");
 container.appendChild(welcomeDiv);
 
 // welcomeDiv.children[0]
@@ -73,27 +72,19 @@ var bullet6 = document.createElement("li");
 bullet6.textContent = "Can you add your initials to the High Score list?";
 instructionsDiv.children[1].appendChild(bullet6);
 
-
 // welcomeDiv.children[2]
 var startGameButton = document.createElement("button");
 startGameButton.textContent = "Begin Quiz";
 startGameButton.addEventListener("click", function() {
-   gameTitle.setAttribute("style", "display:none");
    welcomeDiv.setAttribute("style", "display:none");
-   quizDiv.setAttribute("style", "display:' '; width:80%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:#00b386; padding-left:40px; padding-bottom:10px; padding-top:10px;");
+   quizDiv.setAttribute("style", "display:' '; width:80%; margin-left:auto; margin-right:auto; border-style:solid; border-weight:3px; border-color:#00b386; border-radius:15px; background-color:black; padding-left:40px; padding-bottom:10px; padding-top:10px; position:relative; top:40px;");
    timerDiv.setAttribute("style", "display:' '; background-color:white; color:blue; position:relative; left:100px;");
    populateQuiz();
    currentQuestion = 1;
-   questionTimer(); 
-     
+   count = 2;
+   questionTimer();      
 });
 welcomeDiv.appendChild(startGameButton);
-
-
-
-
-// Setting up the Welcome Page view with welcomeDiv
-// welcomeDiv contains 3 divs: welcomeMessage, instructionsDiv
 
 // quizDiv is parent div for this section
 var quizDiv = document.createElement("div");
@@ -107,7 +98,7 @@ var questionNumber;
 
 // quizDiv.children[1]
 var askQuestion = document.createElement("h3");
-askQuestion.setAttribute("style", "width:85%; font-family:century gothic; color:white; font-weight:bold;");
+askQuestion.setAttribute("style", "width:85%; margin-bottom:60px; font-family:century gothic; color:white; font-weight:bold;");
 quizDiv.appendChild(askQuestion);
 
 // quizDiv.children[2]   
@@ -143,12 +134,11 @@ answerDiv.appendChild(answerE);
 var responseDiv = document.createElement("div");
 quizDiv.appendChild(responseDiv);
 
-
-
 // quizDiv.responseDiv.children[1]
 var correctAnswer;
 var answerFeedback = document.createElement("h3");
 responseDiv.appendChild(answerFeedback);
+
 
 // Score View Assignments
 // scoreDiv is parent div for this section
@@ -188,36 +178,23 @@ var playAgain = document.createElement("button");
 playAgain.textContent = "Play Again";
 scoreDiv.appendChild(playAgain);
 
-
 var userResponseButton;
-
-
 var secondsRemaining = 10;
-
-
-
-
-
-
-
-
-
 
 // Applying Attributes to Buttons
 for (var i = 0; i < buttons.length; i++) {
    if (i === 0) {
-      buttons[i].setAttribute("style", "background-color:white; font-family:century gothic; border:none; color:#cf1717; border-color:#cf1717; border-style:solid; border-width:medium; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px; margin-left:auto; margin-right:auto; font-weight:bold;");
+      buttons[i].setAttribute("style", "background-color:black; font-family:century gothic; color:#cf1717; border-color:#cf1717; border-style:solid; border-width:medium; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px; margin-left:auto; margin-right:auto; font-weight:bold;");
    }
    
    else if (i <= 5) {
-      buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
+      buttons[i].setAttribute("style", "background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
    }
 
    else {
       buttons[i].setAttribute("style", "background-color:#00cc99; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px;");
    } 
 }
-
 
 
 // Quiz Questions and Answers
@@ -324,6 +301,8 @@ var questionsArray = [
     }
 ];
 
+
+
 // Welcome View Settings
 timerDiv.setAttribute("style", "display:none;");
 quizDiv.setAttribute("style", "display:none;");
@@ -332,13 +311,9 @@ scoreDiv.setAttribute("style", "display:none;");
 // Set up transition to second view
 var takeQuiz = document.querySelector("startGameButton");
 
-
-
-
-
 function resetQuizButtons() {
    for (var i = 1; i < buttons.length - 2; i++) {
-      buttons[i].setAttribute("style", "background-color:#0000cc; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
+      buttons[i].setAttribute("style", "background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
    }
 }
 
@@ -374,23 +349,29 @@ function wrongAnswerButtons() {
          // });
 
 
+
+
+
 function questionTimer() {
    var questionInterval = setInterval (function () {
+      
       secondsRemaining--;
       timerPlaceholder.textContent = secondsRemaining;
-    
+      
+      
       if (secondsRemaining === 0) {
-            populateQuiz();
-            currentQuestion += 1;
-            secondsRemaining = 3;
-         }
-
-      if (stopTimer === ) {
-            clearInterval(questionInterval);
-            timerPlaceholder.textContent = "Time's up!";
-            quizDiv.setAttribute("style", "display:none");  
-      }      
-
+            if (currentQuestion <= 9) {  
+               populateQuiz();
+               currentQuestion += 1;
+               secondsRemaining = 10;
+               console.log(`Current question is ${currentQuestion}.`);
+            } else if (currentQuestion = 10) {
+               clearInterval(questionInterval);
+               console.log(`Current question is ${currentQuestion} - should be 10.`)
+               timerPlaceholder.textContent = "Time's up!";
+               quizDiv.setAttribute("style", "display:none");  
+            } 
+   }      
    }, 1000);
 }
 
