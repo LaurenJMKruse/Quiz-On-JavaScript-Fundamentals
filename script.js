@@ -12,10 +12,13 @@ container.appendChild(timerDiv);
 // timerDiv.children[0]
 var timerHeader = document.createElement("h2");
 timerDiv.appendChild(timerHeader);
-timerHeader.textContent = "Timer";
+timerHeader.textContent = `Timer:    `;
+timerHeader.setAttribute("style", "position:relative; display:inline; margin-left:5px;");
 // timerDiv.children[1]
-var timerPlaceholder = document.createElement("p");
+var timerPlaceholder = document.createElement("h2");
 timerDiv.appendChild(timerPlaceholder);
+timerPlaceholder.setAttribute("style", "display:inline-block; margin-right:5px;");
+timerPlaceholder.textContent = 0;
 timerDiv.setAttribute("style", "display:none");
 var currentQuestion = 0;
 var count = 1;
@@ -78,7 +81,7 @@ startGameButton.textContent = "Begin Quiz";
 startGameButton.addEventListener("click", function() {
    welcomeDiv.setAttribute("style", "display:none");
    quizDiv.setAttribute("style", "display:' '; width:80%; margin-left:auto; margin-right:auto; border-style:solid; border-weight:3px; border-color:#00b386; border-radius:15px; background-color:black; padding-left:40px; padding-bottom:10px; padding-top:10px; position:relative; top:40px;");
-   timerDiv.setAttribute("style", "display:' '; background-color:white; color:blue; position:relative; left:100px;");
+   timerDiv.setAttribute("style", "display:' '; width:100px; background-color:black; border-radius:20px; border-style:solid; border-weight:3px; border-color:#cf1717; font-family:century gothic; color:#cf1717; position:relative; padding-left:20px; padding-right:20px; left:900px; top:15px; margin-top:5px;");
    populateQuiz();
    currentQuestion = 1;
    count = 2;
@@ -130,14 +133,9 @@ var answerE = document.createElement("button");
 // answerE.textContent = "E";
 answerDiv.appendChild(answerE);
 
-// quizDiv.children[3]      
-var responseDiv = document.createElement("div");
-quizDiv.appendChild(responseDiv);
-
-// quizDiv.responseDiv.children[1]
 var correctAnswer;
-var answerFeedback = document.createElement("h3");
-responseDiv.appendChild(answerFeedback);
+
+
 
 
 // Score View Assignments
@@ -261,7 +259,7 @@ var questionsArray = [
     },
     { 
       questionNum: 7,
-      question: "Which of the following array methods would you use to add to the end of an array?",
+      question: "Which of the following methods would you use to add to the end of an array?",
        A: "fill()",
        B: "shift()",
        C: "pop()",
@@ -356,8 +354,7 @@ function questionTimer() {
    var questionInterval = setInterval (function () {
       
       secondsRemaining--;
-      timerPlaceholder.textContent = secondsRemaining;
-      
+      timerPlaceholder.textContent = secondsRemaining;     
       
       if (secondsRemaining === 0) {
             if (currentQuestion <= 9) {  
@@ -368,6 +365,7 @@ function questionTimer() {
             } else if (currentQuestion = 10) {
                clearInterval(questionInterval);
                console.log(`Current question is ${currentQuestion} - should be 10.`)
+               timerHeader.setAttribute("style", "display:none");
                timerPlaceholder.textContent = "Time's up!";
                quizDiv.setAttribute("style", "display:none");  
             } 
@@ -421,4 +419,5 @@ function populateQuiz() {
                            break;
    }
 }  
+
 
