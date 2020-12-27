@@ -1,201 +1,80 @@
-var buttons = document.getElementsByTagName("button");
-var body = document.querySelector(".body");
-body.setAttribute("style", "height:100%; margin:0; background-image:url(./Images/JavaScript-Wallpaper.png); padding-bottom:400px; background-position: center; background-repeat:no-repeat; background-size:cover; background-color:black;")
+// *************************************************
+// ELEMENTS
 
-var container = document.createElement("div");
-document.body.appendChild(container);
-container.setAttribute("style", "margin-left:auto; margin-right:auto;");
+// 01. Elements for Shell
+const background = document.querySelector('.background');
+const body = document.querySelector('.body');
+const container = document.createElement('div');
 
-// Timer in timerDiv
-var timerDiv = document.createElement("div");
-container.appendChild(timerDiv);
-// timerDiv.children[0]
-var timerHeader = document.createElement("h2");
-timerDiv.appendChild(timerHeader);
-timerHeader.textContent = `Timer:    `;
-timerHeader.setAttribute("style", "position:relative; display:inline; margin-left:5px;");
-// timerDiv.children[1]
-var timerPlaceholder = document.createElement("h2");
-timerDiv.appendChild(timerPlaceholder);
-timerPlaceholder.setAttribute("style", "display:inline-block; margin-right:5px;");
-timerPlaceholder.textContent = 0;
-timerDiv.setAttribute("style", "display:none");
-var currentQuestion = 0;
-var count = 1;
-totalSeconds = 100;
-secondsPerQuestion = 10;
+// 02. Elements for View 1: Welcome Page
+const welcomeDiv = document.createElement('div');
+const welcomeMessage = document.createElement('h2');
+const instructionsHeader = document.createElement('h3');
+const instructionsList = document.createElement('ul');
+const instruction0 = document.createElement('li');
+const instruction1 = document.createElement('li');
+const instruction2 = document.createElement('li');
+const instruction3 = document.createElement('li');
+const instruction4 = document.createElement('li');
+const instruction5 = document.createElement('li');
+const startButton = document.createElement('button');
 
+// 03. Elements for View 2: Quiz Page
+// A. quizDiv
+const quizDiv = document.createElement('div');
+let questionCount = document.createElement('h2');
+let questionPlaceholder = document.createElement('h3');
+let answerADiv = document.createElement('div');
+let answerAPlaceholder = document.createElement('button');
+let answerAFeedback = document.createElement('h4');
+let answerBDiv = document.createElement('div');
+let answerBPlaceholder = document.createElement('button');
+let answerBFeedback = document.createElement('h4');
+let answerCDiv = document.createElement('div');
+let answerCPlaceholder = document.createElement('button');
+let answerCFeedback = document.createElement('h4');
+let answerDDiv = document.createElement('div');
+let answerDPlaceholder = document.createElement('button');
+let answerDFeedback = document.createElement('h4');
+let answerEDiv = document.createElement('div');
+let answerEPlaceholder = document.createElement('button');
+let answerEFeedback = document.createElement('h4');
 
-// Welcome View Assignments
-// welcomeDiv is parent div for this section
-var welcomeDiv = document.createElement("div");
-welcomeDiv.setAttribute("style", "width:60%; margin-left:auto; margin-right:auto; border-radius:15px; background-color:black; border-style:solid; color:white; border-color:#cf1717; padding-left:40px; padding-right:40px; padding-bottom:10px; padding-top:10px; position:relative; top:100px;");
-container.appendChild(welcomeDiv);
-
-// welcomeDiv.children[0]
-var welcomeMessage = document.createElement("h2");
-welcomeMessage.textContent = "Test your basic JavaScript skills!"
-welcomeMessage.setAttribute("style", "margin-top:10px; margin-left:auto; margin-right:auto; text-align:center; font-family:century gothic; color:white;");
-welcomeDiv.appendChild(welcomeMessage);
-
-// welcomeDiv.children[1]
-var instructionsDiv = document.createElement("div");
-instructionsDiv.setAttribute("style", "color:white; font-family:century gothic;");
-welcomeDiv.appendChild(instructionsDiv);
-// welcomeDiv.children[1].children[0]
-var instructionsHeader = document.createElement("h3");
-instructionsHeader.textContent = "Instructions";
-instructionsDiv.appendChild(instructionsHeader);
-// welcomeDiv.children[1].children[1]
-var instructionsList = document.createElement("ul");
-instructionsList.setAttribute("style", "list-style-type:square");
-instructionsDiv.appendChild(instructionsList);
-// welcomeDiv.instructionsDiv.instructionsList.children[0]
-var bullet1 = document.createElement("li");
-bullet1.textContent = "There are 10 questions";
-instructionsDiv.children[1].appendChild(bullet1);
-// welcomeDiv.instructionsDiv.instructionsList.children[1]
-var bullet2 = document.createElement("li");
-bullet2.textContent = "You have 10 seconds per question";
-instructionsDiv.children[1].appendChild(bullet2);
-// welcomeDiv.instructionsDiv.instructionsList.children[3]
-var bullet3 = document.createElement("li");
-bullet3.textContent = "Answers are multiple choice";
-instructionsDiv.children[1].appendChild(bullet3);
-// welcomeDiv.instructionsDiv.instructionsList.children[4]
-var bullet4 = document.createElement('li');
-bullet4.textContent = "Click the button that has your best answer";
-instructionsDiv.children[1].appendChild(bullet4);
-// welcomeDiv.instructionsDiv.instructionsList.children[5]
-var bullet5 = document.createElement("li");
-bullet5.textContent = "Each right answer is worth 5 points";
-instructionsDiv.children[1].appendChild(bullet5);
-// welcomeDiv.instructionsDiv.instructionsList.children[6]
-var bullet6 = document.createElement("li");
-bullet6.textContent = "Can you add your initials to the High Score list?";
-instructionsDiv.children[1].appendChild(bullet6);
-
-// welcomeDiv.children[2]
-var startGameButton = document.createElement("button");
-startGameButton.textContent = "Begin Quiz";
-startGameButton.addEventListener("click", function() {
-   welcomeDiv.setAttribute("style", "display:none");
-   quizDiv.setAttribute("style", "display:' '; width:80%; margin-left:auto; margin-right:auto; border-style:solid; border-weight:3px; border-color:#00b386; border-radius:15px; background-color:black; padding-left:40px; padding-bottom:10px; padding-top:10px; position:relative; top:40px;");
-   timerDiv.setAttribute("style", "display:' '; width:100px; background-color:black; border-radius:20px; border-style:solid; border-weight:3px; border-color:#cf1717; font-family:century gothic; color:#cf1717; position:relative; padding-left:20px; padding-right:20px; left:900px; top:15px; margin-top:5px;");
-   populateQuiz();
-   currentQuestion = 1;
-   count = 2;
-   questionTimer();      
-});
-welcomeDiv.appendChild(startGameButton);
-
-// quizDiv is parent div for this section
-var quizDiv = document.createElement("div");
-container.appendChild(quizDiv);
-
-// quizDiv.children[0]
-var questionHeader = document.createElement("h2");
-questionHeader.setAttribute("style", "font-family:century gothic; font-weight:bold; color:white;");
-quizDiv.appendChild(questionHeader);
-var questionNumber;
-
-// quizDiv.children[1]
-var askQuestion = document.createElement("h3");
-askQuestion.setAttribute("style", "width:85%; margin-bottom:60px; font-family:century gothic; color:white; font-weight:bold;");
-quizDiv.appendChild(askQuestion);
-
-// quizDiv.children[2]   
-var answerDiv = document.createElement("div");
-quizDiv.appendChild(answerDiv);
-
-// quizDiv.answerDiv.children[0]
-var answerA = document.createElement("button");
-// answerA.textContent = "A";
-answerDiv.appendChild(answerA);
-
-// quizDiv.answerDIv.children[1]
-var answerB = document.createElement("button");
-// answerB.textContent = "B";
-answerDiv.appendChild(answerB);
-
-// quizDiv.answerDiv.children[2]
-var answerC = document.createElement("button");
-// answerC.textContent = "C";
-answerDiv.appendChild(answerC);
-
-// quizDiv.answerDiv.children[3]
-var answerD = document.createElement("button");
-// answerD.textContent = "D";
-answerDiv.appendChild(answerD);
-
-// quizDiv.answerDiv.children[4]
-var answerE = document.createElement("button");
-// answerE.textContent = "E";
-answerDiv.appendChild(answerE);
-
-var correctAnswer;
+// B. timerDiv 
+const timerDiv = document.createElement('div');
+const timerHeader = document.createElement('h2');
+let timerPlaceholder = document.createElement('p');
 
 
+// 04. Elements for View 4: Time's Up!
+const timesUpDiv = document.createElement('div');
+const timesUpHeader = document.createElement('h1');
 
 
-// Score View Assignments
-// scoreDiv is parent div for this section
-var scoreDiv = document.createElement("div");
-container.appendChild(scoreDiv);
-
-// scoreDiv.children[0]
-var scoreMessage = document.createElement("h2");
-scoreMessage.textContent = "How did your score rank?"
-scoreDiv.appendChild(scoreMessage);
-
-// scoreDiv.children[1]
-var allScoresDiv = document.createElement("div");
-scoreDiv.appendChild(allScoresDiv);
-
-// scoreDiv.allScoresDiv.children[0]
-var allScoresHeader = document.createElement("h5");
-allScoresHeader.textContent = "All Games";
-allScoresDiv.appendChild(allScoresHeader);
-
-// scoreDiv.children[2]
-var highScoresDiv = document.createElement("div");
-scoreDiv.appendChild(highScoresDiv);
-
-// scoreDiv.highScoresDiv.children[0]
-var highScoresHeader = document.createElement("h5");
-highScoresHeader.textContent = "High Scores";
-allScoresDiv.appendChild(highScoresHeader);
-
-// scoreDiv.children[3]
-var clearScores = document.createElement("button");
-clearScores.textContent = "Clear Scores";
-scoreDiv.appendChild(clearScores);
-
-// scoreDiv.children[4]
-var playAgain = document.createElement("button");
-playAgain.textContent = "Play Again";
-scoreDiv.appendChild(playAgain);
-
-var userResponseButton;
-var secondsRemaining = 10;
-
-// Applying Attributes to Buttons
-for (var i = 0; i < buttons.length; i++) {
-   if (i === 0) {
-      buttons[i].setAttribute("style", "background-color:black; font-family:century gothic; color:#cf1717; border-color:#cf1717; border-style:solid; border-width:medium; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px; margin-left:auto; margin-right:auto; font-weight:bold;");
-   }
-   
-   else if (i <= 5) {
-      buttons[i].setAttribute("style", "background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
-   }
-
-   else {
-      buttons[i].setAttribute("style", "background-color:#00cc99; border:none; color:white; border-radius:20px; display:block; font-size:20px; text-align:center; padding:15px; cursor:pointer; margin:10px; width:200px;");
-   } 
-}
+// 05. Elements for View 3: Score Page
+const scoreContainer = document.createElement('div');
+const highScoresDiv = document.createElement('div');
+const highScoresHeader = document.createElement('h3');
+const allScoresDiv = document.createElement('div');
+const allScoresHeader = document.createElement('h3');
+const clearScoresButton = document.createElement('button');
+const retakeQuizButton = document.createElement('button');
 
 
-// Quiz Questions and Answers
+// *************************************************
+// VARIABLES
+let buttons = document.getElementsByTagName('button');
+let feedbackMessages = document.getElementsByTagName('h4');
+let currentQuestion = 0;
+let secondsRemaining = 10;
+let points = 0;
+let answersRight = 0;
+let answersWrong = 0;
+let questionInterval;
+let buttonClickCount = 0;
+
+
+// QUIZ ARRAY -- Questions and Answers
 var questionsArray = [
     { 
       questionNum: 1,
@@ -255,7 +134,7 @@ var questionsArray = [
        C: "toUpperCase()",
        D: "trim()",
        E: "None of the above",
-       answer: "splice"
+       answer: "splice()"
     },
     { 
       questionNum: 7,
@@ -282,10 +161,10 @@ var questionsArray = [
       question: "Which of the following is not a component of the Document Object Model tree?",
        A: "Root Element",
        B: "Sibling Element",
-       C: "Cousin Element",
+       C: "Head Element",
        D: "Child Element",
        E: "None of the above",
-       answer: "Cousin Element"
+       answer: "Head Element"
     },
     { 
       questionNum: 10,
@@ -300,124 +179,397 @@ var questionsArray = [
 ];
 
 
+// *************************************************
+// ATTRIBUTES, CONTENT, ASSEMBLY
 
-// Welcome View Settings
-timerDiv.setAttribute("style", "display:none;");
-quizDiv.setAttribute("style", "display:none;");
-scoreDiv.setAttribute("style", "display:none;");
+// 01. Shell
+function shellSetUp() {
+    // Shell Attributes
+    // To do: Add @media for small screen
+    background.setAttribute('style', 'min-height:100%; margin:0; padding:0; background-image:url(./Assets/JavaScript-Wallpaper.png); background-size:cover; background-repeat:no-repeat; background-position:center center; background-attachment:fixed; border:none; background-color:black;');
 
-// Set up transition to second view
-var takeQuiz = document.querySelector("startGameButton");
+    body.setAttribute('style', 'position:relative; top:10px; min-height:100%;');
 
-function resetQuizButtons() {
-   for (var i = 1; i < buttons.length - 2; i++) {
-      buttons[i].setAttribute("style", "background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
-   }
-}
+    container.setAttribute('style', 'display:flex; flex-direction:column; justify-content:center;');
 
-function rightAnswerButtons() {
-   userResponseButton.setAttribute("style", "background-color:green; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
-   userResponseButton.textContent = "Correct!";
-}
-
-function wrongAnswerButtons() {
-   userResponseButton.setAttribute("style", "background-color:red; border:none; color:white; font-family:century gothic; font-weight:bold; border-radius:20px; display:block; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin:10px; width:185px;");
-   userResponseButton.textContent = "Incorrect!";
-}
-
-
-
-// answerDiv.addEventListener("click", function(event) {
-         //    var userResponseButton = event.target; 
-         //    userResponseContent = event.target.textContent;
-            
-         
-         //    //switch (event.target)
-   
-         //    console.log("Clicked on this button: " + userResponseButton);
-         //    console.log("Clicked on this content: " + userResponseContent);
-         
-   
-   
-         //    if (userResponseContent === answersArray.rightAnswer) {
-         //      rightAnswerButtons();
-         //    } else {
-         //       wrongAnswerButtons();
-         //    }    
-         // });
+    // Shell Assembly
+    document.body.appendChild(container);
+};
 
 
 
 
+// 02. View 1: Welcome Page
+function setUpWelcome() {
+    // A. Welcome Page Attributes
+    welcomeDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    welcomeMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
+    instructionsHeader.setAttribute('style', 'width:80%; margin-left:auto; margin-right:auto; margin-top:40px;');
+    instructionsList.setAttribute('style', 'width:80%; margin-left:auto; margin-right:auto; font-size:15px; list-style-type:square; line-height:1.85em;');
+    startButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
 
-function questionTimer() {
-   var questionInterval = setInterval (function () {
-      
-      secondsRemaining--;
-      timerPlaceholder.textContent = secondsRemaining;     
-      
-      if (secondsRemaining === 0) {
-            if (currentQuestion <= 9) {  
-               populateQuiz();
-               currentQuestion += 1;
-               secondsRemaining = 10;
-               console.log(`Current question is ${currentQuestion}.`);
-            } else if (currentQuestion = 10) {
-               clearInterval(questionInterval);
-               console.log(`Current question is ${currentQuestion} - should be 10.`)
-               timerHeader.setAttribute("style", "display:none");
-               timerPlaceholder.textContent = "Time's up!";
-               quizDiv.setAttribute("style", "display:none");  
-            } 
-   }      
-   }, 1000);
-}
+    // B. Welcome Page Content
+    welcomeMessage.innerText = 'Test your Basic JavaScript Skills';
+    instructionsHeader.innerText = 'Instructions';
+    instruction0.innerText = 'Answer 10 questions';
+    instruction1.innerText = 'You have 10 seconds per question';
+    instruction2.innerText = 'Answers are multiple choice';
+    instruction3.innerText = 'Click the button with your best answer';
+    instruction4.innerText = 'Each correct answer is worth 5 points';
+    instruction5.innerText = 'Tallies of 35 points and up are added to the High Score list';
+    startButton.innerText = 'Begin Quiz';
+
+    // C. Welcome Page Assembly
+    container.appendChild(welcomeDiv);
+    welcomeDiv.appendChild(welcomeMessage);
+    welcomeDiv.appendChild(instructionsHeader);
+    welcomeDiv.appendChild(instructionsList);
+    instructionsList.appendChild(instruction0);
+    instructionsList.appendChild(instruction1);
+    instructionsList.appendChild(instruction2);
+    instructionsList.appendChild(instruction3);
+    instructionsList.appendChild(instruction4);
+    instructionsList.appendChild(instruction5);
+    welcomeDiv.appendChild(startButton);
+};
+
+// 03. Transition to Quiz Page
+startButton.addEventListener("click", function() {
+    welcomeDiv.setAttribute('style', 'display:none');
+    setUpQuiz();
+});
+
+// 04. View 2: Quiz Page
+function setUpQuiz() {
+    // A. Quiz Page Attributes
+    // i. timerDiv
+    timerDiv.setAttribute('style', 'height:50px; width:150px; position:absolute; top:30px; right:68px; margin-bottom:30px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; font-weight:bold;');
+    timerHeader.setAttribute('style', 'position:relative; display:inline; text-align:left; margin-left:15px; color:#cf1717');
+    timerPlaceholder.setAttribute('style', 'display:inline-block; position:relative; left:15px; text-align:right; font-size:18px; margin-right:20px;');
+    
+    // ii. quizDiv
+    quizDiv.setAttribute('style', 'max-height:420px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#00b386; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    questionCount.setAttribute('style', 'color:white; margin-top:15px; margin-left:30px; margin-bottom:15px;');
+    questionPlaceholder.setAttribute('style', 'color:white; margin-left:30px; width:85%;');
+    answerAPlaceholder.setAttribute('id', 'responseA1');
+    answerAFeedback.setAttribute('id', 'responseA2');
+    answerBPlaceholder.setAttribute('id', 'responseB1');
+    answerBFeedback.setAttribute('id', 'responseB2');
+    answerCPlaceholder.setAttribute('id', 'responseC1');
+    answerCFeedback.setAttribute('id', 'responseC2');
+    answerDPlaceholder.setAttribute('id', 'responseD1');
+    answerDFeedback.setAttribute('id', 'responseD2');
+    answerEPlaceholder.setAttribute('id', 'responseE1');
+    answerEFeedback.setAttribute('id', 'responseE2');
+
+    // B. Quiz Page Content
+    // i. timerDiv
+    timerHeader.textContent = 'Timer:';
+    timerPlaceholder.textContent = '0:10';
+
+    // ii. quizDiv - See function populateQuiz()  
+    
+    // C. Quiz Page Assembly
+    // i. timerDiv
+    container.appendChild(timerDiv);
+    timerDiv.appendChild(timerHeader);
+    timerDiv.appendChild(timerPlaceholder);
+
+    // ii. quizDiv
+    container.appendChild(quizDiv);
+    quizDiv.appendChild(questionCount);
+    quizDiv.appendChild(questionPlaceholder);
+    quizDiv.appendChild(answerADiv);
+    answerADiv.appendChild(answerAPlaceholder);
+    answerADiv.appendChild(answerAFeedback);
+    quizDiv.appendChild(answerBDiv);
+    answerBDiv.appendChild(answerBPlaceholder);
+    answerBDiv.appendChild(answerBFeedback);
+    quizDiv.appendChild(answerCDiv);
+    answerCDiv.appendChild(answerCPlaceholder);
+    answerCDiv.appendChild(answerCFeedback);
+    quizDiv.appendChild(answerDDiv);
+    answerDDiv.appendChild(answerDPlaceholder);
+    answerDDiv.appendChild(answerDFeedback);
+    quizDiv.appendChild(answerEDiv);
+    answerEDiv.appendChild(answerEPlaceholder);
+    answerEDiv.appendChild(answerEFeedback);
+
+    // D. Processes
+    // i. Quiz Button Set Up
+    quizButtonsSetUp();
+    // ii. Populate First Question
+    populateQuiz();
+    
+    // iv. Get User's Answer
+    checkAnswer();
+    currentQuestion += 1;
+    // v. Answer Feedback
+
+    // vi. Start Timer for Rest of Quiz
+    questionTimer(); 
+};
 
 
+
+
+function quizButtonsSetUp() {
+    for (let i = 1; i < buttons.length; i++) {
+        buttons[i].setAttribute('style', 'background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
+    }
+    for (let j = 0; j < feedbackMessages.length; j++) {
+        feedbackMessages[j].setAttribute('style', 'width:15%; position:relative; left:100px; display:inline;');
+        feedbackMessages[j].textContent = '';
+    }    
+};
 
 
 function populateQuiz() {
+    
+    let quizData = questionsArray[currentQuestion];
 
-   resetQuizButtons();
+    questionNumber = quizData.questionNum;
 
-   quizData = questionsArray[currentQuestion];
+    questionCount.textContent = `Question ${questionNumber}`;
+    
+    questionPlaceholder.textContent = quizData.question;
 
-   questionNumber = quizData.questionNum;
-   console.log("The current question is " + questionNumber);
-      
-   questionHeader.textContent = `Question ${questionNumber}`;
+    answerAPlaceholder.textContent = quizData.A;
 
-   askQuestion.textContent = quizData.question;
-   
-   answerA.textContent = quizData.A;
-   
-   answerB.textContent = quizData.B;
-      
-   answerC.textContent = quizData.C;
+    answerBPlaceholder.textContent = quizData.B;
 
-   answerD.textContent = quizData.D;
+    answerCPlaceholder.textContent = quizData.C;
 
-   answerE.textContent = quizData.E;
+    answerDPlaceholder.textContent = quizData.D;
 
-   correctAnswer = quizData.answer;
-   console.log(correctAnswer);
-
-   switch (correctAnswer) {
-         case "A":   answerFeedback.textContent = `The correct answer is "${quizData.A}".`;
-                           break;
-      
-         case "B":   answerFeedback.textContent = `The correct answer is "${quizData.B}".`;
-                           break;
-      
-         case "C":   answerFeedback.textContent = `The correct answer is "${quizData.C}".`;
-                           break;
-                     
-         case "D":   answerFeedback.textContent = `The correct answer is "${quizData.D}".`;
-                           break;
-
-         case "E":   answerFeedback.textContent = `The correct answer is "${quizData.E}".`;
-                           break;
-   }
-}  
+    answerEPlaceholder.textContent = quizData.E;
+};
 
 
+function questionTimer() {
+    questionInterval = setInterval(function() {
+
+        secondsRemaining--;
+
+        if ((secondsRemaining > 0) && (secondsRemaining < 10)) {
+            timerPlaceholder.textContent = `0:0${secondsRemaining}`;
+        }
+
+        if (secondsRemaining === 0) {
+            if (currentQuestion <= 9) {
+                quizButtonsSetUp();
+                populateQuiz();
+                checkAnswer();
+                currentQuestion += 1;
+                secondsRemaining = 10;
+                timerPlaceholder.textContent = `0:10`;
+            }
+            else if (currentQuestion === 10) {
+                clearInterval(questionInterval);
+                console.log(`This is the last question.`);
+                timerDiv.setAttribute('style', 'display:none');
+                quizDiv.setAttribute('style', 'display:none');
+                timesUpMessage();
+            }
+        }
+    }, 1000);
+};
+
+// function askQuestion() {
+//     questionInterval = setInterval(function() {
+
+//         secondsRemaining--;
+
+//         if ((secondsRemaining > 0) && (secondsRemaining < 10)) {
+//             timerPlaceholder.textContent = `0:0${secondsRemaining}`;
+//         }
+
+//         if (secondsRemaining === 0) {
+//             if (currentQuestion <= 9) {
+//                 quizButtonsSetUp();
+//                 populateQuiz();
+//                 checkAnswer();
+//                 currentQuestion += 1;
+//                 secondsRemaining = 10;
+//                 timerPlaceholder.textContent = `0:10`;
+//             }
+//             else if (currentQuestion === 10) {
+//                 clearInterval(questionInterval);
+//                 console.log(`This is the last question.`);
+//                 timerDiv.setAttribute('style', 'display:none');
+//                 quizDiv.setAttribute('style', 'display:none');
+//                 timesUpMessage();
+//             }
+//         }
+//     }, 1000);
+// };
+
+// startButton.addEventListener("click", function() {
+//     welcomeDiv.setAttribute('style', 'display:none');
+//     setUpQuiz();
+// });
+
+
+// Check user's answer
+function checkAnswer() {
+    let answerData = questionsArray[currentQuestion];
+    let rightAnswer = answerData.answer;
+    let clickedButton;
+           
+    console.log(`The correct answer is: ${rightAnswer}`);
+    
+    function generatingIterator() {
+        let iterator = 1;
+        return iterator;
+    }
+
+    function generateCorrectAnswer(questionNum) {
+        let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
+        questionNum -= 1;
+        console.log(`questionNum ${questionNum} answer is ${rightAnswersArray[questionNum]}.`);
+        return rightAnswersArray[questionNum];
+    }    
+
+    for (let index = generatingIterator(); index < buttons.length; index++) {
+        buttons[index].onclick = function (event) {
+            let goodAnswer = generateCorrectAnswer(questionNumber);
+            clickedButton = event.target.innerText;
+            buttonClickCount += 1;
+               
+            buttons[1].disabled = true;
+            buttons[2].disabled = true;
+            buttons[3].disabled = true;
+            buttons[4].disabled = true;
+            buttons[5].disabled = true;
+
+            if (clickedButton === goodAnswer) {
+                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
+                answersRight++;
+                points += 5;
+                console.log(`Points: ${points}    Number Right: ${answersRight}`);
+            
+                buttons[index].setAttribute('style', 'background-color:green; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; margin-right:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
+        
+                feedbackMessages[index - 1].textContent = 'CORRECT';    
+
+            } else {
+                    console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
+                    answersWrong++;
+                    console.log(`Points: ${points}    Number Wrong: ${answersWrong}`);
+            
+                    buttons[index].setAttribute('style', 'background-color:red; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; margin-right:20px; input:focus; outline:0; outline-style:none; outline-width:0;'); 
+
+                    feedbackMessages[index - 1].textContent = 'INCORRECT';
+                    
+                    
+                }       
+        };    
+    }
+    
+    buttons[1].disabled = false;
+    buttons[2].disabled = false;
+    buttons[3].disabled = false;
+    buttons[4].disabled = false;
+    buttons[5].disabled = false;
+};
+
+
+
+// FIX TEXT ALIGNMENT
+function timesUpMessage() {
+    // A. Time's Up Page Attributes
+    timesUpDiv.setAttribute('style', 'height:200px; width:65%;  margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:black; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
+    timesUpHeader.setAttribute('style', 'margin:0; position:absolute; top:50%; left:10%; -ms-transform:translateY(-50%); transform:translateY(-50%); text-align:center; color:white; font-size:100px;');
+
+    // B. Time's Up Page Content
+    timesUpHeader.textContent = `TIME'S UP!`;
+
+    // C. Time's Up Assembly
+    container.appendChild(timesUpDiv);
+    timesUpDiv.appendChild(timesUpHeader);
+
+    setTimeout(function() { 
+        timesUpDiv.setAttribute('style', 'display:none');
+        setUpScores();
+    }, 5000);
+};
+
+
+// Score Page Set Up
+function setUpScores() {
+    // A. Score Page Attributes
+    // i. scoreContainer
+    scoreContainer.setAttribute('style', 'height:400px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    
+    // ii. highScoresDiv
+    highScoresDiv.setAttribute('style', 'height:250px; width:35%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    highScoresHeader.setAttribute('style', 'display:inline');
+    highScoresHeader.textContent = 'High Scores';
+
+    // ii. allScoresDiv
+    allScoresDiv.setAttribute('style','height:250px; width:35%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ffad33; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    allScoresHeader.setAttribute('style', 'display:inline');
+    allScoresHeader.textContent = 'All Scores';
+
+    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    clearScoresButton.textContent = 'Clear Scores';
+    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    retakeQuizButton.textContent = 'Retake Quiz';
+
+    if ((buttonClickCount < 10)) {
+        answersWrong += (10 - buttonClickCount);
+    }
+
+    console.log(`Final totals:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}`);
+
+
+    container.appendChild(scoreContainer);
+    scoreContainer.appendChild(highScoresDiv);
+    highScoresDiv.appendChild(highScoresHeader);
+    scoreContainer.appendChild(allScoresDiv);
+    allScoresDiv.appendChild(allScoresHeader);
+    scoreContainer.appendChild(clearScoresButton);
+    scoreContainer.appendChild(retakeQuizButton);
+
+
+    // 03. Transition to Welcome Page
+    retakeQuizButton.addEventListener("click", function() {
+        scoreContainer.setAttribute('style', 'display:none');
+        currentQuestion = 0;
+        secondsRemaining = 10;
+        points = 0;
+        answersRight = 0;
+        answersWrong = 0;
+        buttonClickCount = 0;
+        retakeQuizButton.remove();
+        clearScoresButton.remove();
+        buttons = document.getElementsByTagName('button');
+        shellSetUp();
+        setUpWelcome();
+        });
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// *************************************************
+// PROCESSES
+shellSetUp();
+setUpWelcome();
