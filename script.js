@@ -70,6 +70,7 @@ let secondsRemaining = 10;
 let points = 0;
 let answersRight = 0;
 let answersWrong = 0;
+let questionsMissed = 0;
 let questionInterval;
 let buttonClickCount = 0;
 
@@ -180,9 +181,9 @@ var questionsArray = [
 
 
 // *************************************************
-// ATTRIBUTES, CONTENT, ASSEMBLY
+// Functions
 
-// 01. Shell
+// 01. Shell attributes and assembly
 function shellSetUp() {
     // Shell Attributes
     // To do: Add @media for small screen
@@ -517,10 +518,11 @@ function setUpScores() {
     retakeQuizButton.textContent = 'Retake Quiz';
 
     if ((buttonClickCount < 10)) {
-        answersWrong += (10 - buttonClickCount);
+        questionsMissed = 10 - buttonClickCount;
+        answersWrong += questionsMissed;
     }
 
-    console.log(`Final totals:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}`);
+    console.log(`Final totals:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`);
 
 
     container.appendChild(scoreContainer);
@@ -540,6 +542,7 @@ function setUpScores() {
         points = 0;
         answersRight = 0;
         answersWrong = 0;
+        questionsMissed = 0;
         buttonClickCount = 0;
         retakeQuizButton.remove();
         clearScoresButton.remove();
