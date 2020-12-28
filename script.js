@@ -17,6 +17,7 @@ const instruction2 = document.createElement('li');
 const instruction3 = document.createElement('li');
 const instruction4 = document.createElement('li');
 const instruction5 = document.createElement('li');
+const instruction6 = document.createElement('li');
 const startButton = document.createElement('button');
 
 // 03. Elements for View 2: Quiz Page
@@ -105,15 +106,17 @@ const retakeQuizButton = document.createElement('button');
 let buttons = document.getElementsByTagName('button');
 let feedbackMessages = document.getElementsByTagName('h4');
 let currentQuestion = 0;
-let secondsRemaining = 10;
+let secondsRemainingRule = 10;
 let points = 0;
 let answersRight = 0;
 let answersWrong = 0;
 let questionsMissed = 0;
 let questionInterval;
 let buttonClickCount = 0;
+let actualSecondsRemaining = secondsRemainingRule;
 let highScoresTableRowCount = 0;
 let allScoresTableRowCount = 0;
+
 
 
 // *************************************************
@@ -257,7 +260,8 @@ function setUpWelcome() {
     instruction2.innerText = 'Answers are multiple choice';
     instruction3.innerText = 'Click the button with your best answer';
     instruction4.innerText = 'Each correct answer is worth 5 points';
-    instruction5.innerText = 'Tallies of 80 points and up are added to the High Score list';
+    instruction5.innerText = 'For each wrong answer, 2 seconds are deducted per question';
+    instruction6.innerText = 'Tallies of 80 points and up are added to the High Score list';
     startButton.innerText = 'Begin Quiz';
 
     // C. Welcome Page assembly
@@ -271,6 +275,7 @@ function setUpWelcome() {
     instructionsList.appendChild(instruction3);
     instructionsList.appendChild(instruction4);
     instructionsList.appendChild(instruction5);
+    instructionsList.appendChild(instruction6);
     welcomeDiv.appendChild(startButton);
 };
 
@@ -378,13 +383,13 @@ function populateQuiz() {
 function askQuestion() {
     questionInterval = setInterval(function() {
 
-        secondsRemaining--;
+        actualSecondsRemaining--;
 
-        if ((secondsRemaining > 0) && (secondsRemaining < 10)) {
-            timerPlaceholder.textContent = `0:0${secondsRemaining}`;
+        if ((actualSecondsRemaining > 0) && (actualSecondsRemaining < 10)) {
+            timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
         }
 
-        if (secondsRemaining === 0) {
+        if (actualSecondsRemaining === 0) {
             if (currentQuestion <= 9) {
             goToNextQuestion();            
             }
@@ -402,12 +407,9 @@ function askQuestion() {
 // 08. Check user's answer
 function checkAnswer() {
     // A. Variables
-    let answerData = questionsArray[currentQuestion];
-    let rightAnswer = answerData.answer;
     let clickedButton;
-           
-    console.log(`The correct answer is: ${rightAnswer}`);
-    
+    let clickedButtonAnswer;
+             
     // B. Generate iterator for quiz buttons
     function generatingIterator() {
         let iterator = 1;
@@ -418,7 +420,6 @@ function checkAnswer() {
     function generateCorrectAnswer(questionNum) {
         let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
         questionNum -= 1;
-        console.log(`questionNum ${questionNum} answer is ${rightAnswersArray[questionNum]}.`);
         return rightAnswersArray[questionNum];
     }    
 
@@ -426,9 +427,9 @@ function checkAnswer() {
     for (let index = generatingIterator(); index < buttons.length; index++) {
         buttons[index].onclick = function (event) {
             let goodAnswer = generateCorrectAnswer(questionNumber);
-            clickedButton = event.target.innerText;
-            buttonClickCount += 1;
-             
+            clickedButton = event.target;
+            clickedButtonAnswer = event.target.innerText;
+            buttonClickCount += 1;             
             // i. Disable buttons after click for current question
             buttons[1].disabled = true;
             buttons[2].disabled = true;
@@ -437,11 +438,10 @@ function checkAnswer() {
             buttons[5].disabled = true;
 
             // ii. Provide feedback for user's answer; update totals
-            if (clickedButton === goodAnswer) {
+            if (clickedButtonAnswer === goodAnswer) {
                 console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
                 answersRight++;
                 points += 10;
-                console.log(`Points: ${points}    Number Right: ${answersRight}`);
             
                 buttons[index].setAttribute('style', 'background-color:green; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; margin-right:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
         
@@ -455,20 +455,28 @@ function checkAnswer() {
             } else {
                 console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
                 answersWrong++;
-                console.log(`Points: ${points}    Number Wrong: ${answersWrong}`);
             
                 buttons[index].setAttribute('style', 'background-color:red; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; margin-right:20px; input:focus; outline:0; outline-style:none; outline-width:0;'); 
 
-                feedbackMessages[index - 1].textContent = 'INCORRECT';
-    
+                feedbackMessages[index - 1].textContent = 'INCORRECT';              
+
                 setTimeout(function() { 
                     goToNextQuestion();
                 }, 1200);                 
-            }       
+            }   
+            console.log(`Totals for Question ${questionNumber}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
+            
         };    
     }
     
-    // E. Re-enable buttons for next question
+    // E. Check for skipped questions; adjust wrong answers tally
+    if ((actualSecondsRemaining === 0) && (clickedButton === undefined)) {
+        questionsMissed++;
+        answersWrong++;
+        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
+    }
+
+    // F. Re-enable buttons for next question
     buttons[1].disabled = false;
     buttons[2].disabled = false;
     buttons[3].disabled = false;
@@ -479,11 +487,8 @@ function checkAnswer() {
 // 09. Question progression 
 function goToNextQuestion() {
     if (currentQuestion === 10) {
-        clearInterval(questionInterval);
         console.log(`This is the last question.`);
-        timerDiv.setAttribute('style', 'display:none');
-        quizDiv.setAttribute('style', 'display:none');
-        timesUpMessage(); 
+        quizOver();         
     } else {
         clearInterval(questionInterval);
         quizButtonsSetUp();
@@ -491,18 +496,22 @@ function goToNextQuestion() {
         askQuestion();
         checkAnswer();
         currentQuestion += 1;
-        secondsRemaining = 10;
-        timerPlaceholder.textContent = `0:10`;
+        if (answersWrong === 0) {
+            actualSecondsRemaining = 10;
+            timerPlaceholder.textContent = `0:10`;
+        }
+        if (answersWrong >= 1) {
+            actualSecondsRemaining = 10 - (2 * answersWrong);
+            if (actualSecondsRemaining <= 0) {
+                timerPlaceholder.textContent = '';
+                quizOver();
+                console.log(`User's time deducted to 0 seconds per question.`);
+            } else {    
+                timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
+            }
+            console.log(`Seconds Remaining: ${actualSecondsRemaining}`);
+        }   
     }
-};
-
-// 10. Calculate total wrong answers
-function finalizeWrongAnswers() {
-    if ((buttonClickCount < 10)) {
-        questionsMissed = 10 - buttonClickCount;
-        answersWrong += questionsMissed;
-    }
-    console.log(`Final totals:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`);
 };
 
 // 10. 'Time's Up!' message
@@ -518,29 +527,34 @@ function timesUpMessage() {
     container.appendChild(timesUpDiv);
     timesUpDiv.appendChild(timesUpHeader);
 
-    // D. Processes
-    // i. Obtain count for missed questions; finalize wrong answers
-    finalizeWrongAnswers();
-
-    // ii. Transition to Form page
+    // D. Process - Transition to Form page
     setTimeout(function() { 
         timesUpDiv.setAttribute('style', 'display:none');
         setUpForm();
     }, 3500);
 };
 
+// 11. Quiz over; transition to 'Time's Up!' page
+function quizOver() {
+    clearInterval(questionInterval);
+    timerDiv.setAttribute('style', 'display:none');
+    quizDiv.setAttribute('style', 'display:none');
+    timesUpMessage();
+};
 
-// 12. Form Page set up
+// 12. Form page set up
 function setUpForm() {
-    // A. Variable
+    // A. Variables
+    let initialsEntry = document.querySelector('#user-initials');
     let summaryMessage = determinePointsMessage();
 
-    // A. Form Page attributes
+    // A. Form page attributes
     formDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     initialsMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
     initialsForm.setAttribute('style', 'background-color:blue');
     initialsInput.setAttribute('type', 'text');
     initialsInput.setAttribute('id', 'user-initials');
+    initialsInput.setAttribute('required', '');
     submitButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
 
     // B. Form Page content
@@ -558,12 +572,24 @@ function setUpForm() {
     formDiv.appendChild(formButtonDiv);
     formButtonDiv.appendChild(submitButton);
 
-    // D. Process - Submit button
-    submitButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        formDiv.setAttribute('style', 'display:none');
-        setUpScores();
-        }); 
+    // Processes
+    // i. Edit initials entry
+    function processInitials() {
+        console.log(initialsEntry.value);
+        initialsEntry.value.toUpperCase().trim();
+        console.log(initialsEntry.value);
+    }    
+   
+    // ii. Submit button - Validate user input
+        submitButton.addEventListener("click", function(event) {
+            event.preventDefault();           
+              
+        
+                    processInitials();
+                    formDiv.setAttribute('style', 'display:none');
+                    setUpScores();
+     
+        });
 };
 
 // 11. Determine message for points scored
@@ -734,7 +760,7 @@ function addDataToTables() {
 function takeQuizAgain() {
     scoreContainer.setAttribute('style', 'display:none');
     currentQuestion = 0;
-    secondsRemaining = 10;
+    actualSecondsRemaining = secondsRemainingRule;
     points = 0;
     answersRight = 0;
     answersWrong = 0;
