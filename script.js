@@ -46,22 +46,56 @@ const timerHeader = document.createElement('h2');
 let timerPlaceholder = document.createElement('p');
 
 
-// 04. Elements for View 4: Time's Up!
+// 04. Elements for View 3: Time's Up!
 const timesUpDiv = document.createElement('div');
 const timesUpHeader = document.createElement('h1');
 
 
-// 05. Elements for View 3: Score Page
-const scoreContainer = document.createElement('div');
+// 05. Elements for View 4: Form Page
 const formDiv = document.createElement('div');
-const initialsMessage = document.createElement('h3');
+let pointsMessage = document.createElement('h3');
+const initialsMessage = document.createElement('h5');
 const initialsForm = document.createElement('form');
 let initialsInput = document.createElement('input');
+const formButtonDiv = document.createElement('div');
 const submitButton = document.createElement('button');
+
+
+// 06. Elements for View 5: Score Page
+const scoreContainer = document.createElement('div');
 const highScoresDiv = document.createElement('div');
 const highScoresHeader = document.createElement('h3');
+let highScoresTable = document.createElement('table');
+let highScoresTableHeaderRow = document.createElement('tr');
+let highScoresTableInitialsColumn = document.createElement('th');
+let highScoresTablePointsColumn = document.createElement('th');
+let highScoresTableRightColumn = document.createElement('th');
+let highScoresTableWrongColumn = document.createElement('th');
+let highScoresTableMissedColumn = document.createElement('th');
+let highScoresTableInputRow0 = document.createElement('tr');
+let highScoresTableInitials0 = document.createElement('td');
+let highScoresTablePoints0 = document.createElement('td');
+let highScoresTableRight0 = document.createElement('td');
+let highScoresTableWrong0 = document.createElement('td');
+let highScoresTableMissed0 = document.createElement('td');
+
 const allScoresDiv = document.createElement('div');
 const allScoresHeader = document.createElement('h3');
+let allScoresTable = document.createElement('table');
+let allScoresTableHeaderRow = document.createElement('tr');
+let allScoresTableInitialsColumn = document.createElement('th');
+let allScoresTablePointsColumn = document.createElement('th');
+let allScoresTableRightColumn = document.createElement('th');
+let allScoresTableWrongColumn = document.createElement('th');
+let allScoresTableMissedColumn = document.createElement('th');
+let allScoresTableInputRow0 = document.createElement('tr');
+let allScoresTableInitials0 = document.createElement('td');
+let allScoresTablePoints0 = document.createElement('td');
+let allScoresTableRight0 = document.createElement('td');
+let allScoresTableWrong0 = document.createElement('td');
+let allScoresTableMissed0 = document.createElement('td');
+
+const scoresButtonDiv = document.createElement('div');
 const clearScoresButton = document.createElement('button');
 const retakeQuizButton = document.createElement('button');
 
@@ -78,8 +112,11 @@ let answersWrong = 0;
 let questionsMissed = 0;
 let questionInterval;
 let buttonClickCount = 0;
+let highScoresTableRowCount = 0;
+let allScoresTableRowCount = 0;
 
 
+// *************************************************
 // QUIZ ARRAY -- Questions and Answers
 var questionsArray = [
     { 
@@ -186,35 +223,33 @@ var questionsArray = [
 
 
 // *************************************************
-// Functions
+// FUNCTIONS
 
 // 01. Shell attributes and assembly
 function shellSetUp() {
-    // Shell Attributes
-    // To do: Add @media for small screen
+    // Shell attributes
     background.setAttribute('style', 'min-height:100%; margin:0; padding:0; background-image:url(./Assets/JavaScript-Wallpaper.png); background-size:cover; background-repeat:no-repeat; background-position:center center; background-attachment:fixed; border:none; background-color:black;');
 
+    // Body attributes
     body.setAttribute('style', 'position:relative; top:10px; min-height:100%;');
 
+    // Container attributes
     container.setAttribute('style', 'display:flex; flex-direction:column; justify-content:center;');
 
-    // Shell Assembly
+    // Shell assembly
     document.body.appendChild(container);
 };
 
-
-
-
 // 02. View 1: Welcome Page
 function setUpWelcome() {
-    // A. Welcome Page Attributes
+    // A. Welcome Page attributes
     welcomeDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     welcomeMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
     instructionsHeader.setAttribute('style', 'width:80%; margin-left:auto; margin-right:auto; margin-top:40px;');
     instructionsList.setAttribute('style', 'width:80%; margin-left:auto; margin-right:auto; font-size:15px; list-style-type:square; line-height:1.85em;');
     startButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
 
-    // B. Welcome Page Content
+    // B. Welcome Page content
     welcomeMessage.innerText = 'Test your Basic JavaScript Skills';
     instructionsHeader.innerText = 'Instructions';
     instruction0.innerText = 'Answer 10 questions';
@@ -222,10 +257,10 @@ function setUpWelcome() {
     instruction2.innerText = 'Answers are multiple choice';
     instruction3.innerText = 'Click the button with your best answer';
     instruction4.innerText = 'Each correct answer is worth 5 points';
-    instruction5.innerText = 'Tallies of 35 points and up are added to the High Score list';
+    instruction5.innerText = 'Tallies of 80 points and up are added to the High Score list';
     startButton.innerText = 'Begin Quiz';
 
-    // C. Welcome Page Assembly
+    // C. Welcome Page assembly
     container.appendChild(welcomeDiv);
     welcomeDiv.appendChild(welcomeMessage);
     welcomeDiv.appendChild(instructionsHeader);
@@ -247,41 +282,31 @@ startButton.addEventListener("click", function() {
 
 // 04. View 2: Quiz Page
 function setUpQuiz() {
-    // A. Quiz Page Attributes
-    // i. timerDiv
+    // A. Quiz Page attributes
+    // i. timerDiv attributes
     timerDiv.setAttribute('style', 'height:50px; width:150px; position:absolute; top:30px; right:68px; margin-bottom:30px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; font-weight:bold;');
     timerHeader.setAttribute('style', 'position:relative; display:inline; text-align:left; margin-left:15px; color:#cf1717');
     timerPlaceholder.setAttribute('style', 'display:inline-block; position:relative; left:15px; text-align:right; font-size:18px; margin-right:20px;');
     
-    // ii. quizDiv
+    // ii. quizDiv attributes
     quizDiv.setAttribute('style', 'max-height:420px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#00b386; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     questionCount.setAttribute('style', 'color:white; margin-top:15px; margin-left:30px; margin-bottom:15px;');
     questionPlaceholder.setAttribute('style', 'color:white; margin-left:30px; width:85%;');
-    answerAPlaceholder.setAttribute('id', 'responseA1');
-    answerAFeedback.setAttribute('id', 'responseA2');
-    answerBPlaceholder.setAttribute('id', 'responseB1');
-    answerBFeedback.setAttribute('id', 'responseB2');
-    answerCPlaceholder.setAttribute('id', 'responseC1');
-    answerCFeedback.setAttribute('id', 'responseC2');
-    answerDPlaceholder.setAttribute('id', 'responseD1');
-    answerDFeedback.setAttribute('id', 'responseD2');
-    answerEPlaceholder.setAttribute('id', 'responseE1');
-    answerEFeedback.setAttribute('id', 'responseE2');
 
-    // B. Quiz Page Content
-    // i. timerDiv
+    // B. Quiz Page content    
+    // i. timerDiv content
     timerHeader.textContent = 'Timer:';
     timerPlaceholder.textContent = '0:10';
 
-    // ii. quizDiv - See function populateQuiz()  
-    
-    // C. Quiz Page Assembly
-    // i. timerDiv
+    // ii. quizDiv content - See function populateQuiz() and questionsArray  
+        
+    // C. Quiz Page assembly
+    // i. timerDiv assembly
     container.appendChild(timerDiv);
     timerDiv.appendChild(timerHeader);
     timerDiv.appendChild(timerPlaceholder);
 
-    // ii. quizDiv
+    // ii. quizDiv assembly
     container.appendChild(quizDiv);
     quizDiv.appendChild(questionCount);
     quizDiv.appendChild(questionPlaceholder);
@@ -301,22 +326,22 @@ function setUpQuiz() {
     answerEDiv.appendChild(answerEPlaceholder);
     answerEDiv.appendChild(answerEFeedback);
 
-    // D. Processes
-    // i. Quiz Button Set Up
+    // D. Initial processes
+    // i. Quiz buttons set up
     quizButtonsSetUp();
-    // ii. Populate First Question
+
+    // ii. Populate first question
     populateQuiz();
     
-    // iv. Get User's Answer
+    // iv. Obtain user's answer
     checkAnswer();
     currentQuestion += 1;
-    // v. Answer Feedback
-
-    // vi. Start Timer for Rest of Quiz
+        
+    // v. Initiate Timer
     askQuestion(); 
 };
 
-// 05. Quiz Buttons Formatting (Before Being Clicked)
+// 05. Quiz buttons formatting (appearance prior to being clicked)
 function quizButtonsSetUp() {
     for (let i = 1; i < buttons.length; i++) {
         buttons[i].setAttribute('style', 'background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
@@ -327,7 +352,7 @@ function quizButtonsSetUp() {
     }    
 };
 
-// 06. Populating quizDiv with Questions
+// 06. Populating quizDiv with questions
 function populateQuiz() {
     
     let quizData = questionsArray[currentQuestion];
@@ -349,7 +374,7 @@ function populateQuiz() {
     answerEPlaceholder.textContent = quizData.E;
 };
 
-
+// 07. Main process -- Holds timer
 function askQuestion() {
     questionInterval = setInterval(function() {
 
@@ -374,6 +399,84 @@ function askQuestion() {
     }, 1000);
 };
 
+// 08. Check user's answer
+function checkAnswer() {
+    // A. Variables
+    let answerData = questionsArray[currentQuestion];
+    let rightAnswer = answerData.answer;
+    let clickedButton;
+           
+    console.log(`The correct answer is: ${rightAnswer}`);
+    
+    // B. Generate iterator for quiz buttons
+    function generatingIterator() {
+        let iterator = 1;
+        return iterator;
+    }
+
+    // C. Obtain correct answer for current question
+    function generateCorrectAnswer(questionNum) {
+        let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
+        questionNum -= 1;
+        console.log(`questionNum ${questionNum} answer is ${rightAnswersArray[questionNum]}.`);
+        return rightAnswersArray[questionNum];
+    }    
+
+    // D. Obtain user's answer and determine button behavior upon click
+    for (let index = generatingIterator(); index < buttons.length; index++) {
+        buttons[index].onclick = function (event) {
+            let goodAnswer = generateCorrectAnswer(questionNumber);
+            clickedButton = event.target.innerText;
+            buttonClickCount += 1;
+             
+            // i. Disable buttons after click for current question
+            buttons[1].disabled = true;
+            buttons[2].disabled = true;
+            buttons[3].disabled = true;
+            buttons[4].disabled = true;
+            buttons[5].disabled = true;
+
+            // ii. Provide feedback for user's answer; update totals
+            if (clickedButton === goodAnswer) {
+                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
+                answersRight++;
+                points += 10;
+                console.log(`Points: ${points}    Number Right: ${answersRight}`);
+            
+                buttons[index].setAttribute('style', 'background-color:green; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; margin-right:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
+        
+                feedbackMessages[index - 1].textContent = 'CORRECT';
+                
+                // Delay to show feedback, as timer restarts upon answer selection
+                setTimeout(function() { 
+                    goToNextQuestion();
+                }, 1200);
+
+            } else {
+                console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
+                answersWrong++;
+                console.log(`Points: ${points}    Number Wrong: ${answersWrong}`);
+            
+                buttons[index].setAttribute('style', 'background-color:red; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; margin-right:20px; input:focus; outline:0; outline-style:none; outline-width:0;'); 
+
+                feedbackMessages[index - 1].textContent = 'INCORRECT';
+    
+                setTimeout(function() { 
+                    goToNextQuestion();
+                }, 1200);                 
+            }       
+        };    
+    }
+    
+    // E. Re-enable buttons for next question
+    buttons[1].disabled = false;
+    buttons[2].disabled = false;
+    buttons[3].disabled = false;
+    buttons[4].disabled = false;
+    buttons[5].disabled = false;
+};
+
+// 09. Question progression 
 function goToNextQuestion() {
     if (currentQuestion === 10) {
         clearInterval(questionInterval);
@@ -393,191 +496,262 @@ function goToNextQuestion() {
     }
 };
 
-
-// Check user's answer
-function checkAnswer() {
-    let answerData = questionsArray[currentQuestion];
-    let rightAnswer = answerData.answer;
-    let clickedButton;
-           
-    console.log(`The correct answer is: ${rightAnswer}`);
-    
-    function generatingIterator() {
-        let iterator = 1;
-        return iterator;
-    }
-
-    function generateCorrectAnswer(questionNum) {
-        let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
-        questionNum -= 1;
-        console.log(`questionNum ${questionNum} answer is ${rightAnswersArray[questionNum]}.`);
-        return rightAnswersArray[questionNum];
-    }    
-
-    for (let index = generatingIterator(); index < buttons.length; index++) {
-        buttons[index].onclick = function (event) {
-            let goodAnswer = generateCorrectAnswer(questionNumber);
-            clickedButton = event.target.innerText;
-            buttonClickCount += 1;
-               
-            buttons[1].disabled = true;
-            buttons[2].disabled = true;
-            buttons[3].disabled = true;
-            buttons[4].disabled = true;
-            buttons[5].disabled = true;
-
-            if (clickedButton === goodAnswer) {
-                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
-                answersRight++;
-                points += 5;
-                console.log(`Points: ${points}    Number Right: ${answersRight}`);
-            
-                buttons[index].setAttribute('style', 'background-color:green; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; margin-right:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
-        
-                feedbackMessages[index - 1].textContent = 'CORRECT';    
-                
-                setTimeout(function() { 
-                    goToNextQuestion();
-                }, 1500);
-
-            } else {
-                    console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
-                    answersWrong++;
-                    console.log(`Points: ${points}    Number Wrong: ${answersWrong}`);
-            
-                    buttons[index].setAttribute('style', 'background-color:red; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; margin-right:20px; input:focus; outline:0; outline-style:none; outline-width:0;'); 
-
-                    feedbackMessages[index - 1].textContent = 'INCORRECT';
-    
-                    setTimeout(function() { 
-                        goToNextQuestion();
-                    }, 1500);             
-                    
-                }       
-        };    
-    }
-    
-    buttons[1].disabled = false;
-    buttons[2].disabled = false;
-    buttons[3].disabled = false;
-    buttons[4].disabled = false;
-    buttons[5].disabled = false;
-};
-
-
-
-// FIX TEXT ALIGNMENT
-function timesUpMessage() {
-    // A. Time's Up Page Attributes
-    timesUpDiv.setAttribute('style', 'height:200px; width:65%;  margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:black; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
-    timesUpHeader.setAttribute('style', 'margin:0; position:absolute; top:50%; left:10%; -ms-transform:translateY(-50%); transform:translateY(-50%); text-align:center; color:white; font-size:100px;');
-
-    // B. Time's Up Page Content
-    timesUpHeader.textContent = `TIME'S UP!`;
-
-    // C. Time's Up Assembly
-    container.appendChild(timesUpDiv);
-    timesUpDiv.appendChild(timesUpHeader);
-
-    setTimeout(function() { 
-        timesUpDiv.setAttribute('style', 'display:none');
-        setUpScores();
-    }, 5000);
-};
-
-
-// Score Page Set Up
-function setUpScores() {
-    // A. Score Page Attributes
-    // i. scoreContainer
-    scoreContainer.setAttribute('style', 'height:400px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    
-    // ii. Form for user to submit initials
-    formDiv.setAttribute('style', 'height:250px; width:35%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    initialsMessage.setAttribute('style', 'color:red');
-    initialsForm.setAttribute('style', 'background-color:blue');
-    initialsInput.setAttribute('type', 'text');
-    initialsInput.setAttribute('placeholder', 'Enter your initials here');
-    submitButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
-
-    // iii. highScoresDiv
-    highScoresDiv.setAttribute('style', 'height:250px; width:35%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    highScoresHeader.setAttribute('style', 'display:inline');
-    highScoresHeader.textContent = 'High Scores';
-
-    // iv. allScoresDiv
-    allScoresDiv.setAttribute('style','height:250px; width:35%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ffad33; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    allScoresHeader.setAttribute('style', 'display:inline');
-    allScoresHeader.textContent = 'All Scores';
-
-    // v. Buttons to Clear Scores and Retake Quiz
-    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
-    clearScoresButton.textContent = 'Clear Scores';
-
-    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
-    retakeQuizButton.textContent = 'Retake Quiz';
-
+// 10. Calculate total wrong answers
+function finalizeWrongAnswers() {
     if ((buttonClickCount < 10)) {
         questionsMissed = 10 - buttonClickCount;
         answersWrong += questionsMissed;
     }
-
     console.log(`Final totals:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`);
+};
+
+// 10. 'Time's Up!' message
+function timesUpMessage() {
+    // A. 'Time's Up!' page attributes
+    timesUpDiv.setAttribute('style', 'height:200px; width:65%;  margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:black; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
+    timesUpHeader.setAttribute('style', 'margin:0; position:absolute; top:50%; left:10%; -ms-transform:translateY(-50%); transform:translateY(-50%); text-align:center; color:white; font-size:100px;');
+
+    // B. 'Time's Up!' page content
+    timesUpHeader.textContent = `TIME'S UP!`;
+
+    // C. 'Time's Up!' page assembly
+    container.appendChild(timesUpDiv);
+    timesUpDiv.appendChild(timesUpHeader);
+
+    // D. Processes
+    // i. Obtain count for missed questions; finalize wrong answers
+    finalizeWrongAnswers();
+
+    // ii. Transition to Form page
+    setTimeout(function() { 
+        timesUpDiv.setAttribute('style', 'display:none');
+        setUpForm();
+    }, 3500);
+};
 
 
-    container.appendChild(scoreContainer);
-    scoreContainer.appendChild(formDiv);
+// 12. Form Page set up
+function setUpForm() {
+    // A. Variable
+    let summaryMessage = determinePointsMessage();
+
+    // A. Form Page attributes
+    formDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    initialsMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
+    initialsForm.setAttribute('style', 'background-color:blue');
+    initialsInput.setAttribute('type', 'text');
+    initialsInput.setAttribute('id', 'user-initials');
+    submitButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+
+    // B. Form Page content
+    pointsMessage.textContent = `You scored ${points} points! ${summaryMessage}`;
+    initialsMessage.textContent = 'Enter your initials below.';
+    initialsInput.setAttribute('placeholder', 'Enter your initials here');
+    submitButton.textContent = 'Submit';
+    
+    // C. Form Page assembly
+    container.appendChild(formDiv);
+    formDiv.appendChild(pointsMessage);
     formDiv.appendChild(initialsMessage);
     formDiv.appendChild(initialsForm);
-    initialsForm.appendChild(initialsInput);
-    initialsForm.appendChild(submitButton);
+    formDiv.appendChild(initialsInput);
+    formDiv.appendChild(formButtonDiv);
+    formButtonDiv.appendChild(submitButton);
+
+    // D. Process - Submit button
+    submitButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        formDiv.setAttribute('style', 'display:none');
+        setUpScores();
+        }); 
+};
+
+// 11. Determine message for points scored
+function determinePointsMessage() {
+    let pointsMessage;
+    switch (true) {
+        case (points === 100):
+                                                        {                        
+                                                            pointsMessage = `You're an expert!`;
+                                                            break;
+                                                        }
+                                                                      
+        case (points >= 80): 
+                                                        {   
+                                                            pointsMessage = `You really know your stuff!`;
+                                                            break;
+                                                        }
+
+        case (points >= 60): 
+                                                        {
+                                                            pointsMessage = `You did pretty well!`;
+                                                            break;
+                                                        }
+
+        case (points >= 40):   
+                                                        {
+                                                            pointsMessage = `You're getting there!`;
+                                                            break;
+                                                        }
+
+        case (points >= 20):    
+                                                        {
+                                                            pointsMessage = `Better luck next time!`;
+                                                            break;
+                                                        } 
+
+        case (points >= 0):     
+                                                        {
+                                                            pointsMessage = `Time to hit the books!`;
+                                                            break;
+                                                        }
+    }
+    
+    return pointsMessage;
+};
+
+// 12. Score Page set up
+function setUpScores() {
+    // A. Score Page attributes
+    // i. scoreContainer
+    scoreContainer.setAttribute('style', 'height:400px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    
+    // ii. highScoresDiv
+    highScoresDiv.setAttribute('style', 'height:300px; width:40%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    highScoresHeader.setAttribute('style', 'display:inline');    
+
+    // iii. allScoresDiv
+    allScoresDiv.setAttribute('style','height:300px; width:40%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ffad33; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    allScoresHeader.setAttribute('style', 'display:inline');
+
+    // iv. Buttons to clear tables and retake quiz
+    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    
+    // B. Score Page content  
+    highScoresHeader.textContent = 'High Scores';
+    highScoresTableInitialsColumn.textContent = 'Initials';
+    highScoresTablePointsColumn.textContent = 'Points';
+    highScoresTableRightColumn.textContent = 'Right Answers';
+    highScoresTableWrongColumn.textContent = 'Wrong Answers';
+    highScoresTableMissedColumn.textContent = 'Skipped Questions';
+    allScoresHeader.textContent = 'All Scores';
+    allScoresTableInitialsColumn.textContent = 'Initials';
+    allScoresTablePointsColumn.textContent = 'Points';
+    allScoresTableRightColumn.textContent = 'Right Answers';
+    allScoresTableWrongColumn.textContent = 'Wrong Answers';
+    allScoresTableMissedColumn.textContent = 'Skipped Questions';
+
+    clearScoresButton.textContent = 'Clear Scores';   
+    retakeQuizButton.textContent = 'Retake Quiz';
+
+    // C. Score Page assembly
+    container.appendChild(scoreContainer);
     scoreContainer.appendChild(highScoresDiv);
     highScoresDiv.appendChild(highScoresHeader);
+    highScoresDiv.appendChild(highScoresTable);
+    highScoresTable.appendChild(highScoresTableHeaderRow);
+    highScoresTable.appendChild(highScoresTableInitialsColumn);
+    highScoresTable.appendChild(highScoresTablePointsColumn);
+    highScoresTable.appendChild(highScoresTableRightColumn);
+    highScoresTable.appendChild(highScoresTableWrongColumn);
+    highScoresTable.appendChild(highScoresTableMissedColumn);
+    highScoresTable.appendChild(highScoresTableInputRow0);
+    highScoresTable.appendChild(highScoresTableInitials0);
+    highScoresTable.appendChild(highScoresTablePoints0);
+    highScoresTable.appendChild(highScoresTableRight0);
+    highScoresTable.appendChild(highScoresTableWrong0);
+    highScoresTable.appendChild(highScoresTableMissed0);
     scoreContainer.appendChild(allScoresDiv);
     allScoresDiv.appendChild(allScoresHeader);
+    allScoresDiv.appendChild(allScoresTable);
+    allScoresTable.appendChild(allScoresTableHeaderRow);
+    allScoresTable.appendChild(allScoresTableInitialsColumn);
+    allScoresTable.appendChild(allScoresTablePointsColumn);
+    allScoresTable.appendChild(allScoresTableRightColumn);
+    allScoresTable.appendChild(allScoresTableWrongColumn);
+    allScoresTable.appendChild(allScoresTableMissedColumn);
+    allScoresTable.appendChild(allScoresTableInputRow0);
+    allScoresTable.appendChild(allScoresTableInitials0);
+    allScoresTable.appendChild(allScoresTablePoints0);
+    allScoresTable.appendChild(allScoresTableRight0);
+    allScoresTable.appendChild(allScoresTableWrong0);
+    allScoresTable.appendChild(allScoresTableMissed0);  
     scoreContainer.appendChild(clearScoresButton);
     scoreContainer.appendChild(retakeQuizButton);
 
+    // D. Processes
+    // i. Populate tables
+    addDataToTables();
 
-    // 03. Transition to Welcome Page
+    // ii. Clear scores tables
+
+
+    // ii. Transition to Welcome Page
     retakeQuizButton.addEventListener("click", function() {
-        scoreContainer.setAttribute('style', 'display:none');
-        currentQuestion = 0;
-        secondsRemaining = 10;
-        points = 0;
-        answersRight = 0;
-        answersWrong = 0;
-        questionsMissed = 0;
-        buttonClickCount = 0;
-        retakeQuizButton.remove();
-        clearScoresButton.remove();
-        buttons = document.getElementsByTagName('button');
-        shellSetUp();
-        setUpWelcome();
+        takeQuizAgain();
         });
+};
 
+// 13. Populate score tables
+function addDataToTables() {
+    let userInitials = document.querySelector('#user-initials');
+
+    function addHighScoresRow() {
+
+    };
+
+    function addAllScoresRow() {
+
+    };
+
+    if (points >= 80) {
+        if (highScoresTableRowCount === 0) {
+            highScoresTableInitials0.textContent = userInitials.value;
+            highScoresTablePoints0.textContent = points;
+            highScoresTableRight0.textContent = answersRight;
+            highScoresTableWrong0.textContent = answersWrong;
+            highScoresTableMissed0.textContent = questionsMissed;
+        } //else {
+    }        
+        allScoresTableInitials0.textContent = userInitials.value;
+        allScoresTablePoints0.textContent = points;
+        allScoresTableRight0.textContent = answersRight;
+        allScoresTableWrong0.textContent = answersWrong;
+        allScoresTableMissed0.textContent = questionsMissed;
+
+        // }
+
+    
+   
 };
 
 
 
+// 13. Clear Scores
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// 14. Transition to Welcome Page
+function takeQuizAgain() {
+    scoreContainer.setAttribute('style', 'display:none');
+    currentQuestion = 0;
+    secondsRemaining = 10;
+    points = 0;
+    answersRight = 0;
+    answersWrong = 0;
+    questionsMissed = 0;
+    buttonClickCount = 0;
+    initialsInput.value = '';
+    initialsInput.setAttribute('placeholder', 'Enter your initials here');
+    submitButton.remove();
+    retakeQuizButton.remove();
+    clearScoresButton.remove();
+    buttons = document.getElementsByTagName('button');
+    shellSetUp();
+    setUpWelcome();
+};
 
 
 // *************************************************
-// PROCESSES
+// INITIAL PROCESSES
 shellSetUp();
 setUpWelcome();
