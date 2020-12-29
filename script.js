@@ -395,7 +395,6 @@ function askQuestion() {
             }
             else if (currentQuestion === 10) {
                 clearInterval(questionInterval);
-                console.log(`This is the last question.`);
                 timerDiv.setAttribute('style', 'display:none');
                 quizDiv.setAttribute('style', 'display:none');
                 timesUpMessage();
@@ -425,7 +424,7 @@ function checkAnswer() {
 
     // D. Obtain user's answer and determine button behavior upon click
     for (let index = generatingIterator(); index < buttons.length; index++) {
-        buttons[index].onclick = function (event) {
+        buttons[index].onclick = function(event) {
             let goodAnswer = generateCorrectAnswer(questionNumber);
             clickedButton = event.target;
             clickedButtonAnswer = event.target.innerText;
@@ -544,11 +543,10 @@ function quizOver() {
 
 // 12. Form page set up
 function setUpForm() {
-    // A. Variables
-    let initialsEntry = document.querySelector('#user-initials');
+    // A. Variable
     let summaryMessage = determinePointsMessage();
 
-    // A. Form page attributes
+    // B. Form page attributes
     formDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     initialsMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
     initialsForm.setAttribute('style', 'background-color:blue');
@@ -573,23 +571,33 @@ function setUpForm() {
     formButtonDiv.appendChild(submitButton);
 
     // Processes
-    // i. Edit initials entry
-    function processInitials() {
-        console.log(initialsEntry.value);
-        initialsEntry.value.toUpperCase().trim();
-        console.log(initialsEntry.value);
-    }    
-   
-    // ii. Submit button - Validate user input
-        submitButton.addEventListener("click", function(event) {
-            event.preventDefault();           
-              
+    // i. Validate user input
+    function checkInput() {
         
-                    processInitials();
-                    formDiv.setAttribute('style', 'display:none');
-                    setUpScores();
-     
-        });
+    };
+    
+    // ii. Edit initials entry
+    function processInitials(initialsInput) {
+        console.log(`Original initials: ${initialsInput}`);
+        let newInitialsInput = initialsInput.toUpperCase().trim();
+        console.log(`Fixed initials: ${newInitialsInput}`);
+        return newInitialsInput;
+    };    
+   
+    // iii. Submit button - Validate user input
+        submitButton.onclick = function(event) {
+            event.preventDefault();
+
+            let initialsEntry = document.querySelector('#user-initials');
+            let userInitials = initialsEntry.value;
+            let fixedInitials;
+
+            //checkInput();
+
+            fixedInitials = processInitials(userInitials);
+            formDiv.setAttribute('style', 'display:none');
+            setUpScores(fixedInitials); 
+        };
 };
 
 // 11. Determine message for points scored
@@ -637,7 +645,7 @@ function determinePointsMessage() {
 };
 
 // 12. Score Page set up
-function setUpScores() {
+function setUpScores(editedInitials) {
     // A. Score Page attributes
     // i. scoreContainer
     scoreContainer.setAttribute('style', 'height:400px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
@@ -708,7 +716,7 @@ function setUpScores() {
 
     // D. Processes
     // i. Populate tables
-    addDataToTables();
+    addDataToTables(editedInitials);
 
     // ii. Clear scores tables
 
@@ -720,9 +728,7 @@ function setUpScores() {
 };
 
 // 13. Populate score tables
-function addDataToTables() {
-    let userInitials = document.querySelector('#user-initials');
-
+function addDataToTables(finalInitials) {
     function addHighScoresRow() {
 
     };
@@ -733,14 +739,14 @@ function addDataToTables() {
 
     if (points >= 80) {
         if (highScoresTableRowCount === 0) {
-            highScoresTableInitials0.textContent = userInitials.value;
+            highScoresTableInitials0.textContent = finalInitials;
             highScoresTablePoints0.textContent = points;
             highScoresTableRight0.textContent = answersRight;
             highScoresTableWrong0.textContent = answersWrong;
             highScoresTableMissed0.textContent = questionsMissed;
         } //else {
     }        
-        allScoresTableInitials0.textContent = userInitials.value;
+        allScoresTableInitials0.textContent = finalInitials;
         allScoresTablePoints0.textContent = points;
         allScoresTableRight0.textContent = answersRight;
         allScoresTableWrong0.textContent = answersWrong;
