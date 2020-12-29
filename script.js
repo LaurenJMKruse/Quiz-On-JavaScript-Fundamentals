@@ -557,7 +557,7 @@ function setUpForm() {
 
     // B. Form Page content
     pointsMessage.textContent = `You scored ${points} points! ${summaryMessage}`;
-    initialsMessage.textContent = 'Enter your initials below.';
+    initialsMessage.textContent = 'Enter your initials below. They are required.';
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
     submitButton.textContent = 'Submit';
     
@@ -572,8 +572,31 @@ function setUpForm() {
 
     // Processes
     // i. Validate user input
-    function checkInput() {
-        
+    function checkInput(initialsAsEntered) {
+        let letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let numerals = '0123456789';
+        let symbols = `!@#$%^&amp;*()+=-[]///';,./{}|/":&lt;&gt;?`;
+        let result;
+
+        for (let i = 0; i < initialsAsEntered.length; i++) {
+            if ((numerals.indexOf(initialsAsEntered.charAt(i)) != -1) || (symbols.indexOf(initialsAsEntered.charAt(i)) != -1)) {
+                initialsMessage.textContent = 'You have made an invalid entry.';
+                initialsMessage.setAttribute('style', 'color:blue');
+                initialsInput.value = '';
+                initialsInput.setAttribute('placeholder', 'Please try again');
+                result = false;
+            } 
+            
+            if (initialsAsEntered.length > 4) {
+                initialsMessage.textContent = 'Please enter no more than 4 characters.';
+                initialsInput.value = '';
+                initialsInput.setAttribute('placeholder', 'Please try again');
+                result = false;
+            } else if ((letters.indexOf(initialsAsEntered.charAt(i)) != -1) && ((numerals.indexOf(initialsAsEntered.charAt(i)) == -1) || (symbols.indexOf(initialsAsEntered.charAt(i)) == -1))) {   
+                result = true;
+            }
+        }
+        return result;
     };
     
     // ii. Edit initials entry
@@ -584,19 +607,19 @@ function setUpForm() {
         return newInitialsInput;
     };    
    
-    // iii. Submit button - Validate user input
+    // iii. Submit button
         submitButton.onclick = function(event) {
             event.preventDefault();
 
             let initialsEntry = document.querySelector('#user-initials');
             let userInitials = initialsEntry.value;
-            let fixedInitials;
+            let correctInput = checkInput(userInitials); 
 
-            //checkInput();
-
-            fixedInitials = processInitials(userInitials);
-            formDiv.setAttribute('style', 'display:none');
-            setUpScores(fixedInitials); 
+            if (correctInput === true) {
+                let fixedInitials = processInitials(userInitials);
+                formDiv.setAttribute('style', 'display:none');
+                setUpScores(fixedInitials);
+            } 
         };
 };
 
