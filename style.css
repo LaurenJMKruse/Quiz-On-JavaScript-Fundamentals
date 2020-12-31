@@ -1,0 +1,328 @@
+@viewport   {
+    width: device-width;
+    zoom: 1.0;
+}
+
+/* Monitor */
+@media screen and (max-width: 1200px) {
+    .welcomePage {
+        width: 900px;
+        max-height: 800px;
+        top: 50px;
+        padding-bottom: 20px;
+    }
+
+    #rules-header {
+        left: 100px;
+    }
+
+    #quiz-rules {
+        left: 75px;
+        width: 800px;
+        margin-bottom: 20px;
+    }
+
+    .quizPage {
+        width: 900px;
+        max-height: 800px;
+    }
+
+    .timerBox {
+        width: 150px;
+        height: 50px;
+        position: absolute;
+        top: 20px;
+        left: 50px;
+        margin-bottom: 40px;
+    }
+
+    .answerFeedback {
+        left: 80px;
+    }
+
+    .timesUpPage {
+        width: 65%;
+        height: 200px;
+        font-size: 40px;
+    }
+
+    .formPage {
+        width: 700px;
+        max-height: 800px;
+    }
+
+    .points-message {
+        font-size: 15px;
+    }
+
+    .initials-message {
+        margin-left: 20px;
+    }
+
+    #user-initials {
+        margin-left: 20px;
+    }
+
+    .scoresPage {
+        width: 900px;
+        max-height: 660px;
+        top: 40px;
+        margin-top: 20px;
+    }
+
+    /* .clearfix::after {
+        content: '';
+        clear: both;
+        display: table;
+    } */
+
+    .points-chart {
+        width: 380px;
+        height: 275px;
+        font-size: 14px;
+        padding: 10px;
+        margin-top: 5px;
+        margin-left: 15px;
+        margin-right: 15px;
+        float: left;
+        position: relative;
+        top: 15px;
+    }
+
+    .scores-header {
+        left: 10px;
+        font-size: 20px;
+    }
+
+    .table-columns {
+        font-size: 14px;
+    }
+
+    th {
+        width: 20%;
+        text-align: right;
+        border-bottom-style: solid;
+        border-bottom-color: white;
+        border-bottom-width: 2px;
+    }
+
+    td {
+        width: 20%;
+        text-align: right;
+    }
+
+    #clear-button {
+        left: 210px;
+    }
+
+    #retake-button {
+        left: 310px;
+    }
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+    .welcomePage {
+        width: 600px;
+        max-height: 950px;
+        top: 50px;
+    }
+
+    #rules-header {
+        left: 65px;
+    }
+
+    #quiz-rules {
+        left: 40px;
+        width: 450px;
+    }
+
+    .quizPage {
+        width: 600px;
+        max-height: 950px;
+        top: 85px;
+        margin-top: 15px;
+    }
+
+    .timerBox {
+        width: 150px;
+        height: 50px;
+        position:absolute;
+        top:30px;
+        left: 25px;
+        margin-bottom: 30px;
+    }
+
+    .timesUpPage {
+        width: 600px;
+        max-height: 300px;
+        font-size: 40px;
+    }
+
+    .answerFeedback {
+        left: 60px;
+    }
+
+    .formPage {
+        width: 600px;
+        max-height: 950px;
+    }
+
+    .points-message {
+        font-size: 20px;
+    }
+
+    .initials-message {
+        margin-left: 20px;
+    }
+
+    #user-initials {
+        margin-left: 20px;
+    }
+
+    .scoresPage {
+        width: 600px;
+        max-height: 950px;
+    }
+
+    .points-chart {
+        width: 80%;
+        height: 400px;
+        font-size:16px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .scores-header {
+        left:10px;
+        font-size: 14px;
+    }
+
+    .table-columns {
+        font-size: 16px;
+    }
+
+    th {
+        width: 20%;
+        text-align: right;
+    }
+
+    td {
+        width: 20%;
+        text-align: right;
+    }
+
+    #clear-button {
+        left: 85px;
+    }
+
+    #retake-button {
+        left: 135px;
+    }
+}
+/*instructions list and header alignment for tablet and monitor (took away auto margins)*/
+/* Phone */
+@media screen and (max-width: 480px) {
+    .welcomePage {
+        width: 400px;
+        max-height: 1000px;
+        margin-top: -25px;
+    }
+
+    #quiz-title {
+        font-size: 20px;
+    }
+
+    #rules-header {
+        left: 20px;
+    }
+
+    #quiz-rules {
+        left: -4px;
+        width: 350px;
+    }
+
+    .quizPage {
+        width: 400px;
+        max-height: 1000px;
+        top: 85px;
+        margin-top: 15px; 
+    }
+
+    .timerBox {
+        width: 150px;
+        height: 50px;
+        left: 30px;
+        top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .answerFeedback {
+        left: 20px;
+    }
+
+    .timesUpPage {
+        width: 400px;
+        max-height: 150px;
+        font-size: 30px;
+    }
+
+    .formPage {
+        width: 400px;
+        max-height: 1000px;
+    }
+
+    .points-message {
+        font-size: 15px;
+    }
+
+    .initials-message {
+        font-size: 12px;
+        margin-left: 20px;
+    }
+
+    #user-initials {
+        margin-left: 20px;
+    }
+
+    .scoresPage {
+        width: 400px;
+        max-height: 1000px;
+        margin-top:10px;
+    }
+
+    .points-chart {
+        width: 80%;
+        height: 275px;
+        font-size:12px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .scores-header {
+        left:10px;
+        font-size: 15px;
+    }
+
+    .table-columns {
+        font-size: 12px;
+    }
+
+    th {
+        width: 20%;
+        text-align: right;
+    }
+
+    td {
+        width: 20%;
+        text-align: right;
+    }
+
+    #clear-button {
+        left: 15px;
+    }
+
+    #retake-button {
+        left: 20px;
+    }
+}

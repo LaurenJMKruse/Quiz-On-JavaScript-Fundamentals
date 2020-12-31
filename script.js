@@ -96,7 +96,7 @@ let allScoresTableRight0 = document.createElement('td');
 let allScoresTableWrong0 = document.createElement('td');
 let allScoresTableMissed0 = document.createElement('td');
 
-const scoresButtonDiv = document.createElement('div');
+const scoresButtonsDiv = document.createElement('div');
 const clearScoresButton = document.createElement('button');
 const retakeQuizButton = document.createElement('button');
 
@@ -116,11 +116,14 @@ let buttonClickCount = 0;
 let actualSecondsRemaining = secondsRemainingRule;
 let highScoresTableRowCount = 0;
 let allScoresTableRowCount = 0;
-
+let userCount = 0;
+let questionsAsked = 0;
+let totalQuestions = 10;
 
 
 // *************************************************
-// QUIZ ARRAY -- Questions and Answers
+// ARRAYS
+// A. Quiz Array -- Questions and Answers
 var questionsArray = [
     { 
       questionNum: 1,
@@ -224,6 +227,17 @@ var questionsArray = [
     }
 ];
 
+// B. User Data Array
+let userDataArray = [];
+
+// C. User Data Object
+let userDataRecord = {
+    userID: '',
+    pointsEarned: '',
+    correctAnswers: '',
+    incorrectAnswers: '',
+    skippedQuestions: ''
+};
 
 // *************************************************
 // FUNCTIONS
@@ -246,22 +260,26 @@ function shellSetUp() {
 // 02. View 1: Welcome Page
 function setUpWelcome() {
     // A. Welcome Page attributes
-    welcomeDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    welcomeDiv.setAttribute('class', 'welcomePage');
+    welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
+    welcomeMessage.setAttribute('id', 'quiz-title');
     welcomeMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
-    instructionsHeader.setAttribute('style', 'width:80%; margin-left:auto; margin-right:auto; margin-top:40px;');
-    instructionsList.setAttribute('style', 'width:80%; margin-left:auto; margin-right:auto; font-size:15px; list-style-type:square; line-height:1.85em;');
-    startButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    instructionsHeader.setAttribute('id', 'rules-header');
+    instructionsHeader.setAttribute('style', 'width:80%; text-align:left; position:relative; margin-top:40px;');
+    instructionsList.setAttribute('id', 'quiz-rules');
+    instructionsList.setAttribute('style', 'position:relative; font-size:15px; list-style-type:square; line-height:1.85em;');
+    startButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:15px; margin-bottom:15px;');
 
     // B. Welcome Page content
     welcomeMessage.innerText = 'Test your Basic JavaScript Skills';
     instructionsHeader.innerText = 'Instructions';
-    instruction0.innerText = 'Answer 10 questions';
-    instruction1.innerText = 'You have 10 seconds per question';
-    instruction2.innerText = 'Answers are multiple choice';
-    instruction3.innerText = 'Click the button with your best answer';
-    instruction4.innerText = 'Each correct answer is worth 5 points';
-    instruction5.innerText = 'For each wrong answer, 2 seconds are deducted per question';
-    instruction6.innerText = 'Tallies of 80 points and up are added to the High Score list';
+    instruction0.innerText = 'There are 10 questions';
+    instruction1.innerText = 'Answers are multiple choice';
+    instruction2.innerText = 'Click the button with your best answer';
+    instruction3.innerText = 'Each correct answer is worth 5 points';
+    instruction4.innerText = 'Tallies of 80 points and up are added to the High Score list';
+    instruction5.innerText = 'You have 10 seconds per question';
+    instruction6.innerText = 'Each wrong answer will result in a 2-second deduction per subsequent question(s)';
     startButton.innerText = 'Begin Quiz';
 
     // C. Welcome Page assembly
@@ -289,14 +307,21 @@ startButton.addEventListener("click", function() {
 function setUpQuiz() {
     // A. Quiz Page attributes
     // i. timerDiv attributes
-    timerDiv.setAttribute('style', 'height:50px; width:150px; position:absolute; top:30px; right:68px; margin-bottom:30px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; font-weight:bold;');
+    timerDiv.setAttribute('class', 'timerBox');
+    timerDiv.setAttribute('style', 'position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; font-weight:bold;');
     timerHeader.setAttribute('style', 'position:relative; display:inline; text-align:left; margin-left:15px; color:#cf1717');
     timerPlaceholder.setAttribute('style', 'display:inline-block; position:relative; left:15px; text-align:right; font-size:18px; margin-right:20px;');
     
     // ii. quizDiv attributes
-    quizDiv.setAttribute('style', 'max-height:420px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#00b386; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    quizDiv.setAttribute('class', 'quizPage');
+    quizDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; border-style:solid; border-width:3px; border-radius:20px; border-color:#00b386; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     questionCount.setAttribute('style', 'color:white; margin-top:15px; margin-left:30px; margin-bottom:15px;');
     questionPlaceholder.setAttribute('style', 'color:white; margin-left:30px; width:85%;');
+    answerAFeedback.setAttribute('class', 'answerFeedback');
+    answerBFeedback.setAttribute('class', 'answerFeedback');
+    answerCFeedback.setAttribute('class', 'answerFeedback');
+    answerDFeedback.setAttribute('class', 'answerFeedback');
+    answerEFeedback.setAttribute('class', 'answerFeedback');
 
     // B. Quiz Page content    
     // i. timerDiv content
@@ -337,6 +362,7 @@ function setUpQuiz() {
 
     // ii. Populate first question
     populateQuiz();
+    questionsAsked++;
     
     // iv. Obtain user's answer
     checkAnswer();
@@ -352,7 +378,7 @@ function quizButtonsSetUp() {
         buttons[i].setAttribute('style', 'background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
     }
     for (let j = 0; j < feedbackMessages.length; j++) {
-        feedbackMessages[j].setAttribute('style', 'width:15%; position:relative; left:100px; display:inline;');
+        feedbackMessages[j].setAttribute('style', 'width:15%; position:relative; display:inline;');
         feedbackMessages[j].textContent = '';
     }    
 };
@@ -492,6 +518,7 @@ function goToNextQuestion() {
         clearInterval(questionInterval);
         quizButtonsSetUp();
         populateQuiz();
+        questionsAsked++;
         askQuestion();
         checkAnswer();
         currentQuestion += 1;
@@ -513,11 +540,24 @@ function goToNextQuestion() {
     }
 };
 
+// Push userDataArray
+function populateUserDataArray() {
+    userDataRecord.userID = userCount
+    userDataRecord.pointsEarned = points;
+    userDataRecord.correctAnswers = answersRight;
+    userDataRecord.incorrectAnswers = answersWrong;
+    userDataRecord.skippedQuestions = questionsMissed;
+    userDataArray.push(userDataRecord);
+    console.log(`New record: ${userDataRecord}`);
+    return userDataArray[userCount];
+};
+
 // 10. 'Time's Up!' message
 function timesUpMessage() {
     // A. 'Time's Up!' page attributes
-    timesUpDiv.setAttribute('style', 'height:200px; width:65%;  margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:black; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
-    timesUpHeader.setAttribute('style', 'margin:0; position:absolute; top:50%; left:10%; -ms-transform:translateY(-50%); transform:translateY(-50%); text-align:center; color:white; font-size:100px;');
+    timesUpDiv.setAttribute('class', 'timesUpPage');
+    timesUpDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
+    timesUpHeader.setAttribute('style', 'margin-left:auto; margin-right:auto; text-align:center;');
 
     // B. 'Time's Up!' page content
     timesUpHeader.textContent = `TIME'S UP!`;
@@ -533,9 +573,14 @@ function timesUpMessage() {
     }, 3500);
 };
 
+
+// ADD QUESTIONS ASKED TO TABLE!!
+
 // 11. Quiz over; transition to 'Time's Up!' page
 function quizOver() {
+
     clearInterval(questionInterval);
+    populateUserDataArray();
     timerDiv.setAttribute('style', 'display:none');
     quizDiv.setAttribute('style', 'display:none');
     timesUpMessage();
@@ -547,18 +592,22 @@ function setUpForm() {
     let summaryMessage = determinePointsMessage();
 
     // B. Form page attributes
-    formDiv.setAttribute('style', 'height:400px; width:60%; margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    initialsMessage.setAttribute('style', 'text-align:center; color:white; margin:30px;');
-    initialsForm.setAttribute('style', 'background-color:blue');
+    formDiv.setAttribute('class', 'formPage');
+    formDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    pointsMessage.setAttribute('class', 'points-message');
+    pointsMessage.setAttribute('style', 'text-align:center');
+    initialsMessage.setAttribute('class', 'initials-message');
+    initialsMessage.setAttribute('style', 'text-align:left; color:white; margin-left:15px;');
     initialsInput.setAttribute('type', 'text');
+    initialsInput.setAttribute('placeholder', 'Enter your initials here');
     initialsInput.setAttribute('id', 'user-initials');
     initialsInput.setAttribute('required', '');
-    submitButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    initialsInput.setAttribute('style', 'font-family:century gothic; font-weight:bold; text-align:center; padding:3px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color: white;');
+    submitButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
 
     // B. Form Page content
     pointsMessage.textContent = `You scored ${points} points! ${summaryMessage}`;
-    initialsMessage.textContent = 'Enter your initials below. They are required.';
-    initialsInput.setAttribute('placeholder', 'Enter your initials here');
+    initialsMessage.textContent = 'Enter your initials below (required).';
     submitButton.textContent = 'Submit';
     
     // C. Form Page assembly
@@ -570,31 +619,66 @@ function setUpForm() {
     formDiv.appendChild(formButtonDiv);
     formButtonDiv.appendChild(submitButton);
 
+
     // Processes
     // i. Validate user input
     function checkInput(initialsAsEntered) {
         let letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let numerals = '0123456789';
+        let numerals = '0123456789';    
         let symbols = `!@#$%^&amp;*()+=-[]///';,./{}|/":&lt;&gt;?`;
         let result;
+        let initialsGood;
+        let loopCount = 0;
+        let initialsToString = initialsAsEntered.toString();
 
-        for (let i = 0; i < initialsAsEntered.length; i++) {
-            if ((numerals.indexOf(initialsAsEntered.charAt(i)) != -1) || (symbols.indexOf(initialsAsEntered.charAt(i)) != -1)) {
-                initialsMessage.textContent = 'You have made an invalid entry.';
-                initialsMessage.setAttribute('style', 'color:blue');
-                initialsInput.value = '';
-                initialsInput.setAttribute('placeholder', 'Please try again');
-                result = false;
-            } 
+        console.log(`Initials to string: ${typeof initialsToString}`);
+
+        if (initialsToString.length > 4) {
+            initialsMessage.textContent = 'Please enter no more than 4 characters.';
+            initialsInput.value = '';
+            initialsInput.setAttribute('placeholder', 'Please try again');
+            result = false;
+        } else { 
+
+            do { 
             
-            if (initialsAsEntered.length > 4) {
-                initialsMessage.textContent = 'Please enter no more than 4 characters.';
-                initialsInput.value = '';
-                initialsInput.setAttribute('placeholder', 'Please try again');
-                result = false;
-            } else if ((letters.indexOf(initialsAsEntered.charAt(i)) != -1) && ((numerals.indexOf(initialsAsEntered.charAt(i)) == -1) || (symbols.indexOf(initialsAsEntered.charAt(i)) == -1))) {   
-                result = true;
-            }
+                for (let i = 0; i < initialsToString.length; i++) {
+                    if ((numerals.indexOf(initialsToString.charAt(i)) === -1) && (symbols.indexOf(initialsToString.charAt(i)) === -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1)) {
+                        initialsGood = true;
+                        result = true;
+                    } else if ((numerals.indexOf(initialsToString.charAt(i)) !== -1) || (symbols.indexOf(initialsToString.charAt(i)) !== -1)) {
+                        initialsMessage.textContent = 'You have made an invalid entry. Numbers and symbols are not permitted.';
+                        initialsInput.value = '';
+                        initialsInput.setAttribute('placeholder', 'Please try again');
+                        initialsGood = false;
+                        result = false;
+                        break;     
+                    } else if ((numerals.indexOf(initialsToString.charAt(i)) !== -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1) && (symbols.indexOf(initialsToString.charAt(i)) === -1)) {
+                        initialsMessage.textContent = 'You have made an invalid entry. Numbers are not permitted.';
+                        initialsInput.value = '';
+                        initialsInput.setAttribute('placeholder', 'Please try again');
+                        initialsGood = false;
+                        result = false;
+                        break;
+                    } else if ((symbols.indexOf(initialsToString.charAt(i)) !== -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1) && (numerals.indexOf(initialsToString.charAt(i)) === -1)) {
+                        initialsMessage.textContent = 'You have made an invalid entry. Symbols are not permitted.';
+                        initialsInput.value = '';
+                        initialsInput.setAttribute('placeholder', 'Please try again');
+                        initialsGood = false;
+                        result = false;
+                        break;
+                    } else if ((numerals.indexOf(initialsToString.charAt(i)) !== -1) && (symbols.indexOf(initialsToString.charAt(i)) !== -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1)) {
+                        initialsMessage.textContent = 'You have made an invalid entry. Numbers and symbols are not permitted.';
+                        initialsInput.value = '';
+                        initialsInput.setAttribute('placeholder', 'Please try again');
+                        initialsGood = false;
+                        result = false;
+                    }
+                     
+                    console.log(`Loop count: ${loopCount}`);
+                    loopCount++;
+                } 
+            }    while (initialsGood = false)
         }
         return result;
     };
@@ -619,7 +703,7 @@ function setUpForm() {
                 let fixedInitials = processInitials(userInitials);
                 formDiv.setAttribute('style', 'display:none');
                 setUpScores(fixedInitials);
-            } 
+            }
         };
 };
 
@@ -669,36 +753,48 @@ function determinePointsMessage() {
 
 // 12. Score Page set up
 function setUpScores(editedInitials) {
+    
     // A. Score Page attributes
     // i. scoreContainer
-    scoreContainer.setAttribute('style', 'height:400px; width:85%; margin-top:20px; margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    scoreContainer.setAttribute('class', 'scoresPage');
+    scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     
     // ii. highScoresDiv
-    highScoresDiv.setAttribute('style', 'height:300px; width:40%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    highScoresHeader.setAttribute('style', 'display:inline');    
+    highScoresDiv.setAttribute('class', 'points-chart');
+    highScoresDiv.setAttribute('style', 'background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    highScoresHeader.setAttribute('class', 'scores-header');
+    highScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:right; font-size:20px; color:#ff9900;');   
+    highScoresTableHeaderRow.setAttribute('class', 'table-columns'); 
+    highScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px;');
 
     // iii. allScoresDiv
-    allScoresDiv.setAttribute('style','height:300px; width:40%; margin-top:20px; display:inline; border-style:solid; border-weight:3px; border-radius:20px; border-color:#ffad33; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
-    allScoresHeader.setAttribute('style', 'display:inline');
+    allScoresDiv.setAttribute('class', 'points-chart');
+    allScoresDiv.setAttribute('style','background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    allScoresHeader.setAttribute('class', 'scores-header');
+    allScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:right; font-size:20px; color:#ff9900;');
+    allScoresTableHeaderRow.setAttribute('class', 'table-columns');
+    allScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px;');
 
     // iv. Buttons to clear tables and retake quiz
-    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
-    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; font-family:century gothic; font-size:18px; font-weight:bold; display:inline-block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
+    scoresButtonsDiv.setAttribute('style', 'background-color:black; margin-left:auto; margin-right:auto;');
+    clearScoresButton.setAttribute('id', 'clear-button');
+    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; display:inline; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:10px; margin-right:10px');
+    retakeQuizButton.setAttribute('id', 'retake-button');
+    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; display:inline; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:10px; margin-right:10px;');
     
     // B. Score Page content  
     highScoresHeader.textContent = 'High Scores';
-    highScoresTableInitialsColumn.textContent = 'Initials';
-    highScoresTablePointsColumn.textContent = 'Points';
+    highScoresTableInitialsColumn.innerHTML = '<br>Initials';
+    highScoresTablePointsColumn.innerHTML = '<br>Points';
     highScoresTableRightColumn.textContent = 'Right Answers';
     highScoresTableWrongColumn.textContent = 'Wrong Answers';
     highScoresTableMissedColumn.textContent = 'Skipped Questions';
     allScoresHeader.textContent = 'All Scores';
-    allScoresTableInitialsColumn.textContent = 'Initials';
-    allScoresTablePointsColumn.textContent = 'Points';
+    allScoresTableInitialsColumn.innerHTML = '<br>Initials';
+    allScoresTablePointsColumn.innerHTML = '<br>Points';
     allScoresTableRightColumn.textContent = 'Right Answers';
     allScoresTableWrongColumn.textContent = 'Wrong Answers';
     allScoresTableMissedColumn.textContent = 'Skipped Questions';
-
     clearScoresButton.textContent = 'Clear Scores';   
     retakeQuizButton.textContent = 'Retake Quiz';
 
@@ -733,7 +829,10 @@ function setUpScores(editedInitials) {
     allScoresTable.appendChild(allScoresTablePoints0);
     allScoresTable.appendChild(allScoresTableRight0);
     allScoresTable.appendChild(allScoresTableWrong0);
-    allScoresTable.appendChild(allScoresTableMissed0);  
+    allScoresTable.appendChild(allScoresTableMissed0);
+    scoreContainer.appendChild(scoresButtonsDiv);
+    scoresButtonsDiv.appendChild(clearScoresButton);
+    scoresButtonsDiv.appendChild(retakeQuizButton);  
     scoreContainer.appendChild(clearScoresButton);
     scoreContainer.appendChild(retakeQuizButton);
 
@@ -751,7 +850,9 @@ function setUpScores(editedInitials) {
 };
 
 // 13. Populate score tables
-function addDataToTables(finalInitials) {
+function addDataToTables(formattedInitials) {
+    let userTallies = userDataArray[userCount];
+
     function addHighScoresRow() {
 
     };
@@ -762,18 +863,18 @@ function addDataToTables(finalInitials) {
 
     if (points >= 80) {
         if (highScoresTableRowCount === 0) {
-            highScoresTableInitials0.textContent = finalInitials;
-            highScoresTablePoints0.textContent = points;
-            highScoresTableRight0.textContent = answersRight;
-            highScoresTableWrong0.textContent = answersWrong;
-            highScoresTableMissed0.textContent = questionsMissed;
-        } //else {
+            highScoresTableInitials0.textContent = formattedInitials;
+            highScoresTablePoints0.textContent = userTallies.pointsEarned;
+            highScoresTableRight0.textContent = userTallies.correctAnswers;
+            highScoresTableWrong0.textContent = userTallies.incorrectAnswers;
+            highScoresTableMissed0.textContent = userTallies.skippedQuestions;
+        }
     }        
-        allScoresTableInitials0.textContent = finalInitials;
-        allScoresTablePoints0.textContent = points;
-        allScoresTableRight0.textContent = answersRight;
-        allScoresTableWrong0.textContent = answersWrong;
-        allScoresTableMissed0.textContent = questionsMissed;
+        allScoresTableInitials0.textContent = formattedInitials;
+        allScoresTablePoints0.textContent = userTallies.pointsEarned;
+        allScoresTableRight0.textContent = userTallies.correctAnswers;
+        allScoresTableWrong0.textContent = userTallies.incorrectAnswers;
+        allScoresTableMissed0.textContent = userTallies.skippedQuestions;
 
         // }
 
@@ -796,6 +897,7 @@ function takeQuizAgain() {
     questionsMissed = 0;
     buttonClickCount = 0;
     initialsInput.value = '';
+    userCount++;
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
     submitButton.remove();
     retakeQuizButton.remove();
