@@ -293,7 +293,7 @@ function setUpWelcome() {
     instruction3.innerText = 'Each correct answer is worth 5 points';
     instruction4.innerText = 'Tallies of 80 points and up are added to the High Score list';
     instruction5.innerText = 'You have 10 seconds per question';
-    instruction6.innerText = 'Each wrong answer will result in a 2-second deduction per subsequent question(s)';
+    instruction6.innerText = 'Each wrong answer or skipped question will result in a 2-second deduction per subsequent question(s)';
     startButton.innerText = 'Begin Quiz';
 
     // C. Welcome Page assembly
@@ -430,7 +430,6 @@ function quizButtonsSetUp() {
 // 08. Populating quizDiv with questions
 function populateQuiz() {
     console.log('Ran populateQuiz function');
-    questionsAsked++;
 
     let quizData = questionsArray[currentQuestion];
 
@@ -527,6 +526,8 @@ function checkAnswer() {
         console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
     }
 
+    questionsAsked++;
+
     // F. Re-enable buttons for next question
     quizButtonsArray[0].disabled = false;
     quizButtonsArray[1].disabled = false;
@@ -579,8 +580,8 @@ function goToNextQuestion() {
             timerPlaceholder.textContent = `0:10`;
         }
         
-        if ((answersWrong >= 1) && (currentQuestion <= 10)) {
-            actualSecondsRemaining = 10 - (2 * answersWrong);
+        if (((answersWrong >= 1) || (questionsMissed >= 1)) && (currentQuestion <= 10)) {
+            actualSecondsRemaining = 10 - (2 * answersWrong) - (2 * questionsMissed);
             timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
             console.log(`Seconds Remaining: ${actualSecondsRemaining}`);
         }
@@ -950,12 +951,29 @@ function populateScores(editedInitials) {
     createTableRows(editedInitials);
 
     populateScoresCount++;
+    
+    clearScores();
     retakeQuizClick();
 
     // ii. Clear scores from tables
+};
 
+// 21. Clear scores from tables
+function clearScores() {
+    console.log('Set up listener on clearScoresButton');
+    clearScoresButton.addEventListener("click", function() {
+        let highScoreRowsCount = highScoresTable.rows.length;
+        let allScoreRowsCount = allScoresTable.rows.length;
 
-    
+        for (let i = highScoreRowsCount - 1; i > 0; i--) {
+            highScoresTable.deleteRow(i);
+        }
+
+        for (let j = allScoreRowsCount - 1; j > 0; j--) {
+            allScoresTable.deleteRow(j);
+        }
+    });
+    clearScoresButton.removeEventListener('click', function() {});
 };
 
 // 21. Transition to Welcome Page
