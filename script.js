@@ -1,7 +1,6 @@
 // *************************************************
 // ELEMENTS
 
-console.log('Line 04: Start of program - creation of elements');
 // 01. Elements for Shell
 const background = document.querySelector('.background');
 const body = document.querySelector('.body');
@@ -73,6 +72,7 @@ const submitButton = document.createElement('button');
 // A. scoreContainer element
 const scoreContainer = document.createElement('div');
 
+// B. Score Tables
 // i. highScoresDiv elements
 const highScoresDiv = document.createElement('div');
 const highScoresHeader = document.createElement('h3');
@@ -101,15 +101,13 @@ let allScoresTableWrongColumn = document.createElement('th');
 let allScoresTableMissedColumn = document.createElement('th');
 let allScoresTableBody = document.createElement('tbody');
 
-// B. Score Page button elements
+// C. Score Page button elements
 const scoresButtonsDiv = document.createElement('div');
 const clearScoresButton = document.createElement('button');
 const retakeQuizButton = document.createElement('button');
 
 
 // *************************************************
-
-console.log('Line 112: Creation of global variables');
 // VARIABLES
 let quizButtons;
 let feedbackMessages = document.getElementsByTagName('h4');
@@ -124,13 +122,11 @@ let buttonClickCount = 0;
 let actualSecondsRemaining = secondsRemainingRule;
 let userCount = 0;
 let userCountCheck = 0;
-let retakeCount = 1;
 let questionsAsked = 0;
 let totalQuestions = 10;
 let populateScoresCount = 0;
 let lastUserIDUsed;
 
-console.log('Line 129: Creation of questionsArray and empty userDataArray');
 // *************************************************
 // ARRAYS
 // A. Quiz Array -- Questions and Answers
@@ -246,22 +242,20 @@ let userDataArray = [];
 
 // 01. Shell attributes and assembly
 function shellSetUp() {
-    console.log('Ran shellSetUp function');
-
-    // Shell attributes
+    // A. Shell attributes
     background.setAttribute('style', 'min-height:100%; margin:0; padding:0; background-image:url(./Assets/JavaScript-Wallpaper.png); background-size:cover; background-repeat:no-repeat; background-position:center center; background-attachment:fixed; border:none; background-color:black;');
 
-    // Body attributes
+    // B. Body attributes
     body.setAttribute('style', 'position:relative; top:10px; min-height:100%;');
 
-    // Container attributes
+    // C. Container attributes
     container.setAttribute('style', 'display:flex; flex-direction:column; justify-content:center;');
 
-    // Shell assembly
+    // D. Shell assembly
     document.body.appendChild(container);
 
     // *************************************************
-    // INITIAL PROCESSES
+    // E. Processes
     setUpWelcome();
     timesUpSetUp();
     setUpForm();
@@ -272,7 +266,6 @@ function shellSetUp() {
 
 // 02. View 1: Welcome Page
 function setUpWelcome() {
-    console.log('Ran setUpWelcome function');
     // A. Welcome Page attributes
     welcomeDiv.setAttribute('class', 'welcomePage');
     welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
@@ -312,9 +305,8 @@ function setUpWelcome() {
     initialQuizBuild();
 };
 
-// 04. View 2: Quiz Page
+// 03. View 2: Quiz Page
 function initialQuizBuild() {
-    console.log('Ran initialQuizBuild function');
     // A. Quiz Page attributes
     // i. timerDiv attributes
     timerDiv.setAttribute('class', 'timerBox');
@@ -372,9 +364,8 @@ function initialQuizBuild() {
     transitionToQuiz();
 };
 
-// 05. Transition to Quiz Page
+// 04. Transition to Quiz Page
 function transitionToQuiz() {
-    console.log('Ran transitionToQuiz function');
     startButton.addEventListener("click", function() {
         welcomeDiv.setAttribute('style', 'display:none');
         
@@ -408,15 +399,13 @@ function transitionToQuiz() {
     startButton.removeEventListener('click', function() {});
 };
 
-// 06. View 2: Quiz Page
+// 05. Placeholder function - Timer intervals need to be fine-tuned; causing function to run when not called; moved code elsewhere and renamed this placeholderFunction so application would not be affected
 function placeholderFunction() {
-    console.log('Ran placeholderFunction');
+    //console.log('Ran placeholderFunction');
 };
 
-// 07. Quiz buttons formatting (appearance prior to being clicked)
+// 06. Quiz buttons formatting (appearance prior to being clicked)
 function quizButtonsSetUp() {
-    console.log('Ran quizButtonsSetUp function');
-    
     for (let i = 0; i < quizButtonsArray.length; i++) {
         quizButtonsArray[i].setAttribute('style', 'background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
     }
@@ -427,37 +416,27 @@ function quizButtonsSetUp() {
     }    
 };
 
-// 08. Populating quizDiv with questions
+// 07. Populating quizDiv with questions
 function populateQuiz() {
-    console.log('Ran populateQuiz function');
-
     let quizData = questionsArray[currentQuestion];
 
     questionNumber = quizData.questionNum;
-
     questionCount.textContent = `Question ${questionNumber}`;
-    
     questionPlaceholder.textContent = quizData.question;
-
     answerAPlaceholder.textContent = quizData.A;
-
     answerBPlaceholder.textContent = quizData.B;
-
     answerCPlaceholder.textContent = quizData.C;
-
     answerDPlaceholder.textContent = quizData.D;
-
     answerEPlaceholder.textContent = quizData.E;
 };
 
-// 09. Check user's answer
+// 08. Check user's answer
 function checkAnswer() {
-    console.log('Ran checkAnswer function');
     // A. Variables
     let clickedButton;
     let clickedButtonAnswer;
              
-    // B. Generate iterator for quiz buttons
+    // B. Generate iterator for quiz buttons (timer intervals need to be fine-tuned; interfering when 'i' declared in for loop for presenting quiz answer buttons)
     function generatingIterator() {
         console.log('Ran generatingIterator function');
         let iterator = 0;
@@ -466,7 +445,6 @@ function checkAnswer() {
 
     // C. Obtain correct answer for current question
     function generateCorrectAnswer(questionNum) {
-        console.log('Ran generateCorrectAnswer funtion');
         let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
         questionNum -= 1;
         return rightAnswersArray[questionNum];
@@ -490,7 +468,6 @@ function checkAnswer() {
 
             // ii. Provide feedback for user's answer; update totals
             if (clickedButtonAnswer === goodAnswer) {
-                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
                 answersRight++;
                 points += 10;
             
@@ -499,8 +476,12 @@ function checkAnswer() {
                 feedbackMessages[index].textContent = 'CORRECT';
                 
                 // Delay to show feedback, as timer restarts upon answer selection
-                setTimeout(function() { 
-                    goToNextQuestion();
+                setTimeout(function() {
+                    if (currentQuestion === 10) {
+                        quizOver();
+                    } else {
+                        goToNextQuestion();
+                    }
                 }, 1200);
             } else {
                 console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
@@ -512,21 +493,23 @@ function checkAnswer() {
 
                 // Delay to show feedback
                 setTimeout(function() { 
+                    if (currentQuestion === 10) {
+                        quizOver();
+                    } else {
                     goToNextQuestion();
+                    }
                 }, 1200);                 
             }   
             console.log(`Totals for Question ${questionNumber}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
-        };    
-    };
+        };
+    }
     
     // E. Check for skipped questions
     if ((actualSecondsRemaining === 0) && (clickedButton === undefined)) {
-        console.log('Checking missed questions count');
+        //console.log('Checking missed questions count');
         questionsMissed++;
-        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
+        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)        
     }
-
-    questionsAsked++;
 
     // F. Re-enable buttons for next question
     quizButtonsArray[0].disabled = false;
@@ -536,8 +519,9 @@ function checkAnswer() {
     quizButtonsArray[4].disabled = false;
 };
 
-// 10. Main process -- Holds timer
+// 09. Main process -- Holds timer
 function askQuestion() {
+    questionsAsked++;
     console.log('Ran askQuestion function');
     questionInterval = setInterval(function() {
 
@@ -550,61 +534,52 @@ function askQuestion() {
         if (actualSecondsRemaining === 0) {
             if (currentQuestion <= 9) {
                 goToNextQuestion();            
-            } else if (currentQuestion === 10) {
-                clearInterval(questionInterval);
-                timerDiv.setAttribute('style', 'display:none');
-                quizDiv.setAttribute('style', 'display:none');
-                timesUpMessage();
+            } else {
+                questionsMissed++;
+                quizOver();
             }
         }
     }, 1000);
 };
 
-// 11. Question progression 
+// 10. Question progression 
 function goToNextQuestion() {
-    console.log('Ran goToNextQuestion function');
-    if (currentQuestion === 10) {
-        console.log(`This is the last question.`);
-        quizOver();         
-    } else {
-        clearInterval(questionInterval);
-        placeholderFunction();
-        quizButtonsSetUp();
-        populateQuiz();
-        askQuestion();
-        checkAnswer();
-        currentQuestion++;
+    clearInterval(questionInterval);
+    placeholderFunction();
+    quizButtonsSetUp();
+    populateQuiz();
+    askQuestion();
+    checkAnswer();
+    currentQuestion++;
 
-        if (answersWrong === 0) {
-            actualSecondsRemaining = 10;
-            timerPlaceholder.textContent = `0:10`;
-        }
-        
-        if (((answersWrong >= 1) || (questionsMissed >= 1)) && (currentQuestion <= 10)) {
-            actualSecondsRemaining = 10 - (2 * answersWrong) - (2 * questionsMissed);
-            timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
-            console.log(`Seconds Remaining: ${actualSecondsRemaining}`);
-        }
-
-        if ((actualSecondsRemaining <= 0) && (currentQuestion > 1)) {
-            timerPlaceholder.textContent = '';
-            quizOver();                
-            console.log(`User's time deducted to 0 seconds per question.`);
-        }   
+    if (answersWrong === 0) {
+        actualSecondsRemaining = 10;
+        timerPlaceholder.textContent = `0:10`;
     }
+        
+    if (((answersWrong >= 1) || (questionsMissed >= 1)) && (currentQuestion <= 10)) {
+        actualSecondsRemaining = 10 - (2 * answersWrong) - (2 * questionsMissed);
+        timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
+        console.log(`Seconds Remaining: ${actualSecondsRemaining}`);
+    }
+
+    if ((actualSecondsRemaining <= 0) && (currentQuestion > 1)) {
+        timerPlaceholder.textContent = '';
+        quizOver();                
+        console.log(`User's time deducted to 0 seconds per question.`);
+    }    
 };
 
-// 12. Populate userDataArray
+// 11. Populate userDataArray
 function populateUserDataArray() {
-
-    console.log('Ran populateUserDataArray function');
-
+    // A. Ensuring there are no duplicate objects in the array
     if (userCount > 0) {
         lastUserIDUsed = userDataArray[userDataArray.length - 1]['userID'];
     }
    
     if ((userCount === 0) || ((userCount > 0) && (userCount !== lastUserIDUsed))) {
-
+        let midQuizQuestionsAsked;
+        let midQuizQuestionsMissed;
         let userDataRecord = {
             userID: '',
             pointsEarned: '',
@@ -614,22 +589,34 @@ function populateUserDataArray() {
             skippedQuestions: ''
         };
 
-        console.log(`Populating User Data - User Count is ${userCount}`);
+        // B. Determining number of questions asked/questions skipped
+        if (currentQuestion === 10) {
+            userDataRecord.questionsPresented = questionsAsked;
+            userDataRecord.skippedQuestions = questionsMissed;
+        } else {
+            midQuizQuestionsAsked = questionsAsked - 1;
+            midQuizQuestionsMissed = questionsMissed - 1;
+            userDataRecord.questionsPresented = midQuizQuestionsAsked;
+            userDataRecord.skippedQuestions = midQuizQuestionsMissed;
+        }
 
         userDataRecord.userID = userCount;
         userDataRecord.pointsEarned = points;
-        userDataRecord.questionsPresented = questionsAsked;
+        if (currentQuestion === 10) {
+            userDataRecord.questionsPresented = questionsAsked;
+            userDataRecord.skippedQuestions = questionsMissed;
+        } else {
+            userDataRecord.questionsPresented = questionsAsked - 1;
+            userDataRecord.skippedQuestions = questionsMissed - 1;
+        }        
         userDataRecord.correctAnswers = answersRight;
         userDataRecord.incorrectAnswers = answersWrong;
-        userDataRecord.skippedQuestions = questionsMissed;
         userDataArray.push(userDataRecord);
-        console.log(`New record: ${userDataRecord}`);
     }
   };
 
-// 13. 'Time's Up!' initial set up
+// 12. 'Time's Up!' initial set up
 function timesUpSetUp() {
-    console.log('Ran timesUpSetUp function');
     // A. 'Time's Up!' Page attributes
     timesUpDiv.setAttribute('class', 'timesUpPage');
     timesUpDiv.setAttribute('style', 'display:none');
@@ -643,15 +630,10 @@ function timesUpSetUp() {
     timesUpDiv.appendChild(timesUpHeader);
 };
 
- // 14. 'Time's Up!' message
+ // 13. 'Time's Up!' message
 function timesUpMessage() {
-    console.log('Ran timesUpMessage');
     // A. 'Time's Up!' page attributes
     timesUpDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
-
-    // if (currentQuestion < 9) {
-    // questionsAsked = questionsAsked - 2;
-    // }
     
     // B. Process - Transition to Form Page
     setTimeout(function() { 
@@ -660,9 +642,8 @@ function timesUpMessage() {
     }, 2500);
 };
 
-// 15. Quiz over; transition to 'Time's Up!' page
+// 14. Quiz over; transition to 'Time's Up!' page
 function quizOver() {
-    console.log('Ran quizOver function');
     clearInterval(questionInterval);
     populateUserDataArray();
     timerDiv.setAttribute('style', 'display:none');
@@ -670,9 +651,8 @@ function quizOver() {
     timesUpMessage();
 };
 
-// 16. Form Page set up
+// 15. Form Page set up
 function setUpForm() {
-    console.log('Ran setUpForm function');
     // A. Form Page attributes
     formDiv.setAttribute('class', 'formPage');
     formDiv.setAttribute('style', 'display:none;');
@@ -701,9 +681,8 @@ function setUpForm() {
     formButtonDiv.appendChild(submitButton);
 };
 
-// 17. Show Form
+// 16. Show Form
 function utilizeForm() {
-    console.log('Ran utilizeForm function');
     // A. Variable
     let summaryMessage = determinePointsMessage();
 
@@ -722,25 +701,20 @@ function utilizeForm() {
         if (initialsAsEntered.length < 2) {
             initialsMessage.textContent = 'There is a 2-character minimum.';
             initialsInput.value = '';
-            initialsInput.setAttribute('placeholder', 'Please try again');                console.log(`Check for <2 characters ${initialsAsEntered}`);
+            initialsInput.setAttribute('placeholder', 'Please try again');                
             result = false;
         } else if (initialsAsEntered.length > 4) {
             initialsMessage.textContent = 'There is a 4-character limit.';
             initialsInput.value = '';
             initialsInput.setAttribute('placeholder', 'Please try again');
-            console.log(`Check for >4 characters ${initialsAsEntered}`);
             result = false;
         } else if ((initialsAsEntered.length >= 2) && (initialsAsEntered.length < 5)) {
-            console.log(`Made it thru to else statement`);
-        
             if (initialsAsEntered.match(`^[a-zA-Z]+$`)) {
-                console.log(`There are only letters ${initialsAsEntered}`);
                 result = true;
             } else {    
                 initialsMessage.textContent = 'You have made an invalid entry. Numbers and symbols are not permitted.';
                 initialsInput.value = '';
                 initialsInput.setAttribute('placeholder', 'Please try again');
-                console.log(`There are numbers or symbols ${initialsAsEntered}`);
                 result = false;
             }
         }    
@@ -749,10 +723,7 @@ function utilizeForm() {
     
     // ii. Edit initials entry
     function processInitials(initialsInput) {
-        console.log('Ran processInitials function');
-        console.log(`Original initials: ${initialsInput}`);
         let newInitialsInput = initialsInput.toUpperCase().trim();
-        console.log(`Fixed initials: ${newInitialsInput}`);
         return newInitialsInput;
     };    
    
@@ -760,7 +731,6 @@ function utilizeForm() {
     submitButton.onclick = function(event) {
         event.preventDefault();
 
-        console.log('Setting up listener on submit button for form');
         let initialsEntry = document.querySelector('#user-initials');
         let userInitials = initialsEntry.value;
         let correctInput = checkInput(userInitials); 
@@ -773,9 +743,8 @@ function utilizeForm() {
     };
 };
 
-// 18. Determine message for points scored
+// 17. Determine message for points scored
 function determinePointsMessage() {
-    console.log('Ran determinePointsMessage function');
     let pointsMessage;
     switch (true) {
         case (points === 100):
@@ -812,9 +781,8 @@ function determinePointsMessage() {
     return pointsMessage;
 };
 
-// 19. Score Page set up
+// 18. Score Page set up
 function setUpScores() {
-    console.log('Ran setUpScores function');
     // A. Score Page attributes
     // i. scoreContainer
     scoreContainer.setAttribute('class', 'scoresPage');
@@ -901,9 +869,8 @@ function setUpScores() {
     scoreContainer.appendChild(retakeQuizButton);
 };
 
-// 20. Add scores to tables
+// 19. Add scores to tables
 function populateScores(editedInitials) { 
-    console.log('Ran populateScores function');
     // A. scoreContainer attributes
     scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
     
@@ -913,7 +880,7 @@ function populateScores(editedInitials) {
         let userTallies = userDataArray[userCount];
         console.log(`Creating Table Row - User Count is ${userCount}`);
         
-        // High Scores data
+        // a. High Scores data
         if (points >= 80) {    
             let highScoreRow = highScoresTableBody.insertRow(-1);
             let highScoreInitials = highScoreRow.insertCell(0);
@@ -931,7 +898,7 @@ function populateScores(editedInitials) {
             highScoreSkipped.textContent = userTallies.skippedQuestions;
         }
 
-        // All Scores data
+        // b. All Scores data
         let allScoreRow = allScoresTableBody.insertRow(-1);
         let allScoreInitials = allScoreRow.insertCell(0);
         let allScorePoints = allScoreRow.insertCell(1);
@@ -954,13 +921,10 @@ function populateScores(editedInitials) {
     
     clearScores();
     retakeQuizClick();
-
-    // ii. Clear scores from tables
 };
 
-// 21. Clear scores from tables
+// 20. Clear scores from tables
 function clearScores() {
-    console.log('Set up listener on clearScoresButton');
     clearScoresButton.addEventListener("click", function() {
         let highScoreRowsCount = highScoresTable.rows.length;
         let allScoreRowsCount = allScoresTable.rows.length;
@@ -972,13 +936,16 @@ function clearScores() {
         for (let j = allScoreRowsCount - 1; j > 0; j--) {
             allScoresTable.deleteRow(j);
         }
+
+        userDataArray = [];
+        userCount = 0;
+        populateScoresCount = 0;
     });
     clearScoresButton.removeEventListener('click', function() {});
 };
 
 // 21. Transition to Welcome Page
 function retakeQuizClick() {
-    console.log('Set up listener on retakeQuizButton');
     retakeQuizButton.addEventListener("click", function() {
         userCount = populateScoresCount;
         console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
@@ -991,7 +958,7 @@ function retakeQuizClick() {
 // 22. Transition to Welcome Page
 function takeQuizAgain() {
     console.log('Ran takeQuizAgain function');
-    console.log(`User Count at end of quiz is ${userCount}`);
+    //console.log(`User Count at end of quiz is ${userCount}`);
     scoreContainer.setAttribute('style', 'display:none');
     currentQuestion = 0;
     actualSecondsRemaining = secondsRemainingRule;
@@ -1002,39 +969,19 @@ function takeQuizAgain() {
     questionsMissed = 0;
     buttonClickCount = 0;
     initialsInput.value = '';
-    console.log(`Start of new quiz - User Count is ${userCount}`);
+    //console.log(`Start of new quiz - User Count is ${userCount}`);
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
     returnToStart();
 };
 
-// 23. Take quiz again
+// 23. Reset button to begin quiz
 function returnToStart() {
     console.log('Ran returnToStart function');
     welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
     transitionToQuiz();
 }
 
+// *************************************************
+// INITIAL PROCESS
+
 shellSetUp();
-
-
-
-/*
-Shell
-- Elements
-- Function (one-time): shellSetUp()
-Welcome Page
-- Elements
-- Function (one-time): setUpWelcome()
-- Function: returnToStart();
-Quiz Page
-- Elements
-- Function (one-time): initialQuizBuild()
-- Function: transitionToQuiz()
-- Function: quizSetUp()
-  Contains: quizButtonSetup()
-                   populateQuiz()
-                   checkAnswer()
-                   askQuestion()
-
-
-*/
