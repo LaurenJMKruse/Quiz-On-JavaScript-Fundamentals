@@ -1,6 +1,7 @@
 // *************************************************
 // ELEMENTS
 
+console.log('Line 04: Start of program - creation of elements');
 // 01. Elements for Shell
 const background = document.querySelector('.background');
 const body = document.querySelector('.body');
@@ -20,8 +21,10 @@ const instruction5 = document.createElement('li');
 const instruction6 = document.createElement('li');
 const startButton = document.createElement('button');
 
+
 // 03. Elements for View 2: Quiz Page
 // A. quizDiv
+// i. quizDiv elements
 const quizDiv = document.createElement('div');
 let questionCount = document.createElement('h2');
 let questionPlaceholder = document.createElement('h3');
@@ -41,16 +44,21 @@ let answerEDiv = document.createElement('div');
 let answerEPlaceholder = document.createElement('button');
 let answerEFeedback = document.createElement('h4');
 
+// ii. Assigning IDs to quiz answer buttons
+answerAPlaceholder.setAttribute('id', 'buttonA');
+answerBPlaceholder.setAttribute('id', 'buttonB');
+answerCPlaceholder.setAttribute('id', 'buttonC');
+answerDPlaceholder.setAttribute('id', 'buttonD');
+answerEPlaceholder.setAttribute('id', 'buttonE');
+
 // B. timerDiv 
 const timerDiv = document.createElement('div');
 const timerHeader = document.createElement('h2');
 let timerPlaceholder = document.createElement('p');
 
-
 // 04. Elements for View 3: Time's Up!
 const timesUpDiv = document.createElement('div');
 const timesUpHeader = document.createElement('h1');
-
 
 // 05. Elements for View 4: Form Page
 const formDiv = document.createElement('div');
@@ -61,49 +69,49 @@ let initialsInput = document.createElement('input');
 const formButtonDiv = document.createElement('div');
 const submitButton = document.createElement('button');
 
-
 // 06. Elements for View 5: Score Page
+// A. scoreContainer element
 const scoreContainer = document.createElement('div');
+
+// i. highScoresDiv elements
 const highScoresDiv = document.createElement('div');
 const highScoresHeader = document.createElement('h3');
 let highScoresTable = document.createElement('table');
+let highScoresTableHead = document.createElement('thead');
 let highScoresTableHeaderRow = document.createElement('tr');
 let highScoresTableInitialsColumn = document.createElement('th');
 let highScoresTablePointsColumn = document.createElement('th');
+let highScoresTableNumQuestionsColumn = document.createElement('th');
 let highScoresTableRightColumn = document.createElement('th');
 let highScoresTableWrongColumn = document.createElement('th');
 let highScoresTableMissedColumn = document.createElement('th');
-let highScoresTableInputRow0 = document.createElement('tr');
-let highScoresTableInitials0 = document.createElement('td');
-let highScoresTablePoints0 = document.createElement('td');
-let highScoresTableRight0 = document.createElement('td');
-let highScoresTableWrong0 = document.createElement('td');
-let highScoresTableMissed0 = document.createElement('td');
+let highScoresTableBody = document.createElement('tbody');
 
+// ii. allScoresDiv elements 
 const allScoresDiv = document.createElement('div');
 const allScoresHeader = document.createElement('h3');
 let allScoresTable = document.createElement('table');
+let allScoresTableHead = document.createElement('thead');
 let allScoresTableHeaderRow = document.createElement('tr');
 let allScoresTableInitialsColumn = document.createElement('th');
 let allScoresTablePointsColumn = document.createElement('th');
+let allScoresTableNumQuestionsColumn = document.createElement('th');
 let allScoresTableRightColumn = document.createElement('th');
 let allScoresTableWrongColumn = document.createElement('th');
 let allScoresTableMissedColumn = document.createElement('th');
-let allScoresTableInputRow0 = document.createElement('tr');
-let allScoresTableInitials0 = document.createElement('td');
-let allScoresTablePoints0 = document.createElement('td');
-let allScoresTableRight0 = document.createElement('td');
-let allScoresTableWrong0 = document.createElement('td');
-let allScoresTableMissed0 = document.createElement('td');
+let allScoresTableBody = document.createElement('tbody');
 
+// B. Score Page button elements
 const scoresButtonsDiv = document.createElement('div');
 const clearScoresButton = document.createElement('button');
 const retakeQuizButton = document.createElement('button');
 
 
 // *************************************************
+
+console.log('Line 112: Creation of global variables');
 // VARIABLES
-let buttons = document.getElementsByTagName('button');
+let quizButtons;
 let feedbackMessages = document.getElementsByTagName('h4');
 let currentQuestion = 0;
 let secondsRemainingRule = 10;
@@ -114,13 +122,15 @@ let questionsMissed = 0;
 let questionInterval;
 let buttonClickCount = 0;
 let actualSecondsRemaining = secondsRemainingRule;
-let highScoresTableRowCount = 0;
-let allScoresTableRowCount = 0;
 let userCount = 0;
+let userCountCheck = 0;
+let retakeCount = 1;
 let questionsAsked = 0;
 let totalQuestions = 10;
+let populateScoresCount = 0;
+let lastUserIDUsed;
 
-
+console.log('Line 129: Creation of questionsArray and empty userDataArray');
 // *************************************************
 // ARRAYS
 // A. Quiz Array -- Questions and Answers
@@ -230,20 +240,14 @@ var questionsArray = [
 // B. User Data Array
 let userDataArray = [];
 
-// C. User Data Object
-let userDataRecord = {
-    userID: '',
-    pointsEarned: '',
-    correctAnswers: '',
-    incorrectAnswers: '',
-    skippedQuestions: ''
-};
 
 // *************************************************
 // FUNCTIONS
 
 // 01. Shell attributes and assembly
 function shellSetUp() {
+    console.log('Ran shellSetUp function');
+
     // Shell attributes
     background.setAttribute('style', 'min-height:100%; margin:0; padding:0; background-image:url(./Assets/JavaScript-Wallpaper.png); background-size:cover; background-repeat:no-repeat; background-position:center center; background-attachment:fixed; border:none; background-color:black;');
 
@@ -255,10 +259,20 @@ function shellSetUp() {
 
     // Shell assembly
     document.body.appendChild(container);
+
+    // *************************************************
+    // INITIAL PROCESSES
+    setUpWelcome();
+    timesUpSetUp();
+    setUpForm();
+    setUpScores();
+
+    console.log(`User Count at very beginning is ${userCount}`);
 };
 
 // 02. View 1: Welcome Page
 function setUpWelcome() {
+    console.log('Ran setUpWelcome function');
     // A. Welcome Page attributes
     welcomeDiv.setAttribute('class', 'welcomePage');
     welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
@@ -295,26 +309,22 @@ function setUpWelcome() {
     instructionsList.appendChild(instruction5);
     instructionsList.appendChild(instruction6);
     welcomeDiv.appendChild(startButton);
+    initialQuizBuild();
 };
 
-// 03. Transition to Quiz Page
-startButton.addEventListener("click", function() {
-    welcomeDiv.setAttribute('style', 'display:none');
-    setUpQuiz();
-});
-
 // 04. View 2: Quiz Page
-function setUpQuiz() {
+function initialQuizBuild() {
+    console.log('Ran initialQuizBuild function');
     // A. Quiz Page attributes
     // i. timerDiv attributes
     timerDiv.setAttribute('class', 'timerBox');
-    timerDiv.setAttribute('style', 'position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; font-weight:bold;');
+    timerDiv.setAttribute('style', 'display:none');
     timerHeader.setAttribute('style', 'position:relative; display:inline; text-align:left; margin-left:15px; color:#cf1717');
     timerPlaceholder.setAttribute('style', 'display:inline-block; position:relative; left:15px; text-align:right; font-size:18px; margin-right:20px;');
-    
+
     // ii. quizDiv attributes
     quizDiv.setAttribute('class', 'quizPage');
-    quizDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; border-style:solid; border-width:3px; border-radius:20px; border-color:#00b386; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    quizDiv.setAttribute('style', 'display:none');
     questionCount.setAttribute('style', 'color:white; margin-top:15px; margin-left:30px; margin-bottom:15px;');
     questionPlaceholder.setAttribute('style', 'color:white; margin-left:30px; width:85%;');
     answerAFeedback.setAttribute('class', 'answerFeedback');
@@ -324,12 +334,9 @@ function setUpQuiz() {
     answerEFeedback.setAttribute('class', 'answerFeedback');
 
     // B. Quiz Page content    
-    // i. timerDiv content
+    // timerDiv content
     timerHeader.textContent = 'Timer:';
-    timerPlaceholder.textContent = '0:10';
-
-    // ii. quizDiv content - See function populateQuiz() and questionsArray  
-        
+    
     // C. Quiz Page assembly
     // i. timerDiv assembly
     container.appendChild(timerDiv);
@@ -355,37 +362,76 @@ function setUpQuiz() {
     quizDiv.appendChild(answerEDiv);
     answerEDiv.appendChild(answerEPlaceholder);
     answerEDiv.appendChild(answerEFeedback);
-
-    // D. Initial processes
-    // i. Quiz buttons set up
-    quizButtonsSetUp();
-
-    // ii. Populate first question
-    populateQuiz();
-    questionsAsked++;
     
-    // iv. Obtain user's answer
-    checkAnswer();
-    currentQuestion += 1;
-        
-    // v. Initiate Timer
-    askQuestion(); 
+    // D. Creation of quizButtonsArray
+    quizButtons = quizDiv.querySelectorAll('#buttonA, #buttonB, #buttonC, #buttonD, #buttonE')
+    ;
+    quizButtonsArray = Array.from(quizButtons);
+
+    // E. Begin quiz
+    transitionToQuiz();
 };
 
-// 05. Quiz buttons formatting (appearance prior to being clicked)
+// 05. Transition to Quiz Page
+function transitionToQuiz() {
+    console.log('Ran transitionToQuiz function');
+    startButton.addEventListener("click", function() {
+        welcomeDiv.setAttribute('style', 'display:none');
+        
+        // A. Quiz Page attributes
+        // i. timerDiv attributes
+        timerDiv.setAttribute('style', 'position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; font-weight:bold;');
+    
+        // ii. quizDiv attributes
+        quizDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; border-style:solid; border-width:3px; border-radius:20px; border-color:#00b386; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+
+        // B. Quiz Page content    
+        // timerDiv content
+        timerPlaceholder.textContent = '0:10';
+
+        // ii. quizDiv content - See function populateQuiz() and questionsArray  
+    
+        // D. Processes
+        // i. For first question
+        if (currentQuestion === 0) {
+            // i. Quiz buttons set up
+            quizButtonsSetUp();
+            // ii. Populate first question
+            populateQuiz();
+            // iii. Initiate timer
+            askQuestion();
+            // iv. Check user response
+            checkAnswer();
+            currentQuestion++;
+        }
+    });
+    startButton.removeEventListener('click', function() {});
+};
+
+// 06. View 2: Quiz Page
+function placeholderFunction() {
+    console.log('Ran placeholderFunction');
+};
+
+// 07. Quiz buttons formatting (appearance prior to being clicked)
 function quizButtonsSetUp() {
-    for (let i = 1; i < buttons.length; i++) {
-        buttons[i].setAttribute('style', 'background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
+    console.log('Ran quizButtonsSetUp function');
+    
+    for (let i = 0; i < quizButtonsArray.length; i++) {
+        quizButtonsArray[i].setAttribute('style', 'background-color:black; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
     }
+
     for (let j = 0; j < feedbackMessages.length; j++) {
         feedbackMessages[j].setAttribute('style', 'width:15%; position:relative; display:inline;');
         feedbackMessages[j].textContent = '';
     }    
 };
 
-// 06. Populating quizDiv with questions
+// 08. Populating quizDiv with questions
 function populateQuiz() {
-    
+    console.log('Ran populateQuiz function');
+    questionsAsked++;
+
     let quizData = questionsArray[currentQuestion];
 
     questionNumber = quizData.questionNum;
@@ -405,8 +451,93 @@ function populateQuiz() {
     answerEPlaceholder.textContent = quizData.E;
 };
 
-// 07. Main process -- Holds timer
+// 09. Check user's answer
+function checkAnswer() {
+    console.log('Ran checkAnswer function');
+    // A. Variables
+    let clickedButton;
+    let clickedButtonAnswer;
+             
+    // B. Generate iterator for quiz buttons
+    function generatingIterator() {
+        console.log('Ran generatingIterator function');
+        let iterator = 0;
+        return iterator;
+    }
+
+    // C. Obtain correct answer for current question
+    function generateCorrectAnswer(questionNum) {
+        console.log('Ran generateCorrectAnswer funtion');
+        let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
+        questionNum -= 1;
+        return rightAnswersArray[questionNum];
+    }    
+
+    // D. Obtain user's answer and determine button behavior upon click
+    for (let index = generatingIterator(); index < quizButtonsArray.length; index++) {
+        quizButtonsArray[index].onclick = function(event) {
+            let goodAnswer = generateCorrectAnswer(questionNumber);
+            clickedButton = event.target;
+            clickedButtonAnswer = event.target.innerText;
+            buttonClickCount += 1;
+            console.log('User clicked answer button');
+
+            // i. Disable buttons after click for current question
+            quizButtonsArray[0].disabled = true;
+            quizButtonsArray[1].disabled = true;
+            quizButtonsArray[2].disabled = true;
+            quizButtonsArray[3].disabled = true;
+            quizButtonsArray[4].disabled = true;
+
+            // ii. Provide feedback for user's answer; update totals
+            if (clickedButtonAnswer === goodAnswer) {
+                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
+                answersRight++;
+                points += 10;
+            
+                quizButtonsArray[index].setAttribute('style', 'background-color:green; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; margin-right:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
+        
+                feedbackMessages[index].textContent = 'CORRECT';
+                
+                // Delay to show feedback, as timer restarts upon answer selection
+                setTimeout(function() { 
+                    goToNextQuestion();
+                }, 1200);
+            } else {
+                console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
+                answersWrong++;
+            
+                quizButtonsArray[index].setAttribute('style', 'background-color:red; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; margin-right:20px; input:focus; outline:0; outline-style:none; outline-width:0;'); 
+
+                feedbackMessages[index].textContent = 'INCORRECT';              
+
+                // Delay to show feedback
+                setTimeout(function() { 
+                    goToNextQuestion();
+                }, 1200);                 
+            }   
+            console.log(`Totals for Question ${questionNumber}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
+        };    
+    };
+    
+    // E. Check for skipped questions
+    if ((actualSecondsRemaining === 0) && (clickedButton === undefined)) {
+        console.log('Checking missed questions count');
+        questionsMissed++;
+        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
+    }
+
+    // F. Re-enable buttons for next question
+    quizButtonsArray[0].disabled = false;
+    quizButtonsArray[1].disabled = false;
+    quizButtonsArray[2].disabled = false;
+    quizButtonsArray[3].disabled = false;
+    quizButtonsArray[4].disabled = false;
+};
+
+// 10. Main process -- Holds timer
 function askQuestion() {
+    console.log('Ran askQuestion function');
     questionInterval = setInterval(function() {
 
         actualSecondsRemaining--;
@@ -417,9 +548,8 @@ function askQuestion() {
 
         if (actualSecondsRemaining === 0) {
             if (currentQuestion <= 9) {
-            goToNextQuestion();            
-            }
-            else if (currentQuestion === 10) {
+                goToNextQuestion();            
+            } else if (currentQuestion === 10) {
                 clearInterval(questionInterval);
                 timerDiv.setAttribute('style', 'display:none');
                 quizDiv.setAttribute('style', 'display:none');
@@ -429,156 +559,109 @@ function askQuestion() {
     }, 1000);
 };
 
-// 08. Check user's answer
-function checkAnswer() {
-    // A. Variables
-    let clickedButton;
-    let clickedButtonAnswer;
-             
-    // B. Generate iterator for quiz buttons
-    function generatingIterator() {
-        let iterator = 1;
-        return iterator;
-    }
-
-    // C. Obtain correct answer for current question
-    function generateCorrectAnswer(questionNum) {
-        let rightAnswersArray = ['Double', '===', '5 (the number)', 'None of the above', 'break', 'splice()', 'push()', 'Function', 'Head Element', 'Operator'];
-        questionNum -= 1;
-        return rightAnswersArray[questionNum];
-    }    
-
-    // D. Obtain user's answer and determine button behavior upon click
-    for (let index = generatingIterator(); index < buttons.length; index++) {
-        buttons[index].onclick = function(event) {
-            let goodAnswer = generateCorrectAnswer(questionNumber);
-            clickedButton = event.target;
-            clickedButtonAnswer = event.target.innerText;
-            buttonClickCount += 1;             
-            // i. Disable buttons after click for current question
-            buttons[1].disabled = true;
-            buttons[2].disabled = true;
-            buttons[3].disabled = true;
-            buttons[4].disabled = true;
-            buttons[5].disabled = true;
-
-            // ii. Provide feedback for user's answer; update totals
-            if (clickedButtonAnswer === goodAnswer) {
-                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
-                answersRight++;
-                points += 10;
-            
-                buttons[index].setAttribute('style', 'background-color:green; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; margin-right:20px; width:200px; input:focus; outline:0; outline-style:none; outline-width:0;');
-        
-                feedbackMessages[index - 1].textContent = 'CORRECT';
-                
-                // Delay to show feedback, as timer restarts upon answer selection
-                setTimeout(function() { 
-                    goToNextQuestion();
-                }, 1200);
-
-            } else {
-                console.log(`The user got #${questionNumber} wrong! The answer is ${goodAnswer}!`);
-                answersWrong++;
-            
-                buttons[index].setAttribute('style', 'background-color:red; border-style:solid; border-color:#00b386; color:#00b386; font-family:century gothic; font-weight:bold; border-radius:20px; display:inline; font-size:15px; text-align:left; padding-left:20px; padding-top:10px; padding-bottom:10px; cursor:pointer; margin-left:30px; margin-bottom:20px; width:200px; margin-right:20px; input:focus; outline:0; outline-style:none; outline-width:0;'); 
-
-                feedbackMessages[index - 1].textContent = 'INCORRECT';              
-
-                setTimeout(function() { 
-                    goToNextQuestion();
-                }, 1200);                 
-            }   
-            console.log(`Totals for Question ${questionNumber}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
-            
-        };    
-    }
-    
-    // E. Check for skipped questions; adjust wrong answers tally
-    if ((actualSecondsRemaining === 0) && (clickedButton === undefined)) {
-        questionsMissed++;
-        answersWrong++;
-        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
-    }
-
-    // F. Re-enable buttons for next question
-    buttons[1].disabled = false;
-    buttons[2].disabled = false;
-    buttons[3].disabled = false;
-    buttons[4].disabled = false;
-    buttons[5].disabled = false;
-};
-
-// 09. Question progression 
+// 11. Question progression 
 function goToNextQuestion() {
+    console.log('Ran goToNextQuestion function');
     if (currentQuestion === 10) {
         console.log(`This is the last question.`);
         quizOver();         
     } else {
         clearInterval(questionInterval);
+        placeholderFunction();
         quizButtonsSetUp();
         populateQuiz();
-        questionsAsked++;
         askQuestion();
         checkAnswer();
-        currentQuestion += 1;
+        currentQuestion++;
+
         if (answersWrong === 0) {
             actualSecondsRemaining = 10;
             timerPlaceholder.textContent = `0:10`;
         }
-        if (answersWrong >= 1) {
+        
+        if ((answersWrong >= 1) && (currentQuestion <= 10)) {
             actualSecondsRemaining = 10 - (2 * answersWrong);
-            if (actualSecondsRemaining <= 0) {
-                timerPlaceholder.textContent = '';
-                quizOver();
-                console.log(`User's time deducted to 0 seconds per question.`);
-            } else {    
-                timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
-            }
+            timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
             console.log(`Seconds Remaining: ${actualSecondsRemaining}`);
+        }
+
+        if ((actualSecondsRemaining <= 0) && (currentQuestion > 1)) {
+            timerPlaceholder.textContent = '';
+            quizOver();                
+            console.log(`User's time deducted to 0 seconds per question.`);
         }   
     }
 };
 
-// Push userDataArray
+// 12. Populate userDataArray
 function populateUserDataArray() {
-    userDataRecord.userID = userCount
-    userDataRecord.pointsEarned = points;
-    userDataRecord.correctAnswers = answersRight;
-    userDataRecord.incorrectAnswers = answersWrong;
-    userDataRecord.skippedQuestions = questionsMissed;
-    userDataArray.push(userDataRecord);
-    console.log(`New record: ${userDataRecord}`);
-    return userDataArray[userCount];
-};
 
-// 10. 'Time's Up!' message
-function timesUpMessage() {
-    // A. 'Time's Up!' page attributes
+    console.log('Ran populateUserDataArray function');
+
+    if (userCount > 0) {
+        lastUserIDUsed = userDataArray[userDataArray.length - 1]['userID'];
+    }
+   
+    if ((userCount === 0) || ((userCount > 0) && (userCount !== lastUserIDUsed))) {
+
+        let userDataRecord = {
+            userID: '',
+            pointsEarned: '',
+            questionsPresented: '',
+            correctAnswers: '',
+            incorrectAnswers: '',
+            skippedQuestions: ''
+        };
+
+        console.log(`Populating User Data - User Count is ${userCount}`);
+
+        userDataRecord.userID = userCount;
+        userDataRecord.pointsEarned = points;
+        userDataRecord.questionsPresented = questionsAsked;
+        userDataRecord.correctAnswers = answersRight;
+        userDataRecord.incorrectAnswers = answersWrong;
+        userDataRecord.skippedQuestions = questionsMissed;
+        userDataArray.push(userDataRecord);
+        console.log(`New record: ${userDataRecord}`);
+    }
+  };
+
+// 13. 'Time's Up!' initial set up
+function timesUpSetUp() {
+    console.log('Ran timesUpSetUp function');
+    // A. 'Time's Up!' Page attributes
     timesUpDiv.setAttribute('class', 'timesUpPage');
-    timesUpDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
+    timesUpDiv.setAttribute('style', 'display:none');
     timesUpHeader.setAttribute('style', 'margin-left:auto; margin-right:auto; text-align:center;');
 
-    // B. 'Time's Up!' page content
+    // B. 'Time's Up!' Page content
     timesUpHeader.textContent = `TIME'S UP!`;
 
-    // C. 'Time's Up!' page assembly
+    // C. 'Time's Up!' Page assembly
     container.appendChild(timesUpDiv);
     timesUpDiv.appendChild(timesUpHeader);
-
-    // D. Process - Transition to Form page
-    setTimeout(function() { 
-        timesUpDiv.setAttribute('style', 'display:none');
-        setUpForm();
-    }, 3500);
 };
 
+ // 14. 'Time's Up!' message
+function timesUpMessage() {
+    console.log('Ran timesUpMessage');
+    // A. 'Time's Up!' page attributes
+    timesUpDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:100px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:#cf1717; color:white; font-family:century gothic; padding-top:20px; padding-bottom:20px;');
 
-// ADD QUESTIONS ASKED TO TABLE!!
+    // if (currentQuestion < 9) {
+    // questionsAsked = questionsAsked - 2;
+    // }
+    
+    // B. Process - Transition to Form Page
+    setTimeout(function() { 
+        timesUpDiv.setAttribute('style', 'display:none');
+        utilizeForm();
+    }, 2500);
+};
 
-// 11. Quiz over; transition to 'Time's Up!' page
+// 15. Quiz over; transition to 'Time's Up!' page
 function quizOver() {
-
+    console.log('Ran quizOver function');
     clearInterval(questionInterval);
     populateUserDataArray();
     timerDiv.setAttribute('style', 'display:none');
@@ -586,14 +669,12 @@ function quizOver() {
     timesUpMessage();
 };
 
-// 12. Form page set up
+// 16. Form Page set up
 function setUpForm() {
-    // A. Variable
-    let summaryMessage = determinePointsMessage();
-
-    // B. Form page attributes
+    console.log('Ran setUpForm function');
+    // A. Form Page attributes
     formDiv.setAttribute('class', 'formPage');
-    formDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    formDiv.setAttribute('style', 'display:none;');
     pointsMessage.setAttribute('class', 'points-message');
     pointsMessage.setAttribute('style', 'text-align:center');
     initialsMessage.setAttribute('class', 'initials-message');
@@ -606,8 +687,7 @@ function setUpForm() {
     submitButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#cf1717; color:#cf1717; font-family:century gothic; font-size:18px; font-weight:bold; display:block; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:auto; margin-right:auto; margin-top:30px;');
 
     // B. Form Page content
-    pointsMessage.textContent = `You scored ${points} points! ${summaryMessage}`;
-    initialsMessage.textContent = 'Enter your initials below (required).';
+    initialsMessage.textContent = 'Enter your initials below. 2 to 4 characters are required.';
     submitButton.textContent = 'Submit';
     
     // C. Form Page assembly
@@ -618,73 +698,57 @@ function setUpForm() {
     formDiv.appendChild(initialsInput);
     formDiv.appendChild(formButtonDiv);
     formButtonDiv.appendChild(submitButton);
+};
 
+// 17. Show Form
+function utilizeForm() {
+    console.log('Ran utilizeForm function');
+    // A. Variable
+    let summaryMessage = determinePointsMessage();
 
-    // Processes
+    // B. formDiv attributes
+    formDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; top:60px; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+
+    // C. Form Page content
+    pointsMessage.textContent = `You scored ${points} points! ${summaryMessage}`;
+
+    // D. Processes
     // i. Validate user input
     function checkInput(initialsAsEntered) {
-        let letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let numerals = '0123456789';    
-        let symbols = `!@#$%^&amp;*()+=-[]///';,./{}|/":&lt;&gt;?`;
-        let result;
-        let initialsGood;
-        let loopCount = 0;
-        let initialsToString = initialsAsEntered.toString();
-
-        console.log(`Initials to string: ${typeof initialsToString}`);
-
-        if (initialsToString.length > 4) {
-            initialsMessage.textContent = 'Please enter no more than 4 characters.';
+        console.log('Ran checkInput function');
+        let result;        
+        
+        if (initialsAsEntered.length < 2) {
+            initialsMessage.textContent = 'There is a 2-character minimum.';
+            initialsInput.value = '';
+            initialsInput.setAttribute('placeholder', 'Please try again');                console.log(`Check for <2 characters ${initialsAsEntered}`);
+            result = false;
+        } else if (initialsAsEntered.length > 4) {
+            initialsMessage.textContent = 'There is a 4-character limit.';
             initialsInput.value = '';
             initialsInput.setAttribute('placeholder', 'Please try again');
+            console.log(`Check for >4 characters ${initialsAsEntered}`);
             result = false;
-        } else { 
-
-            do { 
-            
-                for (let i = 0; i < initialsToString.length; i++) {
-                    if ((numerals.indexOf(initialsToString.charAt(i)) === -1) && (symbols.indexOf(initialsToString.charAt(i)) === -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1)) {
-                        initialsGood = true;
-                        result = true;
-                    } else if ((numerals.indexOf(initialsToString.charAt(i)) !== -1) || (symbols.indexOf(initialsToString.charAt(i)) !== -1)) {
-                        initialsMessage.textContent = 'You have made an invalid entry. Numbers and symbols are not permitted.';
-                        initialsInput.value = '';
-                        initialsInput.setAttribute('placeholder', 'Please try again');
-                        initialsGood = false;
-                        result = false;
-                        break;     
-                    } else if ((numerals.indexOf(initialsToString.charAt(i)) !== -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1) && (symbols.indexOf(initialsToString.charAt(i)) === -1)) {
-                        initialsMessage.textContent = 'You have made an invalid entry. Numbers are not permitted.';
-                        initialsInput.value = '';
-                        initialsInput.setAttribute('placeholder', 'Please try again');
-                        initialsGood = false;
-                        result = false;
-                        break;
-                    } else if ((symbols.indexOf(initialsToString.charAt(i)) !== -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1) && (numerals.indexOf(initialsToString.charAt(i)) === -1)) {
-                        initialsMessage.textContent = 'You have made an invalid entry. Symbols are not permitted.';
-                        initialsInput.value = '';
-                        initialsInput.setAttribute('placeholder', 'Please try again');
-                        initialsGood = false;
-                        result = false;
-                        break;
-                    } else if ((numerals.indexOf(initialsToString.charAt(i)) !== -1) && (symbols.indexOf(initialsToString.charAt(i)) !== -1) && (letters.indexOf(initialsToString.charAt(i)) !== -1)) {
-                        initialsMessage.textContent = 'You have made an invalid entry. Numbers and symbols are not permitted.';
-                        initialsInput.value = '';
-                        initialsInput.setAttribute('placeholder', 'Please try again');
-                        initialsGood = false;
-                        result = false;
-                    }
-                     
-                    console.log(`Loop count: ${loopCount}`);
-                    loopCount++;
-                } 
-            }    while (initialsGood = false)
-        }
+        } else if ((initialsAsEntered.length >= 2) && (initialsAsEntered.length < 5)) {
+            console.log(`Made it thru to else statement`);
+        
+            if (initialsAsEntered.match(`^[a-zA-Z]+$`)) {
+                console.log(`There are only letters ${initialsAsEntered}`);
+                result = true;
+            } else {    
+                initialsMessage.textContent = 'You have made an invalid entry. Numbers and symbols are not permitted.';
+                initialsInput.value = '';
+                initialsInput.setAttribute('placeholder', 'Please try again');
+                console.log(`There are numbers or symbols ${initialsAsEntered}`);
+                result = false;
+            }
+        }    
         return result;
     };
     
     // ii. Edit initials entry
     function processInitials(initialsInput) {
+        console.log('Ran processInitials function');
         console.log(`Original initials: ${initialsInput}`);
         let newInitialsInput = initialsInput.toUpperCase().trim();
         console.log(`Fixed initials: ${newInitialsInput}`);
@@ -692,72 +756,68 @@ function setUpForm() {
     };    
    
     // iii. Submit button
-        submitButton.onclick = function(event) {
-            event.preventDefault();
+    submitButton.onclick = function(event) {
+        event.preventDefault();
 
-            let initialsEntry = document.querySelector('#user-initials');
-            let userInitials = initialsEntry.value;
-            let correctInput = checkInput(userInitials); 
+        console.log('Setting up listener on submit button for form');
+        let initialsEntry = document.querySelector('#user-initials');
+        let userInitials = initialsEntry.value;
+        let correctInput = checkInput(userInitials); 
 
-            if (correctInput === true) {
-                let fixedInitials = processInitials(userInitials);
-                formDiv.setAttribute('style', 'display:none');
-                setUpScores(fixedInitials);
-            }
-        };
+        if (correctInput === true) {
+            let fixedInitials = processInitials(userInitials);
+            formDiv.setAttribute('style', 'display:none');
+            populateScores(fixedInitials);
+        }
+    };
 };
 
-// 11. Determine message for points scored
+// 18. Determine message for points scored
 function determinePointsMessage() {
+    console.log('Ran determinePointsMessage function');
     let pointsMessage;
     switch (true) {
         case (points === 100):
-                                                        {                        
-                                                            pointsMessage = `You're an expert!`;
-                                                            break;
-                                                        }
-                                                                      
+                                                {                        
+                                                    pointsMessage = `You're an expert!`;
+                                                    break;
+                                                }                 
         case (points >= 80): 
-                                                        {   
-                                                            pointsMessage = `You really know your stuff!`;
-                                                            break;
-                                                        }
-
+                                                {   
+                                                    pointsMessage = `You really know your stuff!`;
+                                                    break;
+                                                }
         case (points >= 60): 
-                                                        {
-                                                            pointsMessage = `You did pretty well!`;
-                                                            break;
-                                                        }
-
+                                                {
+                                                    pointsMessage = `You did pretty well!`;
+                                                    break;
+                                                }
         case (points >= 40):   
-                                                        {
-                                                            pointsMessage = `You're getting there!`;
-                                                            break;
-                                                        }
-
+                                                {
+                                                    pointsMessage = `You're getting there!`;
+                                                    break;
+                                                }
         case (points >= 20):    
-                                                        {
-                                                            pointsMessage = `Better luck next time!`;
-                                                            break;
-                                                        } 
-
+                                                {
+                                                    pointsMessage = `Better luck next time!`;
+                                                    break;
+                                                } 
         case (points >= 0):     
-                                                        {
-                                                            pointsMessage = `Time to hit the books!`;
-                                                            break;
-                                                        }
+                                                {
+                                                    pointsMessage = `Time to hit the books!`;
+                                                    break;
+                                                }
     }
-    
     return pointsMessage;
 };
 
-// 12. Score Page set up
-function setUpScores(editedInitials) {
-    
+// 19. Score Page set up
+function setUpScores() {
+    console.log('Ran setUpScores function');
     // A. Score Page attributes
     // i. scoreContainer
     scoreContainer.setAttribute('class', 'scoresPage');
-    scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    scoreContainer.setAttribute('style', 'display:none');
     
     // ii. highScoresDiv
     highScoresDiv.setAttribute('class', 'points-chart');
@@ -765,7 +825,7 @@ function setUpScores(editedInitials) {
     highScoresHeader.setAttribute('class', 'scores-header');
     highScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:right; font-size:20px; color:#ff9900;');   
     highScoresTableHeaderRow.setAttribute('class', 'table-columns'); 
-    highScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px;');
+    highScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px; position: sticky; top:0');
 
     // iii. allScoresDiv
     allScoresDiv.setAttribute('class', 'points-chart');
@@ -773,7 +833,7 @@ function setUpScores(editedInitials) {
     allScoresHeader.setAttribute('class', 'scores-header');
     allScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:right; font-size:20px; color:#ff9900;');
     allScoresTableHeaderRow.setAttribute('class', 'table-columns');
-    allScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px;');
+    allScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px; position:sticky; top:0;');
 
     // iv. Buttons to clear tables and retake quiz
     scoresButtonsDiv.setAttribute('style', 'background-color:black; margin-left:auto; margin-right:auto;');
@@ -786,12 +846,14 @@ function setUpScores(editedInitials) {
     highScoresHeader.textContent = 'High Scores';
     highScoresTableInitialsColumn.innerHTML = '<br>Initials';
     highScoresTablePointsColumn.innerHTML = '<br>Points';
+    highScoresTableNumQuestionsColumn.innerHTML = 'Questions Asked';
     highScoresTableRightColumn.textContent = 'Right Answers';
     highScoresTableWrongColumn.textContent = 'Wrong Answers';
     highScoresTableMissedColumn.textContent = 'Skipped Questions';
     allScoresHeader.textContent = 'All Scores';
     allScoresTableInitialsColumn.innerHTML = '<br>Initials';
     allScoresTablePointsColumn.innerHTML = '<br>Points';
+    allScoresTableNumQuestionsColumn.innerHTML = 'Questions Asked';
     allScoresTableRightColumn.textContent = 'Right Answers';
     allScoresTableWrongColumn.textContent = 'Wrong Answers';
     allScoresTableMissedColumn.textContent = 'Skipped Questions';
@@ -799,116 +861,162 @@ function setUpScores(editedInitials) {
     retakeQuizButton.textContent = 'Retake Quiz';
 
     // C. Score Page assembly
+    // i. scoreContainer
     container.appendChild(scoreContainer);
+
+    // ii. highScoresDiv
     scoreContainer.appendChild(highScoresDiv);
     highScoresDiv.appendChild(highScoresHeader);
     highScoresDiv.appendChild(highScoresTable);
-    highScoresTable.appendChild(highScoresTableHeaderRow);
-    highScoresTable.appendChild(highScoresTableInitialsColumn);
-    highScoresTable.appendChild(highScoresTablePointsColumn);
-    highScoresTable.appendChild(highScoresTableRightColumn);
-    highScoresTable.appendChild(highScoresTableWrongColumn);
-    highScoresTable.appendChild(highScoresTableMissedColumn);
-    highScoresTable.appendChild(highScoresTableInputRow0);
-    highScoresTable.appendChild(highScoresTableInitials0);
-    highScoresTable.appendChild(highScoresTablePoints0);
-    highScoresTable.appendChild(highScoresTableRight0);
-    highScoresTable.appendChild(highScoresTableWrong0);
-    highScoresTable.appendChild(highScoresTableMissed0);
+    highScoresTable.appendChild(highScoresTableHead);
+    highScoresTableHead.appendChild(highScoresTableHeaderRow);
+    highScoresTableHead.appendChild(highScoresTableInitialsColumn);
+    highScoresTableHead.appendChild(highScoresTablePointsColumn);
+    highScoresTableHead.appendChild(highScoresTableNumQuestionsColumn);
+    highScoresTableHead.appendChild(highScoresTableRightColumn);
+    highScoresTableHead.appendChild(highScoresTableWrongColumn);
+    highScoresTableHead.appendChild(highScoresTableMissedColumn);
+    highScoresTable.appendChild(highScoresTableBody);
+
+    // iii. allScoresDiv
     scoreContainer.appendChild(allScoresDiv);
     allScoresDiv.appendChild(allScoresHeader);
     allScoresDiv.appendChild(allScoresTable);
-    allScoresTable.appendChild(allScoresTableHeaderRow);
-    allScoresTable.appendChild(allScoresTableInitialsColumn);
-    allScoresTable.appendChild(allScoresTablePointsColumn);
-    allScoresTable.appendChild(allScoresTableRightColumn);
-    allScoresTable.appendChild(allScoresTableWrongColumn);
-    allScoresTable.appendChild(allScoresTableMissedColumn);
-    allScoresTable.appendChild(allScoresTableInputRow0);
-    allScoresTable.appendChild(allScoresTableInitials0);
-    allScoresTable.appendChild(allScoresTablePoints0);
-    allScoresTable.appendChild(allScoresTableRight0);
-    allScoresTable.appendChild(allScoresTableWrong0);
-    allScoresTable.appendChild(allScoresTableMissed0);
+    allScoresTable.appendChild(allScoresTableHead);
+    allScoresTableHead.appendChild(allScoresTableHeaderRow);
+    allScoresTableHead.appendChild(allScoresTableInitialsColumn);
+    allScoresTableHead.appendChild(allScoresTablePointsColumn);
+    allScoresTableHead.appendChild(allScoresTableNumQuestionsColumn);
+    allScoresTableHead.appendChild(allScoresTableRightColumn);
+    allScoresTableHead.appendChild(allScoresTableWrongColumn);
+    allScoresTableHead.appendChild(allScoresTableMissedColumn);
+    allScoresTable.appendChild(allScoresTableBody);
+
+    // iv. scoresButtonsDiv
     scoreContainer.appendChild(scoresButtonsDiv);
     scoresButtonsDiv.appendChild(clearScoresButton);
     scoresButtonsDiv.appendChild(retakeQuizButton);  
     scoreContainer.appendChild(clearScoresButton);
     scoreContainer.appendChild(retakeQuizButton);
-
-    // D. Processes
-    // i. Populate tables
-    addDataToTables(editedInitials);
-
-    // ii. Clear scores tables
-
-
-    // ii. Transition to Welcome Page
-    retakeQuizButton.addEventListener("click", function() {
-        takeQuizAgain();
-        });
 };
 
-// 13. Populate score tables
-function addDataToTables(formattedInitials) {
-    let userTallies = userDataArray[userCount];
+// 20. Add scores to tables
+function populateScores(editedInitials) { 
+    console.log('Ran populateScores function');
+    // A. scoreContainer attributes
+    scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    
+    // B. Processes
+    // i. Add user data to tables
+    function createTableRows(formattedInitials) {
+        let userTallies = userDataArray[userCount];
+        console.log(`Creating Table Row - User Count is ${userCount}`);
+        
+        // High Scores data
+        if (points >= 80) {    
+            let highScoreRow = highScoresTableBody.insertRow(-1);
+            let highScoreInitials = highScoreRow.insertCell(0);
+            let highScorePoints = highScoreRow.insertCell(1);
+            let highScoreNumQuestions = highScoreRow.insertCell(2);
+            let highScoreRight = highScoreRow.insertCell(3);
+            let highScoreWrong = highScoreRow.insertCell(4);
+            let highScoreSkipped = highScoreRow.insertCell(5);
 
-    function addHighScoresRow() {
-
-    };
-
-    function addAllScoresRow() {
-
-    };
-
-    if (points >= 80) {
-        if (highScoresTableRowCount === 0) {
-            highScoresTableInitials0.textContent = formattedInitials;
-            highScoresTablePoints0.textContent = userTallies.pointsEarned;
-            highScoresTableRight0.textContent = userTallies.correctAnswers;
-            highScoresTableWrong0.textContent = userTallies.incorrectAnswers;
-            highScoresTableMissed0.textContent = userTallies.skippedQuestions;
+            highScoreInitials.textContent = formattedInitials;
+            highScorePoints.textContent = userTallies.pointsEarned;
+            highScoreNumQuestions.textContent = userTallies.questionsPresented;
+            highScoreRight.textContent = userTallies.correctAnswers;
+            highScoreWrong.textContent = userTallies.incorrectAnswers;
+            highScoreSkipped.textContent = userTallies.skippedQuestions;
         }
-    }        
-        allScoresTableInitials0.textContent = formattedInitials;
-        allScoresTablePoints0.textContent = userTallies.pointsEarned;
-        allScoresTableRight0.textContent = userTallies.correctAnswers;
-        allScoresTableWrong0.textContent = userTallies.incorrectAnswers;
-        allScoresTableMissed0.textContent = userTallies.skippedQuestions;
 
-        // }
+        // All Scores data
+        let allScoreRow = allScoresTableBody.insertRow(-1);
+        let allScoreInitials = allScoreRow.insertCell(0);
+        let allScorePoints = allScoreRow.insertCell(1);
+        let allScoreNumQuestions = allScoreRow.insertCell(2);
+        let allScoreRight = allScoreRow.insertCell(3);
+        let allScoreWrong = allScoreRow.insertCell(4);
+        let allScoreSkipped = allScoreRow.insertCell(5);
+
+        allScoreInitials.textContent = formattedInitials;
+        allScorePoints.textContent = userTallies.pointsEarned;
+        allScoreNumQuestions.textContent = userTallies.questionsPresented;
+        allScoreRight.textContent = userTallies.correctAnswers;
+        allScoreWrong.textContent = userTallies.incorrectAnswers;
+        allScoreSkipped.textContent = userTallies.skippedQuestions;
+    };
+
+    createTableRows(editedInitials);
+
+    populateScoresCount++;
+    retakeQuizClick();
+
+    // ii. Clear scores from tables
+
 
     
-   
 };
 
+// 21. Transition to Welcome Page
+function retakeQuizClick() {
+    console.log('Set up listener on retakeQuizButton');
+    retakeQuizButton.addEventListener("click", function() {
+        userCount = populateScoresCount;
+        console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
+        
+        takeQuizAgain();
+    });
+    retakeQuizButton.removeEventListener('click', function() {});
+};
 
-
-// 13. Clear Scores
-
-// 14. Transition to Welcome Page
+// 22. Transition to Welcome Page
 function takeQuizAgain() {
+    console.log('Ran takeQuizAgain function');
+    console.log(`User Count at end of quiz is ${userCount}`);
     scoreContainer.setAttribute('style', 'display:none');
     currentQuestion = 0;
     actualSecondsRemaining = secondsRemainingRule;
     points = 0;
+    questionsAsked = 0;
     answersRight = 0;
     answersWrong = 0;
     questionsMissed = 0;
     buttonClickCount = 0;
     initialsInput.value = '';
-    userCount++;
+    console.log(`Start of new quiz - User Count is ${userCount}`);
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
-    submitButton.remove();
-    retakeQuizButton.remove();
-    clearScoresButton.remove();
-    buttons = document.getElementsByTagName('button');
-    shellSetUp();
-    setUpWelcome();
+    returnToStart();
 };
 
+// 23. Take quiz again
+function returnToStart() {
+    console.log('Ran returnToStart function');
+    welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
+    transitionToQuiz();
+}
 
-// *************************************************
-// INITIAL PROCESSES
 shellSetUp();
-setUpWelcome();
+
+
+
+/*
+Shell
+- Elements
+- Function (one-time): shellSetUp()
+Welcome Page
+- Elements
+- Function (one-time): setUpWelcome()
+- Function: returnToStart();
+Quiz Page
+- Elements
+- Function (one-time): initialQuizBuild()
+- Function: transitionToQuiz()
+- Function: quizSetUp()
+  Contains: quizButtonSetup()
+                   populateQuiz()
+                   checkAnswer()
+                   askQuestion()
+
+
+*/
