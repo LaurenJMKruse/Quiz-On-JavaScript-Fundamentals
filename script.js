@@ -102,7 +102,7 @@ let allScoresTableMissedColumn = document.createElement('th');
 let allScoresTableBody = document.createElement('tbody');
 
 // C. Score Page button elements
-const scoresButtonsDiv = document.createElement('div');
+const saveScoresButton = document.createElement('button');
 const clearScoresButton = document.createElement('button');
 const retakeQuizButton = document.createElement('button');
 
@@ -578,37 +578,28 @@ function populateUserDataArray() {
     }
    
     if ((userCount === 0) || ((userCount > 0) && (userCount !== lastUserIDUsed))) {
-        let midQuizQuestionsAsked;
-        let midQuizQuestionsMissed;
+        let midQuizQuestionsAsked = questionsAsked - 1;
+        console.log(`questions asked: ${questionsAsked}`);
+        console.log(`Midquestions asked: ${midQuizQuestionsAsked}`);
         let userDataRecord = {
             userID: '',
             pointsEarned: '',
             questionsPresented: '',
             correctAnswers: '',
             incorrectAnswers: '',
-            skippedQuestions: ''
+            skippedQuestions: '',
+            savedRecordNum: ''
         };
 
-        // B. Determining number of questions asked/questions skipped
+        // B. Determining number of questions asked        
         if (currentQuestion === 10) {
             userDataRecord.questionsPresented = questionsAsked;
-            userDataRecord.skippedQuestions = questionsMissed;
         } else {
-            midQuizQuestionsAsked = questionsAsked - 1;
-            midQuizQuestionsMissed = questionsMissed - 1;
             userDataRecord.questionsPresented = midQuizQuestionsAsked;
-            userDataRecord.skippedQuestions = midQuizQuestionsMissed;
         }
-
+        userDataRecord.skippedQuestions = questionsMissed;
         userDataRecord.userID = userCount;
         userDataRecord.pointsEarned = points;
-        if (currentQuestion === 10) {
-            userDataRecord.questionsPresented = questionsAsked;
-            userDataRecord.skippedQuestions = questionsMissed;
-        } else {
-            userDataRecord.questionsPresented = questionsAsked - 1;
-            userDataRecord.skippedQuestions = questionsMissed - 1;
-        }        
         userDataRecord.correctAnswers = answersRight;
         userDataRecord.incorrectAnswers = answersWrong;
         userDataArray.push(userDataRecord);
@@ -790,26 +781,29 @@ function setUpScores() {
     
     // ii. highScoresDiv
     highScoresDiv.setAttribute('class', 'points-chart');
-    highScoresDiv.setAttribute('style', 'background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    highScoresDiv.setAttribute('style', 'background-color:black; color:white; font-family:century gothic; margin-left:auto; margin-right:auto;');
     highScoresHeader.setAttribute('class', 'scores-header');
-    highScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:right; font-size:20px; color:#ff9900;');   
+    highScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:left; font-size:20px; color:#ff9900;');
     highScoresTableHeaderRow.setAttribute('class', 'table-columns'); 
     highScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px; position: sticky; top:0');
+    highScoresTableInitialsColumn.setAttribute('class', 'initials-column');
 
     // iii. allScoresDiv
     allScoresDiv.setAttribute('class', 'points-chart');
-    allScoresDiv.setAttribute('style','background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    allScoresDiv.setAttribute('style','background-color:black; color:white; font-family:century gothic; margin-left:auto; margin-right:auto;');
     allScoresHeader.setAttribute('class', 'scores-header');
-    allScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:right; font-size:20px; color:#ff9900;');
+    allScoresHeader.setAttribute('style', 'display:inline; position:relative; text-align:left; font-size:20px; color:#ff9900;');
     allScoresTableHeaderRow.setAttribute('class', 'table-columns');
     allScoresTableHeaderRow.setAttribute('style', 'text-align:right; font-size:18px; position:sticky; top:0;');
+    allScoresTableInitialsColumn.setAttribute('class', 'initials-column');
 
-    // iv. Buttons to clear tables and retake quiz
-    scoresButtonsDiv.setAttribute('style', 'background-color:black; margin-left:auto; margin-right:auto;');
+    // iv. Score Page buttons
+    saveScoresButton.setAttribute('id', 'save-button');
+    saveScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; text-align:center; padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:5px; margin-right:5px');
     clearScoresButton.setAttribute('id', 'clear-button');
-    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; display:inline; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:10px; margin-right:10px');
+    clearScoresButton.setAttribute('style', 'background-color:black; border-style:solid; border-width:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:5px; margin-right:5px');
     retakeQuizButton.setAttribute('id', 'retake-button');
-    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; display:inline; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:10px; margin-right:10px;');
+    retakeQuizButton.setAttribute('style', 'background-color:black; border-style:solid; border-weight:3px; border-radius:40px; border-color:#ffad33; color:#ffad33; position:relative; font-family:century gothic; font-size:18px; font-weight:bold; text-align:center;  padding-top:15px; padding-bottom:15px; padding-left:25px; padding-right:25px; cursor:pointer; margin-left:10px; margin-right:10px;');
     
     // B. Score Page content  
     highScoresHeader.textContent = 'High Scores';
@@ -826,6 +820,7 @@ function setUpScores() {
     allScoresTableRightColumn.textContent = 'Right Answers';
     allScoresTableWrongColumn.textContent = 'Wrong Answers';
     allScoresTableMissedColumn.textContent = 'Skipped Questions';
+    saveScoresButton.textContent = 'Save Scores';   
     clearScoresButton.textContent = 'Clear Scores';   
     retakeQuizButton.textContent = 'Retake Quiz';
 
@@ -861,25 +856,22 @@ function setUpScores() {
     allScoresTableHead.appendChild(allScoresTableMissedColumn);
     allScoresTable.appendChild(allScoresTableBody);
 
-    // iv. scoresButtonsDiv
-    scoreContainer.appendChild(scoresButtonsDiv);
-    scoresButtonsDiv.appendChild(clearScoresButton);
-    scoresButtonsDiv.appendChild(retakeQuizButton);  
+    // iv. Score Page buttons
+    scoreContainer.appendChild(saveScoresButton);
     scoreContainer.appendChild(clearScoresButton);
-    scoreContainer.appendChild(retakeQuizButton);
+    scoreContainer.appendChild(retakeQuizButton);  
 };
 
 // 19. Add scores to tables
 function populateScores(editedInitials) { 
     // A. scoreContainer attributes
-    scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; padding-bottom:20px;');
+    scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; height:800px;');
     
     // B. Processes
     // i. Add user data to tables
     function createTableRows(formattedInitials) {
         let userTallies = userDataArray[userCount];
-        console.log(`Creating Table Row - User Count is ${userCount}`);
-        
+                
         // a. High Scores data
         if (points >= 80) {    
             let highScoreRow = highScoresTableBody.insertRow(-1);
@@ -890,6 +882,7 @@ function populateScores(editedInitials) {
             let highScoreWrong = highScoreRow.insertCell(4);
             let highScoreSkipped = highScoreRow.insertCell(5);
 
+            highScoreInitials.setAttribute('style', 'text-align:left');
             highScoreInitials.textContent = formattedInitials;
             highScorePoints.textContent = userTallies.pointsEarned;
             highScoreNumQuestions.textContent = userTallies.questionsPresented;
@@ -907,6 +900,7 @@ function populateScores(editedInitials) {
         let allScoreWrong = allScoreRow.insertCell(4);
         let allScoreSkipped = allScoreRow.insertCell(5);
 
+        allScoreInitials.setAttribute('style', 'text-align:left');
         allScoreInitials.textContent = formattedInitials;
         allScorePoints.textContent = userTallies.pointsEarned;
         allScoreNumQuestions.textContent = userTallies.questionsPresented;
@@ -916,14 +910,30 @@ function populateScores(editedInitials) {
     };
 
     createTableRows(editedInitials);
-
-    populateScoresCount++;
     
+    //saveScores();
     clearScores();
     retakeQuizClick();
+
+    populateScoresCount++;
 };
 
-// 20. Clear scores from tables
+// 20. Save scores in local storage
+function saveScores() {
+    saveScoresButton.addEventListener("click", function() {
+
+        // let lastArrayElement = userDataArray[userDataArray.length - 1];
+        // let savedRecordCount = populateScoresCount;
+        // let currentUserRecord = savedRecordCount + lastArrayElement['userID'];
+        // lastArrayElement['savedRecordNum'] = currentUserRecord;        
+        
+        // localStorage.setItem('lastArrayElement', JSON.stringify(lastArrayElement));
+        // let currentUserRecord = JSON.parse(localStorage.getItem('lastArrayElement'));
+        // console.log(`Current record saved is ${currentUserRecord}`);
+    });
+};
+
+// 21. Clear scores from tables
 function clearScores() {
     clearScoresButton.addEventListener("click", function() {
         let highScoreRowsCount = highScoresTable.rows.length;
@@ -944,18 +954,19 @@ function clearScores() {
     clearScoresButton.removeEventListener('click', function() {});
 };
 
-// 21. Transition to Welcome Page
+// 22. Transition to Welcome Page
 function retakeQuizClick() {
     retakeQuizButton.addEventListener("click", function() {
         userCount = populateScoresCount;
-        console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
-        
+        // console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
+        saveScoresButton.removeEventListener('click', function() {});
         takeQuizAgain();
     });
     retakeQuizButton.removeEventListener('click', function() {});
+
 };
 
-// 22. Transition to Welcome Page
+// 23. Transition to Welcome Page
 function takeQuizAgain() {
     console.log('Ran takeQuizAgain function');
     //console.log(`User Count at end of quiz is ${userCount}`);
@@ -974,7 +985,7 @@ function takeQuizAgain() {
     returnToStart();
 };
 
-// 23. Reset button to begin quiz
+// 24. Reset button to begin quiz
 function returnToStart() {
     console.log('Ran returnToStart function');
     welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
