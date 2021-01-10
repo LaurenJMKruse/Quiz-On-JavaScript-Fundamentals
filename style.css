@@ -3,11 +3,158 @@
     zoom: 1.0;
 }
 
-/* Monitor */
-@media screen and (max-width: 1200px) {
+/* Desktop */
+@media screen and (max-width: 1300px) {
+    .welcomePage {
+        width: 1000px;
+        height: 475px;
+        top: 50px;
+        padding-bottom: 20px;
+    }
+
+    #quiz-title {
+        position: relative;
+        top: 10px;
+    }
+    
+    #rules-header {
+        top: 20px;
+        left: 70px;
+    }
+
+    #quiz-rules {
+        left: 45px;
+        width: 800px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .quizPage {
+        width: 1000px;
+        height: 425px;
+    }
+
+    .timerBox {
+        width: 150px;
+        height: 50px;
+        position: absolute;
+        top: 20px;
+        left: 100px;
+        margin-bottom: 40px;
+    }
+
+    #question-count {
+        margin-bottom: 50px;
+    }
+
+    .answerFeedback {
+        left: 100px;
+    }
+
+    .timesUpPage {
+        width: 65%;
+        height: 200px;
+        font-size: 40px;
+    }
+
+    .formPage {
+        width: 800px;
+        max-height: 800px;
+    }
+
+    .points-message {
+        font-size: 30px;
+    }
+
+    .initials-message {
+        position: relative;
+        left: 22px;
+        font-size: 20px;
+    }
+
+    #user-initials {
+        position: relative;
+        left: 35px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    .scoresPage {
+        position: relative;
+        width: 900px;
+        max-height: 500px;
+        top: 20px;
+    }
+
+    /* .clearfix::after {
+        content: '';
+        clear: both;
+        display: table;
+    } */
+
+    .points-chart {
+        width: 47%;
+        height: 275px;
+        font-size: 14px;
+        padding: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+        float: left;
+        position: relative;
+        top: 30px;
+        left: 4px;
+    }
+
+    .initials-column {
+        text-align: left;
+    }
+
+    .scores-header {
+        left: 10px;
+        font-size: 20px;
+    }
+
+    .table-columns {
+        font-size: 14px;
+    }
+
+    th {
+        width: 16%;
+        text-align: right;
+        border-bottom-style: solid;
+        border-bottom-color: white;
+        border-bottom-width: 2px;
+    }
+
+    td {
+        width: 16%;
+        text-align: right;
+    }
+
+    #save-button {
+        top: 100px;
+        display: inline;
+        left: 130px;
+    }
+
+    #clear-button {
+        top: 100px;
+        display: inline;
+        left: 197px;
+    }
+
+    #retake-button {
+        top: 100px;
+        display: inline;
+        left: 246px;
+    }
+}
+
+/* Small Laptop */
+@media screen and (max-width: 940px) {
     .welcomePage {
         width: 900px;
-        max-height: 800px;
+        height: 450px;
         top: 50px;
         padding-bottom: 20px;
     }
@@ -19,7 +166,8 @@
     #quiz-rules {
         left: 45px;
         width: 800px;
-        margin-bottom: 20px;
+        margin-top: 30px;
+        margin-bottom: 40px;
     }
 
     .quizPage {
@@ -143,7 +291,7 @@
 @media screen and (max-width: 768px) {
     .welcomePage {
         width: 600px;
-        max-height: 950px;
+        height: 480px;
         top: 50px;
     }
 
@@ -154,6 +302,8 @@
     #quiz-rules {
         left: 40px;
         width: 450px;
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 
     .quizPage {
@@ -261,7 +411,7 @@
 @media screen and (max-width: 480px) {
     .welcomePage {
         width: 400px;
-        max-height: 1000px;
+        height: 510px;
         margin-top: -25px;
     }
 
@@ -276,6 +426,8 @@
     #quiz-rules {
         left: -4px;
         width: 350px;
+        margin-top: 30px;
+        margin-bottom: 20px;
     }
 
     .quizPage {

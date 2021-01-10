@@ -125,7 +125,8 @@ let userCountCheck = 0;
 let questionsAsked = 0;
 let totalQuestions = 10;
 let populateScoresCount = 0;
-let lastUserIDUsed;
+let savedRecordsIndex = 0;
+let retakeQuizCount = 0;
 
 // *************************************************
 // ARRAYS
@@ -236,6 +237,9 @@ var questionsArray = [
 // B. User Data Array
 let userDataArray = [];
 
+// C. Saved Data Array
+let savedDataArray = [{savedInitials: '', savedPoints: '', savedQuestionsAsked: '', savedAnswersRight: '', savedAnswersWrong: '', savedMissedQuestions: ''}];
+
 
 // *************************************************
 // FUNCTIONS
@@ -317,6 +321,7 @@ function initialQuizBuild() {
     // ii. quizDiv attributes
     quizDiv.setAttribute('class', 'quizPage');
     quizDiv.setAttribute('style', 'display:none');
+    questionCount.setAttribute('id', 'question-count');
     questionCount.setAttribute('style', 'color:white; margin-top:15px; margin-left:30px; margin-bottom:15px;');
     questionPlaceholder.setAttribute('style', 'color:white; margin-left:30px; width:85%;');
     answerAFeedback.setAttribute('class', 'answerFeedback');
@@ -587,8 +592,7 @@ function populateUserDataArray() {
             questionsPresented: '',
             correctAnswers: '',
             incorrectAnswers: '',
-            skippedQuestions: '',
-            savedRecordNum: ''
+            skippedQuestions: ''
         };
 
         // B. Determining number of questions asked        
@@ -911,7 +915,7 @@ function populateScores(editedInitials) {
 
     createTableRows(editedInitials);
     
-    //saveScores();
+    saveScores(editedInitials);
     clearScores();
     retakeQuizClick();
 
@@ -919,19 +923,61 @@ function populateScores(editedInitials) {
 };
 
 // 20. Save scores in local storage
-function saveScores() {
+function saveScores(incomingInitials) {
     saveScoresButton.addEventListener("click", function() {
+        console.log(`incomingInitials: ${incomingInitials}`);
+        let lastArrayElement = userDataArray[userDataArray.length - 1];
+        let initialsToSave = incomingInitials;
+        console.log(`initialsToSave: ${initialsToSave}`);
 
-        // let lastArrayElement = userDataArray[userDataArray.length - 1];
-        // let savedRecordCount = populateScoresCount;
-        // let currentUserRecord = savedRecordCount + lastArrayElement['userID'];
-        // lastArrayElement['savedRecordNum'] = currentUserRecord;        
+        if (savedRecordsIndex === 0) {
+            localStorage.setItem('savedDataArray', JSON.stringify(savedDataArray));
+        }
+
+        let savedUserData = {
+            savedInitials: initialsToSave,
+            savedPoints: lastArrayElement['pointsEarned'],
+            savedQuestionsAsked: lastArrayElement['questionsPresented'],
+            savedAnswersRight: lastArrayElement['correctAnswers'],
+            savedAnswersWrong: lastArrayElement['incorrectAnswers'],
+            savedMissedQuestions: lastArrayElement['skippedQuestions']
+        };
         
-        // localStorage.setItem('lastArrayElement', JSON.stringify(lastArrayElement));
-        // let currentUserRecord = JSON.parse(localStorage.getItem('lastArrayElement'));
-        // console.log(`Current record saved is ${currentUserRecord}`);
+        function getSavedArray() {
+            let workingCopyOfSavedArray = [];
+            let staticCopyOfSavedArray = localStorage.getItem(savedDataArray);
+            workingCopyOfSavedArray = JSON.parse(staticCopyOfSavedArray);
+            console.log(workingCopyOfSavedArray);
+            return workingCopyOfSavedArray;
+        }
+
+        function pushToStoredArray(workingSavedArray, userInfo) {
+            let revisedStoredArray = workingSavedArray;
+            revisedfStoredArray.push(userInfo);
+            setItem(savedDataArray, JSON.stringify(revisedStoredArray));
+            console.log(savedDataArray[savedRecordsIndex]);
+        }
+
+        let workingArray = getSavedArray();
+        pushToStoredArray(workingArray, savedUserData);
     });
+
+    savedRecordsIndex++;
 };
+
+// function renderLastRecord() {
+//        let lastSavedRecord = JSON.parse(localStorage.getItem(savedUserData))
+//             lastSavedInitials = savedUserData.savedInitials;
+//             lastSavedPoints = savedUserData.savedPoints;
+//             lastSavedQuestionsAsked = savedUserData.savedQuestionsAsked;
+//             lastSavedAnswersRight = savedUserData.savedAnswersRight;
+//             lastSavedAnswersWrong = savedUserData.savedAnswersWrong;
+//             lastSavedMissedQuestions = savedUserData.savedMissedQuestions;
+        
+
+//     };
+    
+
 
 // 21. Clear scores from tables
 function clearScores() {
@@ -950,6 +996,7 @@ function clearScores() {
         userDataArray = [];
         userCount = 0;
         populateScoresCount = 0;
+        retakeQuizCount = 0;
     });
     clearScoresButton.removeEventListener('click', function() {});
 };
@@ -958,6 +1005,7 @@ function clearScores() {
 function retakeQuizClick() {
     retakeQuizButton.addEventListener("click", function() {
         userCount = populateScoresCount;
+        retakeQuizCount++;
         // console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
         saveScoresButton.removeEventListener('click', function() {});
         takeQuizAgain();
@@ -969,7 +1017,7 @@ function retakeQuizClick() {
 // 23. Transition to Welcome Page
 function takeQuizAgain() {
     console.log('Ran takeQuizAgain function');
-    //console.log(`User Count at end of quiz is ${userCount}`);
+    console.log(`User Count at end of quiz is ${userCount}`);
     scoreContainer.setAttribute('style', 'display:none');
     currentQuestion = 0;
     actualSecondsRemaining = secondsRemainingRule;
@@ -980,7 +1028,8 @@ function takeQuizAgain() {
     questionsMissed = 0;
     buttonClickCount = 0;
     initialsInput.value = '';
-    //console.log(`Start of new quiz - User Count is ${userCount}`);
+
+    console.log(`Start of new quiz - User Count is ${userCount}`);
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
     returnToStart();
 };
