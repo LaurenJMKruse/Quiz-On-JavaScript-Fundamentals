@@ -121,13 +121,14 @@ let questionInterval;
 let buttonClickCount = 0;
 let actualSecondsRemaining = secondsRemainingRule;
 let userCount = 0;
-let userCountCheck = 0;
 let questionsAsked = 0;
 let totalQuestions = 10;
 let populateScoresCount = 0;
 let savedRecordsIndex = 0;
-let retakeQuizCount = 0;
 let skippedCount = 0;
+let finalInitials;
+let currentHighScoreRow;
+let currentAllScoreRow;
 
 // *************************************************
 // ARRAYS
@@ -239,7 +240,8 @@ var questionsArray = [
 let userDataArray = [];
 
 // C. Saved Data Array
-let savedDataArray = [{savedInitials: '', savedPoints: '', savedQuestionsAsked: '', savedAnswersRight: '', savedAnswersWrong: '', savedMissedQuestions: ''}];
+let savedDataArray = [];
+let storageKey = 'savedDataArray';
 
 
 // *************************************************
@@ -530,7 +532,6 @@ function checkAnswer() {
 
 // 09. Main process -- Holds timer
 function askQuestion() {
-    //questionsAsked++;
     console.log('Ran askQuestion function');
     questionInterval = setInterval(function() {
 
@@ -729,7 +730,8 @@ function utilizeForm() {
     // ii. Edit initials entry
     function processInitials(initialsInput) {
         let newInitialsInput = initialsInput.toUpperCase().trim();
-        return newInitialsInput;
+        finalInitials = newInitialsInput;
+        console.log(finalInitials);
     };    
    
     // iii. Submit button
@@ -834,7 +836,7 @@ function setUpScores() {
     allScoresTableRightColumn.textContent = 'Right Answers';
     allScoresTableWrongColumn.textContent = 'Wrong Answers';
     allScoresTableMissedColumn.textContent = 'Skipped Questions';
-    saveScoresButton.textContent = 'Save Scores';   
+    saveScoresButton.textContent = 'Save Score';   
     clearScoresButton.textContent = 'Clear Scores';   
     retakeQuizButton.textContent = 'Retake Quiz';
 
@@ -877,13 +879,13 @@ function setUpScores() {
 };
 
 // 19. Add scores to tables
-function populateScores(editedInitials) { 
+function populateScores() { 
     // A. scoreContainer attributes
     scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; height:800px;');
     
     // B. Processes
     // i. Add user data to tables
-    function createTableRows(formattedInitials) {
+    function createTableRows() {
         let userTallies = userDataArray[userCount];
                 
         // a. High Scores data
@@ -895,9 +897,10 @@ function populateScores(editedInitials) {
             let highScoreRight = highScoreRow.insertCell(3);
             let highScoreWrong = highScoreRow.insertCell(4);
             let highScoreSkipped = highScoreRow.insertCell(5);
+            currentHighScoreRow = highScoreRow;
 
             highScoreInitials.setAttribute('style', 'text-align:left');
-            highScoreInitials.textContent = formattedInitials;
+            highScoreInitials.textContent = finalInitials;
             highScorePoints.textContent = userTallies.pointsEarned;
             highScoreNumQuestions.textContent = userTallies.questionsPresented;
             highScoreRight.textContent = userTallies.correctAnswers;
@@ -913,9 +916,10 @@ function populateScores(editedInitials) {
         let allScoreRight = allScoreRow.insertCell(3);
         let allScoreWrong = allScoreRow.insertCell(4);
         let allScoreSkipped = allScoreRow.insertCell(5);
+        currentAllScoreRow = allScoreRow;
 
         allScoreInitials.setAttribute('style', 'text-align:left');
-        allScoreInitials.textContent = formattedInitials;
+        allScoreInitials.textContent = finalInitials;
         allScorePoints.textContent = userTallies.pointsEarned;
         allScoreNumQuestions.textContent = userTallies.questionsPresented;
         allScoreRight.textContent = userTallies.correctAnswers;
@@ -923,9 +927,9 @@ function populateScores(editedInitials) {
         allScoreSkipped.textContent = userTallies.skippedQuestions;
     };
 
-    createTableRows(editedInitials);
+    createTableRows();
     
-    saveScores(editedInitials);
+    saveScores();
     clearScores();
     retakeQuizClick();
 
@@ -933,50 +937,127 @@ function populateScores(editedInitials) {
 };
 
 // 20. Save scores in local storage
-function saveScores(incomingInitials) {
-    saveScoresButton.addEventListener("click", function() {
-        console.log(`incomingInitials: ${incomingInitials}`);
-        let lastArrayElement = userDataArray[userDataArray.length - 1];
-        let initialsToSave = incomingInitials;
-        console.log(`initialsToSave: ${initialsToSave}`);
+function saveScores() {
+    saveScoresButton.onclick = function() {
+        console.log('Ran saveScoresButton function');
+        let talliesToSave = userDataArray[userCount];
 
-        if (savedRecordsIndex === 0) {
-            localStorage.setItem('savedDataArray', JSON.stringify(savedDataArray));
+        if (localStorage.getItem('savedInitials') == null) {
+            localStorage.setItem('savedInitials', '[]');
+            localStorage.setItem('savedPoints', '[]');
+            localStorage.setItem('savedQuestionsAsked', '[]');
+            localStorage.setItem('savedAnswersRight', '[]');
+            localStorage.setItem('savedAnswersWrong', '[]');
+            localStorage.setItem('savedMissedQuestions', '[]');
         }
 
-        let savedUserData = {
-            savedInitials: initialsToSave,
-            savedPoints: lastArrayElement['pointsEarned'],
-            savedQuestionsAsked: lastArrayElement['questionsPresented'],
-            savedAnswersRight: lastArrayElement['correctAnswers'],
-            savedAnswersWrong: lastArrayElement['incorrectAnswers'],
-            savedMissedQuestions: lastArrayElement['skippedQuestions']
-        };
+        let newInitials = finalInitials;
+        let newPoints = talliesToSave.pointsEarned;
+        let newQuestions = talliesToSave.questionsPresented;
+        let newRight = talliesToSave.correctAnswers;
+        let newWrong = talliesToSave.incorrectAnswers;
+        let newSkipped = talliesToSave.skippedQuestions;
         
-        function getSavedArray() {
-            let workingCopyOfSavedArray = [];
-            let staticCopyOfSavedArray = localStorage.getItem(savedDataArray);
-            workingCopyOfSavedArray = JSON.parse(staticCopyOfSavedArray);
-            console.log(workingCopyOfSavedArray);
-            return workingCopyOfSavedArray;
+        let oldInitials = JSON.parse(localStorage.getItem('savedInitials'));
+        oldInitials.push(newInitials);
+        
+        let oldPoints = JSON.parse(localStorage.getItem('savedPoints'));
+        oldPoints.push(newPoints);
+
+        let oldQuestions = JSON.parse(localStorage.getItem('savedQuestionsAsked'));
+        oldQuestions.push(newQuestions);
+
+        let oldRight = JSON.parse(localStorage.getItem('savedAnswersRight'));
+        oldRight.push(newRight);
+
+        let oldWrong = JSON.parse(localStorage.getItem('savedAnswersWrong'));
+        oldWrong.push(newWrong);
+
+        let oldSkipped = JSON.parse(localStorage.getItem('savedMissedQuestions'));
+        oldSkipped.push(newSkipped);
+
+        if (newPoints >= 80) {
+            currentHighScoreRow.setAttribute('style', 'color:#00b386; font-weight:bold;');
         }
 
-        function pushToStoredArray(workingSavedArray, userInfo) {
-            let revisedStoredArray = workingSavedArray;
-            revisedfStoredArray.push(userInfo);
-            setItem(savedDataArray, JSON.stringify(revisedStoredArray));
-            console.log(savedDataArray[savedRecordsIndex]);
-        }
+        currentAllScoreRow.setAttribute('style', 'color:#00b386; font-weight:bold;');
 
-        let workingArray = getSavedArray();
-        pushToStoredArray(workingArray, savedUserData);
-    });
+        localStorage.clear();
 
+        localStorage.setItem('savedInitials', '[]');
+        localStorage.setItem('savedInitials', JSON.stringify(oldInitials));
+        
+        localStorage.setItem('savedPoints', '[]');
+        localStorage.setItem('savedPoints', JSON.stringify(oldPoints));
+
+        localStorage.setItem('savedQuestionsAsked', '[]');
+        localStorage.setItem('savedQuestionsAsked', JSON.stringify(oldQuestions));
+
+        localStorage.setItem('savedAnswersRight', '[]');
+        localStorage.setItem('savedAnswersRight', JSON.stringify(oldRight));
+
+        localStorage.setItem('savedAnswersWrong', '[]');
+        localStorage.setItem('savedAnswersWrong', JSON.stringify(oldWrong));
+
+        localStorage.setItem('savedMissedQuestions', '[]');
+        localStorage.setItem('savedMissedQuestions', JSON.stringify(oldSkipped));
+
+        
+        
+    
+        // function getRecord() {
+        //     currentStoredRecord = JSON.parse(localStorage.getItem(savedUserInfo));
+        //     console.log(currentStoredRecord);
+           
+        //     // a. High Scores data
+        //     if (points >= 80) {
+        //         let highScoresList = highScoresTable.querySelector('tbody');    
+        //         highScoresList.deleteRow(-1);
+        //         let savedHighScoreRow = highScoresList.insertRow(-1);
+        //         let savedHighScoreInitials = savedHighScoreRow.insertCell(0);
+        //         let savedHighScorePoints = savedHighScoreRow.insertCell(1);
+        //         let savedHighScoreNumQuestions = savedHighScoreRow.insertCell(2);
+        //         let savedHighScoreRight = savedHighScoreRow.insertCell(3);
+        //         let savedHighScoreWrong = savedHighScoreRow.insertCell(4);
+        //         let savedHighScoreSkipped = savedHighScoreRow.insertCell(5);
+
+        //         savedHighScoreRow.setAttribute('style', 'text-align:left; color:green; font-weight:bold;');
+        //         savedHighScoreInitials.textContent = currentStoredRecord.savedInitials;
+        //         savedHighScorePoints.textContent = currentStoredRecord.savedPoints;
+        //         savedHighScoreNumQuestions.textContent = currentStoredRecord.savedQuestionsAsked;
+        //         savedHighScoreRight.textContent = currentStoredRecord.savedAnswersRight;
+        //         savedHighScoreWrong.textContent = currentStoredRecord.savedAnswersWrong;
+        //         savedHighScoreSkipped.textContent = currentStoredRecord.savedMissedQuestions;
+        //     }
+
+        //     // b. All Scores data
+        //     let allScoresList = allScoresTable.querySelector('tbody');
+        //     allScoresList.deleteRow(-1);
+        //     let savedAllScoreRow = allScoresList.insertRow(-1);
+        //     let savedAllScoreInitials = savedAllScoreRow.insertCell(0);
+        //     let savedAllScorePoints = savedAllScoreRow.insertCell(1);
+        //     let savedAllScoreNumQuestions = savedAllScoreRow.insertCell(2);
+        //     let savedAllScoreRight = savedAllScoreRow.insertCell(3);
+        //     let savedAllScoreWrong = savedAllScoreRow.insertCell(4);
+        //     let savedAllScoreSkipped = savedAllScoreRow.insertCell(5);
+
+        //     savedAllScoreRow.setAttribute('style', 'text-align:left; color:green; font-weight:bold;');
+        //     savedAllScoreInitials.textContent = currentStoredRecord.savedInitials;
+        //     savedAllScorePoints.textContent = currentStoredRecord.pointsEarned;
+        //     savedAllScoreNumQuestions.textContent = currentStoredRecord.questionsPresented;
+        //     savedAllScoreRight.textContent = currentStoredRecord.correctAnswers;
+        //     savedAllScoreWrong.textContent = currentStoredRecord.incorrectAnswers;
+        //     savedAllScoreSkipped.textContent = currentStoredRecord.skippedQuestions;
+        // }
+    };
     savedRecordsIndex++;
 };
 
-// function renderLastRecord() {
-//        let lastSavedRecord = JSON.parse(localStorage.getItem(savedUserData))
+// function renderSavedRecords() {
+//     for (i = 0; i < savedRecordsIndex; i++) {   
+    
+//         let savedRecords = savedRecordsArray[i];
+//          = JSON.parse(localStorage.getItem(savedUserData))
 //             lastSavedInitials = savedUserData.savedInitials;
 //             lastSavedPoints = savedUserData.savedPoints;
 //             lastSavedQuestionsAsked = savedUserData.savedQuestionsAsked;
@@ -984,8 +1065,8 @@ function saveScores(incomingInitials) {
 //             lastSavedAnswersWrong = savedUserData.savedAnswersWrong;
 //             lastSavedMissedQuestions = savedUserData.savedMissedQuestions;
         
-
-//     };
+//     }
+// };
     
 
 
@@ -1003,10 +1084,10 @@ function clearScores() {
             allScoresTable.deleteRow(j);
         }
 
+        localStorage.clear();
         userDataArray = [];
         userCount = 0;
         populateScoresCount = 0;
-        retakeQuizCount = 0;
     });
     clearScoresButton.removeEventListener('click', function() {});
 };
@@ -1015,7 +1096,6 @@ function clearScores() {
 function retakeQuizClick() {
     retakeQuizButton.addEventListener("click", function() {
         userCount = populateScoresCount;
-        retakeQuizCount++;
         // console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
         saveScoresButton.removeEventListener('click', function() {});
         takeQuizAgain();
@@ -1039,6 +1119,7 @@ function takeQuizAgain() {
     buttonClickCount = 0;
     initialsInput.value = '';
     skippedCount = 0;
+    finalInitials = '';
 
     console.log(`Start of new quiz - User Count is ${userCount}`);
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
