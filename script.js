@@ -127,6 +127,7 @@ let totalQuestions = 10;
 let populateScoresCount = 0;
 let savedRecordsIndex = 0;
 let retakeQuizCount = 0;
+let skippedCount = 0;
 
 // *************************************************
 // ARRAYS
@@ -423,6 +424,7 @@ function quizButtonsSetUp() {
 
 // 07. Populating quizDiv with questions
 function populateQuiz() {
+    questionsAsked++;
     let quizData = questionsArray[currentQuestion];
 
     questionNumber = quizData.questionNum;
@@ -473,6 +475,7 @@ function checkAnswer() {
 
             // ii. Provide feedback for user's answer; update totals
             if (clickedButtonAnswer === goodAnswer) {
+                console.log(`The user got #${questionNumber} right! The answer is ${goodAnswer}!`);
                 answersRight++;
                 points += 10;
             
@@ -505,15 +508,16 @@ function checkAnswer() {
                     }
                 }, 1200);                 
             }   
-            console.log(`Totals for Question ${questionNumber}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)
+            console.log(`Totals for Question ${questionNumber}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${skippedCount}`)
         };
     }
     
     // E. Check for skipped questions
     if ((actualSecondsRemaining === 0) && (clickedButton === undefined)) {
-        //console.log('Checking missed questions count');
-        questionsMissed++;
-        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Skipped: ${questionsMissed}`)        
+        console.log('User skipped this question.');
+        skippedCount++;
+        //questionsMissed++;
+        console.log(`Totals for Question ${questionNumber - 1}:    Points: ${points}     Answers Right: ${answersRight}     Answers Wrong: ${answersWrong}       Questions Missed: ${questionsMissed}    Skipped: ${skippedCount}`)        
     }
 
     // F. Re-enable buttons for next question
@@ -526,7 +530,7 @@ function checkAnswer() {
 
 // 09. Main process -- Holds timer
 function askQuestion() {
-    questionsAsked++;
+    //questionsAsked++;
     console.log('Ran askQuestion function');
     questionInterval = setInterval(function() {
 
@@ -562,8 +566,8 @@ function goToNextQuestion() {
         timerPlaceholder.textContent = `0:10`;
     }
         
-    if (((answersWrong >= 1) || (questionsMissed >= 1)) && (currentQuestion <= 10)) {
-        actualSecondsRemaining = 10 - (2 * answersWrong) - (2 * questionsMissed);
+    if (((answersWrong >= 1) || (skippedCount >= 1)) && (currentQuestion <= 10)) {
+        actualSecondsRemaining = 10 - (2 * answersWrong) - (2 * skippedCount);
         timerPlaceholder.textContent = `0:0${actualSecondsRemaining}`;
         console.log(`Seconds Remaining: ${actualSecondsRemaining}`);
     }
@@ -583,6 +587,10 @@ function populateUserDataArray() {
     }
    
     if ((userCount === 0) || ((userCount > 0) && (userCount !== lastUserIDUsed))) {
+        if (questionsAsked > (answersRight + answersWrong)){
+            skippedCount = 1;
+        } 
+        
         let midQuizQuestionsAsked = questionsAsked - 1;
         console.log(`questions asked: ${questionsAsked}`);
         console.log(`Midquestions asked: ${midQuizQuestionsAsked}`);
@@ -601,12 +609,14 @@ function populateUserDataArray() {
         } else {
             userDataRecord.questionsPresented = midQuizQuestionsAsked;
         }
-        userDataRecord.skippedQuestions = questionsMissed;
+        userDataRecord.skippedQuestions = skippedCount;
         userDataRecord.userID = userCount;
         userDataRecord.pointsEarned = points;
         userDataRecord.correctAnswers = answersRight;
         userDataRecord.incorrectAnswers = answersWrong;
         userDataArray.push(userDataRecord);
+
+        console.log(`Total skipped is ${skippedCount}`)
     }
   };
 
@@ -1028,6 +1038,7 @@ function takeQuizAgain() {
     questionsMissed = 0;
     buttonClickCount = 0;
     initialsInput.value = '';
+    skippedCount = 0;
 
     console.log(`Start of new quiz - User Count is ${userCount}`);
     initialsInput.setAttribute('placeholder', 'Enter your initials here');
