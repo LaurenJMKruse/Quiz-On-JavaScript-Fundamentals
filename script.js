@@ -124,11 +124,12 @@ let userCount = 0;
 let questionsAsked = 0;
 let totalQuestions = 10;
 let populateScoresCount = 0;
-let savedRecordsIndex = 0;
 let skippedCount = 0;
 let finalInitials;
 let currentHighScoreRow;
 let currentAllScoreRow;
+let savedRecordsCount;
+let createRowsCount = 0;
 
 // *************************************************
 // ARRAYS
@@ -878,57 +879,123 @@ function setUpScores() {
     scoreContainer.appendChild(retakeQuizButton);  
 };
 
+// 20. Add user data to High Score Table
+function createHighScoreTableRows() {
+    let userTallies = userDataArray[userCount];
+
+    // A. High Scores row creation
+    let highScoreRow = highScoresTableBody.insertRow(-1);
+    let highScoreInitials = highScoreRow.insertCell(0);
+    let highScorePoints = highScoreRow.insertCell(1);
+    let highScoreNumQuestions = highScoreRow.insertCell(2);
+    let highScoreRight = highScoreRow.insertCell(3);
+    let highScoreWrong = highScoreRow.insertCell(4);
+    let highScoreSkipped = highScoreRow.insertCell(5);
+    currentHighScoreRow = highScoreRow;
+
+    // B. High Scores data
+    highScoreInitials.setAttribute('style', 'text-align:left');
+    highScoreInitials.textContent = finalInitials;
+    highScorePoints.textContent = userTallies.pointsEarned;
+    highScoreNumQuestions.textContent = userTallies.questionsPresented;
+    highScoreRight.textContent = userTallies.correctAnswers;
+    highScoreWrong.textContent = userTallies.incorrectAnswers;
+    highScoreSkipped.textContent = userTallies.skippedQuestions;
+};
+
+// 21. Add user data to All Score Table
+function createAllScoreTableRows() {
+    let userTallies = userDataArray[userCount];
+
+    // A. All Scores row creation
+    let allScoreRow = allScoresTableBody.insertRow(-1);
+    let allScoreInitials = allScoreRow.insertCell(0);
+    let allScorePoints = allScoreRow.insertCell(1);
+    let allScoreNumQuestions = allScoreRow.insertCell(2);
+    let allScoreRight = allScoreRow.insertCell(3);
+    let allScoreWrong = allScoreRow.insertCell(4);
+    let allScoreSkipped = allScoreRow.insertCell(5);
+    currentAllScoreRow = allScoreRow;
+
+    // B. All Scores data
+    allScoreInitials.setAttribute('style', 'text-align:left');
+    allScoreInitials.textContent = finalInitials;
+    allScorePoints.textContent = userTallies.pointsEarned;
+    allScoreNumQuestions.textContent = userTallies.questionsPresented;
+    allScoreRight.textContent = userTallies.correctAnswers;
+    allScoreWrong.textContent = userTallies.incorrectAnswers;
+    allScoreSkipped.textContent = userTallies.skippedQuestions;
+};
+
+// 21. Render previously saved scores to tables
+function renderSavedScores() {
+    let storedInitials = JSON.parse(localStorage.getItem('savedInitials'));
+    console.log(storedInitials);
+    let storedPoints = JSON.parse(localStorage.getItem('savedPoints'));
+    let storedQuestions = JSON.parse(localStorage.getItem('savedQuestionsAsked'));
+    let storedRight = JSON.parse(localStorage.getItem('savedAnswersRight'));
+    let storedWrong = JSON.parse(localStorage.getItem('savedAnswersWrong'));
+    let storedSkipped = JSON.parse(localStorage.getItem('savedMissedQuestions'));
+
+    for (let i = 0; i < storedInitials.length; i++) {
+        if (storedPoints[i] >= 80) {
+            // A. Saved High Scores row creation    
+            let storedHighScoreRow = highScoresTableBody.insertRow(-1);
+            let storedHighScoreInitials = storedHighScoreRow.insertCell(0);
+            let storedHighScorePoints = storedHighScoreRow.insertCell(1);
+            let storedHighScoreNumQuestions = storedHighScoreRow.insertCell(2);
+            let storedHighScoreRight = storedHighScoreRow.insertCell(3);
+            let storedHighScoreWrong = storedHighScoreRow.insertCell(4);
+            let storedHighScoreSkipped = storedHighScoreRow.insertCell(5);
+            
+            // B. Saved High Scores data
+            storedHighScoreRow.setAttribute('style', 'color:#00b386; font-weight:bold;');
+            storedHighScoreInitials.setAttribute('style', 'text-align:left');
+            storedHighScoreInitials.textContent = storedInitials[i];
+            storedHighScorePoints.textContent = storedPoints[i];
+            storedHighScoreNumQuestions.textContent = storedQuestions[i];
+            storedHighScoreRight.textContent = storedRight[i];
+            storedHighScoreWrong.textContent = storedWrong[i];
+            storedHighScoreSkipped.textContent = storedSkipped[i];
+        }
+
+        // A. Saved All Scores row creation    
+        let storedAllScoreRow = allScoresTableBody.insertRow(-1);
+        let storedAllScoreInitials = storedAllScoreRow.insertCell(0);
+        let storedAllScorePoints = storedAllScoreRow.insertCell(1);
+        let storedAllScoreNumQuestions = storedAllScoreRow.insertCell(2);
+        let storedAllScoreRight = storedAllScoreRow.insertCell(3);
+        let storedAllScoreWrong = storedAllScoreRow.insertCell(4);
+        let storedAllScoreSkipped = storedAllScoreRow.insertCell(5);
+        
+        // B. Saved All Scores data
+        storedAllScoreRow.setAttribute('style', 'color:#00b386; font-weight:bold;');
+        storedAllScoreInitials.setAttribute('style', 'text-align:left');
+        storedAllScoreInitials.textContent = storedInitials[i];
+        storedAllScorePoints.textContent = storedPoints[i];
+        storedAllScoreNumQuestions.textContent = storedQuestions[i];
+        storedAllScoreRight.textContent = storedRight[i];
+        storedAllScoreWrong.textContent = storedWrong[i];
+        storedAllScoreSkipped.textContent = storedSkipped[i];           
+    }
+};
+
 // 19. Add scores to tables
 function populateScores() { 
     // A. scoreContainer attributes
     scoreContainer.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#ff9900; background-color:black; color:white; font-family:century gothic; height:800px;');
+
+    if (localStorage.getItem('savedInitials') != null) {
+    console.log(`savedRecordsCount is ${savedRecordsCount}`);
+    // if (savedRecordsCount > 0) {
+        renderSavedScores();
+    }
+
+    if (points >= 80) {
+        createHighScoreTableRows();
+    }
     
-    // B. Processes
-    // i. Add user data to tables
-    function createTableRows() {
-        let userTallies = userDataArray[userCount];
-                
-        // a. High Scores data
-        if (points >= 80) {    
-            let highScoreRow = highScoresTableBody.insertRow(-1);
-            let highScoreInitials = highScoreRow.insertCell(0);
-            let highScorePoints = highScoreRow.insertCell(1);
-            let highScoreNumQuestions = highScoreRow.insertCell(2);
-            let highScoreRight = highScoreRow.insertCell(3);
-            let highScoreWrong = highScoreRow.insertCell(4);
-            let highScoreSkipped = highScoreRow.insertCell(5);
-            currentHighScoreRow = highScoreRow;
-
-            highScoreInitials.setAttribute('style', 'text-align:left');
-            highScoreInitials.textContent = finalInitials;
-            highScorePoints.textContent = userTallies.pointsEarned;
-            highScoreNumQuestions.textContent = userTallies.questionsPresented;
-            highScoreRight.textContent = userTallies.correctAnswers;
-            highScoreWrong.textContent = userTallies.incorrectAnswers;
-            highScoreSkipped.textContent = userTallies.skippedQuestions;
-        }
-
-        // b. All Scores data
-        let allScoreRow = allScoresTableBody.insertRow(-1);
-        let allScoreInitials = allScoreRow.insertCell(0);
-        let allScorePoints = allScoreRow.insertCell(1);
-        let allScoreNumQuestions = allScoreRow.insertCell(2);
-        let allScoreRight = allScoreRow.insertCell(3);
-        let allScoreWrong = allScoreRow.insertCell(4);
-        let allScoreSkipped = allScoreRow.insertCell(5);
-        currentAllScoreRow = allScoreRow;
-
-        allScoreInitials.setAttribute('style', 'text-align:left');
-        allScoreInitials.textContent = finalInitials;
-        allScorePoints.textContent = userTallies.pointsEarned;
-        allScoreNumQuestions.textContent = userTallies.questionsPresented;
-        allScoreRight.textContent = userTallies.correctAnswers;
-        allScoreWrong.textContent = userTallies.incorrectAnswers;
-        allScoreSkipped.textContent = userTallies.skippedQuestions;
-    };
-
-    createTableRows();
-    
+    createAllScoreTableRows();
     saveScores();
     clearScores();
     retakeQuizClick();
@@ -940,7 +1007,12 @@ function populateScores() {
 function saveScores() {
     saveScoresButton.onclick = function() {
         console.log('Ran saveScoresButton function');
+        // highScoresTableBody.deleteRow(-1);
+        // allScoresTableBody.deleteRow(-1);
         let talliesToSave = userDataArray[userCount];
+        createRowsCount++;
+        savedRecordsCount = createRowsCount.valueOf();
+        console.log(`savedRecordsCount is ${savedRecordsCount}`);
 
         if (localStorage.getItem('savedInitials') == null) {
             localStorage.setItem('savedInitials', '[]');
@@ -1001,73 +1073,11 @@ function saveScores() {
 
         localStorage.setItem('savedMissedQuestions', '[]');
         localStorage.setItem('savedMissedQuestions', JSON.stringify(oldSkipped));
-
-        
-        
-    
-        // function getRecord() {
-        //     currentStoredRecord = JSON.parse(localStorage.getItem(savedUserInfo));
-        //     console.log(currentStoredRecord);
-           
-        //     // a. High Scores data
-        //     if (points >= 80) {
-        //         let highScoresList = highScoresTable.querySelector('tbody');    
-        //         highScoresList.deleteRow(-1);
-        //         let savedHighScoreRow = highScoresList.insertRow(-1);
-        //         let savedHighScoreInitials = savedHighScoreRow.insertCell(0);
-        //         let savedHighScorePoints = savedHighScoreRow.insertCell(1);
-        //         let savedHighScoreNumQuestions = savedHighScoreRow.insertCell(2);
-        //         let savedHighScoreRight = savedHighScoreRow.insertCell(3);
-        //         let savedHighScoreWrong = savedHighScoreRow.insertCell(4);
-        //         let savedHighScoreSkipped = savedHighScoreRow.insertCell(5);
-
-        //         savedHighScoreRow.setAttribute('style', 'text-align:left; color:green; font-weight:bold;');
-        //         savedHighScoreInitials.textContent = currentStoredRecord.savedInitials;
-        //         savedHighScorePoints.textContent = currentStoredRecord.savedPoints;
-        //         savedHighScoreNumQuestions.textContent = currentStoredRecord.savedQuestionsAsked;
-        //         savedHighScoreRight.textContent = currentStoredRecord.savedAnswersRight;
-        //         savedHighScoreWrong.textContent = currentStoredRecord.savedAnswersWrong;
-        //         savedHighScoreSkipped.textContent = currentStoredRecord.savedMissedQuestions;
-        //     }
-
-        //     // b. All Scores data
-        //     let allScoresList = allScoresTable.querySelector('tbody');
-        //     allScoresList.deleteRow(-1);
-        //     let savedAllScoreRow = allScoresList.insertRow(-1);
-        //     let savedAllScoreInitials = savedAllScoreRow.insertCell(0);
-        //     let savedAllScorePoints = savedAllScoreRow.insertCell(1);
-        //     let savedAllScoreNumQuestions = savedAllScoreRow.insertCell(2);
-        //     let savedAllScoreRight = savedAllScoreRow.insertCell(3);
-        //     let savedAllScoreWrong = savedAllScoreRow.insertCell(4);
-        //     let savedAllScoreSkipped = savedAllScoreRow.insertCell(5);
-
-        //     savedAllScoreRow.setAttribute('style', 'text-align:left; color:green; font-weight:bold;');
-        //     savedAllScoreInitials.textContent = currentStoredRecord.savedInitials;
-        //     savedAllScorePoints.textContent = currentStoredRecord.pointsEarned;
-        //     savedAllScoreNumQuestions.textContent = currentStoredRecord.questionsPresented;
-        //     savedAllScoreRight.textContent = currentStoredRecord.correctAnswers;
-        //     savedAllScoreWrong.textContent = currentStoredRecord.incorrectAnswers;
-        //     savedAllScoreSkipped.textContent = currentStoredRecord.skippedQuestions;
-        // }
     };
-    savedRecordsIndex++;
+    savedRecordsCount++;
+    console.log(`Saved Record Count after saving record: ${savedRecordsCount}`);
 };
 
-// function renderSavedRecords() {
-//     for (i = 0; i < savedRecordsIndex; i++) {   
-    
-//         let savedRecords = savedRecordsArray[i];
-//          = JSON.parse(localStorage.getItem(savedUserData))
-//             lastSavedInitials = savedUserData.savedInitials;
-//             lastSavedPoints = savedUserData.savedPoints;
-//             lastSavedQuestionsAsked = savedUserData.savedQuestionsAsked;
-//             lastSavedAnswersRight = savedUserData.savedAnswersRight;
-//             lastSavedAnswersWrong = savedUserData.savedAnswersWrong;
-//             lastSavedMissedQuestions = savedUserData.savedMissedQuestions;
-        
-//     }
-// };
-    
 
 
 // 21. Clear scores from tables
@@ -1088,6 +1098,7 @@ function clearScores() {
         userDataArray = [];
         userCount = 0;
         populateScoresCount = 0;
+        savedRecordsCount = 0;
     });
     clearScoresButton.removeEventListener('click', function() {});
 };
@@ -1098,10 +1109,20 @@ function retakeQuizClick() {
         userCount = populateScoresCount;
         // console.log(`Taking on populateScoresCount of ${populateScoresCount}`);
         saveScoresButton.removeEventListener('click', function() {});
+        
+        let highScoreRowsCount = highScoresTable.rows.length;
+        let allScoreRowsCount = allScoresTable.rows.length;
+
+        for (let i = highScoreRowsCount - 1; i > 0; i--) {
+            highScoresTable.deleteRow(i);
+        }
+
+        for (let j = allScoreRowsCount - 1; j > 0; j--) {
+            allScoresTable.deleteRow(j);
+        }
         takeQuizAgain();
     });
     retakeQuizButton.removeEventListener('click', function() {});
-
 };
 
 // 23. Transition to Welcome Page
@@ -1131,7 +1152,7 @@ function returnToStart() {
     console.log('Ran returnToStart function');
     welcomeDiv.setAttribute('style', 'margin-left:auto; margin-right:auto; position:relative; border-style:solid; border-width:3px; border-radius:20px; border-color:#cf1717; background-color:black; color:white; font-family:century gothic;');
     transitionToQuiz();
-}
+};
 
 // *************************************************
 // INITIAL PROCESS
