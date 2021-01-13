@@ -81,26 +81,25 @@ Application built entirely from scratch, including:
 
 
 ## Challenges Met and Experience Gained
-Building this application:
-* Enabled me to garner knowledge of wide array of CSS styles and techniques
-* Made evident importance of thoroughly reading appropriate documentation **prior to** implementation of methods, processes, etc.
-* Caused me to develop deep appreciation of time and effort necessary in building CSS styles and media queries from scratch
-Working with event listeners proved a challenge, as I learned how they may interfere with looping, data collection, function calls, etc. 
+*Building this application:
+ * Enabled me to garner knowledge of wide array of CSS styles and techniques
+ * Made evident importance of thoroughly reading appropriate documentation **prior to** implementation of methods, processes, etc.
+ * Caused me to develop deep appreciation of time and effort necessary in building CSS styles and media queries from scratch
+* Working with event listeners proved a challenge, as I learned how they may interfere with looping, data collection, function calls, etc. 
 
 
 ## Improvements
-This program is a work-in-progress. As my aptitude for CSS and JavaScript grows, I aim to:
-* Make the code more concise
-* Learn to better organize code and processes
-* Improve implementation and placement of functions
-* Fine-tune positioning of elements using CSS
-N.B.: Several lines of code can be pared down or eliminated; I struggled with event listeners that were affecting values and processes. Hence, I developed work-arounds prior to modifying the listeners themselves.
+* This program is a work-in-progress. As my aptitude for CSS and JavaScript grows, I aim to:
+ * Make the code more concise
+ * Learn to better organize code and processes
+ * Improve implementation and placement of functions
+ * Fine-tune positioning of elements using CSS
+* N.B.: Several lines of code can be pared down or eliminated; I struggled with event listeners that were affecting values and processes. Hence, I developed work-arounds prior to modifying the listeners themselves.
 
 
 ## Installation
-Installation not required; program runs in browser
-Deployed application may be found here:
-https://laurenjmkruse.github.io/Quiz-On-JavaScript-Fundamentals/
+* Installation not required; program runs in browser
+* Deployed application may be found here: https://laurenjmkruse.github.io/Quiz-On-JavaScript-Fundamentals/
 
 
 ## Screenshots
