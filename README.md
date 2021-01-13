@@ -83,7 +83,7 @@ Application built entirely from scratch, including:
 ## Challenges Met and Experience Gained
 Building this application:
 * Enabled me to garner knowledge of wide array of CSS styles and techniques
-* Made evident importance of thoroughly reading appropriate documentation **prior** to implementation of methods, processes, etc.
+* Made evident importance of thoroughly reading appropriate documentation **prior to** implementation of methods, processes, etc.
 * Caused me to develop deep appreciation of time and effort necessary in building CSS styles and media queries from scratch
 Working with event listeners proved a challenge, as I learned how they may interfere with looping, data collection, function calls, etc. 
 
