@@ -4,6 +4,7 @@
 *AS A coding boot camp student,
 I WANT to take a timed quiz on JavaScript fundamentals that stores high scores SO THAT I can gauge my progress compared to my peers*
 
+## © 2021, Lauren J. M. Kruse. All rights reserved.
 
 ## Description
 
